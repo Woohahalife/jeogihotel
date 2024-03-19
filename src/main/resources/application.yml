@@ -13,3 +13,22 @@ springdoc:
     display-request-duration: true # 요청 실행시간 ui에 표시
   paths-to-match: # ui에 모든 api 경로 포함
     - /**
+
+# H2-console 설정
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:testdb
+  jpa:
+    # sql 쿼리 콘솔 출력 허용
+    show_sql: true
+    properties:
+      hibernate:
+        # SQL 쿼리에 주석을 추가하여 해당 쿼리가 어떤 Hibernate 쿼리에 해당하는지 식별
+        use_sql_comments: true
+        # 쿼리 포멧팅
+        format_sql: true
+    open-in-view: false
