@@ -32,3 +32,8 @@ spring:
         # 쿼리 포멧팅
         format_sql: true
     open-in-view: false
+
+jwt:
+  access-token:
+    secret-key: bab2ee005bf1daad5c736636d8b40184520f49df5d1b3303d923137af0b1dc95
+    access-expired: 600000
