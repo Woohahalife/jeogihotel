@@ -8,7 +8,7 @@ springdoc:
   swagger-ui: # ui 설정
     operations-sorter: alpha # 알파벳순 작업 정렬
     tags-sorter: alpha # 알파벳순 태그 정렬
-    path: /public-api/swagger-ui # ui uri 지정 : localhost:8080//public-api/swagger-ui
+    path: /public-api/swagger-ui # ui uri 지정 : localhost:8080/public-api/swagger-ui
     disable-swagger-default-url: true # 기본 uri 비활성화
     display-request-duration: true # 요청 실행시간 ui에 표시
   paths-to-match: # ui에 모든 api 경로 포함
