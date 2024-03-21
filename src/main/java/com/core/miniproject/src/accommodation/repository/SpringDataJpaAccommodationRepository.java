@@ -1,8 +1,7 @@
 package com.core.miniproject.src.accommodation.repository;
 
-import com.core.miniproject.src.accommodation.domain.AccommodationDto;
+import com.core.miniproject.src.accommodation.domain.Accommodation;
 import com.core.miniproject.src.accommodation.domain.AccommodationType;
-import com.core.miniproject.src.common.response.BaseResponseStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,13 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SpringDataJpaAccommodationRepository extends JpaRepository<AccommodationDto, Long>{
+public interface SpringDataJpaAccommodationRepository extends JpaRepository<Accommodation, Long>{
 
     @Override
-    AccommodationDto save(AccommodationDto accommodationDto);
+    Accommodation save(Accommodation accommodation);
 
     @Override
-    List<AccommodationDto> findAll();
+    List<Accommodation> findAll();
 
-    Optional<AccommodationDto> findByAccommodationType(AccommodationType accommodationType);
+    Optional<Accommodation> findByAccommodationType(AccommodationType accommodationType);
 }
