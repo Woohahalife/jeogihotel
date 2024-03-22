@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-REPOSITORY=/home/ec2-user/KDT_BE7_Mini-Project
+REPOSITORY=/home/ubuntu/KDT_BE7_Mini-Project
 cd $REPOSITORY
 
 APP_NAME=KDT_BE7_Mini-Project
