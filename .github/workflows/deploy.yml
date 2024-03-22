@@ -6,7 +6,7 @@ on:
 
 env:
   PROJECT_NAME: KDT_BE7_Mini-Project
-  BUCKET_NAME: bucket_KDT_BE7_Mini-Project
+  BUCKET_NAME: accommodation-cicd-bucket
   CODE_DEPLOY_APP_NAME: accommodaionCICD
   DEPLOYMENT_GROUP_NAME: cicd_codeDeploy
   
