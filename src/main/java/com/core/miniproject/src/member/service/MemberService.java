@@ -37,7 +37,6 @@ public class MemberService {
                     throw new BaseException(DUPLICAE_EMAIL);
                 });
 
-
         Member saveMember = memberRepository.save(insertMemberDataFromRequest(request));
 
         log.info("MemberEntity has created for join with ID: {} email: {} name : {}",
@@ -64,7 +63,6 @@ public class MemberService {
             - email 등록되어 있지 않다면 에러 반환
             - password가 일치하지 않는다면 에러 반환
          */
-
         Member member = memberRepository.findByMemberEmail(request.getEmail())
                 .orElseThrow(() -> new BaseException(MEMBER_NOT_FOUND));
 

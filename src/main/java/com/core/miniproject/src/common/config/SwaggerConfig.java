@@ -23,12 +23,12 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class SwaggerConfig {
 
-        String[] paths = {"/user"}; // 기능별 root url 구분
+        String[] paths = {"/member"}; // 기능별 root url 구분
 
         @Bean
         public GroupedOpenApi getUserApi() { // root url에 따라 명세 구분
                 return GroupedOpenApi.builder()
-                        .group("user")
+                        .group("member")
                         .pathsToMatch(paths[0] + "/**")
                         .build();
         }
