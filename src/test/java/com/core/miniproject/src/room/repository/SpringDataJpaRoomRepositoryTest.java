@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
+import java.util.Optional;
 
 @DataJpaTest
 class SpringDataJpaRoomRepositoryTest {
@@ -20,7 +21,12 @@ class SpringDataJpaRoomRepositoryTest {
     SpringDataJpaRoomPriceRepository springDataJpaRoomPriceRepository;
 
     @Test
-    void create(){
+    void create() {
+
+        RoomPrice roomPrice = RoomPrice.builder()
+                .price(200000)
+                .build();
+
         Room room = Room.builder()
                 .roomName("더블 디럭스")
                 .roomInfo("테스트 호텔의 객실")
@@ -28,14 +34,6 @@ class SpringDataJpaRoomRepositoryTest {
                 .fixedMember(2)
                 .maxedMember(4)
                 .accommodationId(null)
-                .roomPrice(null)
-                .build();
-
-        RoomPrice roomPrice = RoomPrice.builder()
-                .price(200000)
-                .build();
-
-        Room.builder()
                 .roomPrice(roomPrice)
                 .build();
 
@@ -45,10 +43,16 @@ class SpringDataJpaRoomRepositoryTest {
 
         //then
         Assertions.assertThat(newRoom.getRoomPrice()).isEqualTo(newRoomPrice);
+        Assertions.assertThat(room.getRoomPrice().getPrice()).isEqualTo(newRoom.getRoomPrice().getPrice());
     }
 
     @Test
-    void findAll_성공(){
+    void findAll_성공() {
+
+        RoomPrice roomPrice = RoomPrice.builder()
+                .price(200000)
+                .build();
+
         Room room = Room.builder()
                 .roomName("더블 디럭스")
                 .roomInfo("테스트 호텔의 객실")
@@ -56,35 +60,27 @@ class SpringDataJpaRoomRepositoryTest {
                 .fixedMember(2)
                 .maxedMember(4)
                 .accommodationId(null)
-                .roomPrice(null)
-                .build();
-
-        RoomPrice roomPrice = RoomPrice.builder()
-                .price(200000)
-                .build();
-
-        Room.builder()
                 .roomPrice(roomPrice)
                 .build();
 
         springDataJpaRoomPriceRepository.save(roomPrice);
         springDataJpaRoomRepository.save(room);
-
+        RoomPrice byId = springDataJpaRoomPriceRepository.findById(1L).orElseThrow();
         //when
         List<Room> rooms = springDataJpaRoomRepository.findAll();
         for (Room room1 : rooms) {
             System.out.println("room1.getRoomPrice().getPrice() = " + room1.getRoomPrice().getPrice());
         }
         Assertions.assertThat(rooms.size()).isEqualTo(1);
+        Assertions.assertThat(room.getRoomPrice().getPrice()).isEqualTo(byId.getPrice());
     }
 
     @Test
-    void findAll_실패(){
+    void findAll_실패() {
         List<Room> rooms = springDataJpaRoomRepository.findAll();
         //then
         Assertions.assertThat(rooms).isEmpty();
     }
-
 
 
 }
