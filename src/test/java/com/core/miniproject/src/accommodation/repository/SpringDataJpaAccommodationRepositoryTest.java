@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-
+//테스트 코드 커밋
 @DataJpaTest
 @Transactional
 class SpringDataJpaAccommodationRepositoryTest {
