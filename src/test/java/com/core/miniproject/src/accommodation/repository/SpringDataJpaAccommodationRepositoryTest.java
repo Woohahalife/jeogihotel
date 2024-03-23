@@ -9,31 +9,25 @@ import com.core.miniproject.src.room.domain.entity.Room;
 import com.core.miniproject.src.room.repository.SpringDataJpaRoomRepository;
 import com.core.miniproject.src.roomprice.domain.RoomPrice;
 import com.core.miniproject.src.roomprice.repository.SpringDataJpaRoomPriceRepository;
-import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-
+//테스트 코드 커밋
 @DataJpaTest
-@Transactional
 class SpringDataJpaAccommodationRepositoryTest {
 
     @Autowired
     SpringDataJpaAccommodationRepository springDataJpaAccommodationRepository;
-
     @Autowired
     SpringDataJpaRoomRepository springDataJpaRoomRepository;
-
     @Autowired
     SpringDataJpaRoomPriceRepository springDataJpaRoomPriceRepository;
-
     @Autowired
     SpringDataLocationRepository springDataLocationRepository;
 
