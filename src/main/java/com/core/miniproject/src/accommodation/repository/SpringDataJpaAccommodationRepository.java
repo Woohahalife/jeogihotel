@@ -1,7 +1,7 @@
 package com.core.miniproject.src.accommodation.repository;
 
-import com.core.miniproject.src.accommodation.domain.Accommodation;
-import com.core.miniproject.src.accommodation.domain.AccommodationType;
+import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
+import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

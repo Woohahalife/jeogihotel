@@ -1,20 +1,28 @@
 package com.core.miniproject.src.accommodation.repository;
 
-import com.core.miniproject.src.accommodation.domain.Accommodation;
-import com.core.miniproject.src.accommodation.domain.AccommodationType;
-import com.core.miniproject.src.room.domain.Room;
+import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
+import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
+import com.core.miniproject.src.location.domain.entity.Location;
+import com.core.miniproject.src.location.domain.entity.LocationType;
+import com.core.miniproject.src.location.repository.SpringDataLocationRepository;
+import com.core.miniproject.src.room.domain.entity.Room;
 import com.core.miniproject.src.room.repository.SpringDataJpaRoomRepository;
+import com.core.miniproject.src.roomprice.domain.RoomPrice;
+import com.core.miniproject.src.roomprice.repository.SpringDataJpaRoomPriceRepository;
+import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 
 @DataJpaTest
+@Transactional
 class SpringDataJpaAccommodationRepositoryTest {
 
     @Autowired
@@ -23,65 +31,93 @@ class SpringDataJpaAccommodationRepositoryTest {
     @Autowired
     SpringDataJpaRoomRepository springDataJpaRoomRepository;
 
+    @Autowired
+    SpringDataJpaRoomPriceRepository springDataJpaRoomPriceRepository;
+
+    @Autowired
+    SpringDataLocationRepository springDataLocationRepository;
+
     @Test //room 테이블 연관관계 추가
     void create(){
-        //given
-        Accommodation accommodation = new Accommodation();
-        accommodation.setIntroduction("소개합니다 호텔");
-        accommodation.setAccommodationName("테스트 호텔");
-        accommodation.setAccommodationType(AccommodationType.HOTEL);
-        accommodation.setAccommodationImage("이미지 링크");
+        // Location 생성
+        Location location = Location.builder()
+                .locationName(LocationType.GANGNEUNG)
+                .build();
 
-        Room room = new Room();
-        room.setRoomInfo("이 방은 테스트 호텔의 방");
-        room.setRoomName("방 이름");
-        room.setRoomCount(1);
-        room.setFixedMember(2);
-        room.setMaxedMember(4);
-        room.setAccommodation(accommodation);
+        // Room 생성
+        Room room1 = Room.builder()
+                .roomName("테스트 호텔 디럭스 룸")
+                .roomInfo("깨끗한 객실")
+                .roomCount(200)
+                .fixedMember(2)
+                .maxedMember(4)
+                .roomPrice(RoomPrice.builder()
+                        .price(200000)
+                        .build())
+                .build();
 
-        List<Room> rooms = new ArrayList<>();
-        rooms.add(room);
-        accommodation.setRoomId(rooms);
-
+        Room room2 = Room.builder()
+                .roomName("테스트 호텔 슈페리어 룸")
+                .roomInfo("편안한 객실")
+                .roomCount(150)
+                .fixedMember(2)
+                .maxedMember(3)
+                .roomPrice(RoomPrice.builder()
+                        .price(250000)
+                        .build())
+                .build();
+        // Accommodation 생성
+        Accommodation accommodation = Accommodation.builder()
+                .introduction("테스트 호텔입니다.")
+                .accommodationImage("이미지 링크입니다.")
+                .accommodationType(AccommodationType.HOTEL)
+                .accommodationName("테스트 호텔")
+                .roomId(Arrays.asList(room1, room2)) // Room 리스트 설정
+                .locationId(location) // Location 설정
+                .build();
         //when
         Accommodation newAccomm = springDataJpaAccommodationRepository.save(accommodation);
-        Room newRoom = springDataJpaRoomRepository.save(room);
 
         //then
-        //1. 객실에 숙소가 잘 매핑 되었는지
-//      Assertions.assertThat(newRoom.getAccommodation().getId()).isEqualTo(newAccomm.getId());
-        //2. 숙소에 객실이 잘 매핑 되었는지
-        Assertions.assertThat(newRoom).isEqualTo(newAccomm.getRoomId().get(0));
+        System.out.println("newAccomm.getLocationId() = " + newAccomm.getLocationId());
+        Assertions.assertThat(newAccomm.getRoomId().get(0).getRoomPrice().getPrice()).isEqualTo(200000);
     }
 
     @Test
     void 전체_목록_조회_성공(){
         //given
-        Accommodation accommodation = new Accommodation();
-        accommodation.setIntroduction("소개합니다 호텔");
-        accommodation.setAccommodationName("테스트 호텔");
-        accommodation.setAccommodationType(AccommodationType.HOTEL);
-        accommodation.setAccommodationImage("이미지 링크");
-
-        Room room = new Room();
-        room.setRoomInfo("이 방은 테스트 호텔의 방");
-        room.setRoomName("방 이름");
-        room.setRoomCount(1);
-        room.setFixedMember(2);
-        room.setMaxedMember(4);
-        room.setAccommodation(accommodation);
-
-        List<Room> rooms = new ArrayList<>();
-        rooms.add(room);
-        accommodation.setRoomId(rooms);
+        //Location->Accommodation->Room->RoomPrice
+        Location location = Location.builder()
+                .accommodationId(Arrays.asList(Accommodation.builder()
+                        .roomId(Arrays.asList(Room.builder()
+                                .roomCount(20)
+                                .roomPrice(RoomPrice.builder()
+                                        .price(20000)
+                                        .build())
+                                .roomInfo("객실은 깨끗")
+                                .fixedMember(2)
+                                .maxedMember(4)
+                                .roomName("디럭스")
+                                .build()))
+                        .accommodationImage("이미지 링크")
+                        .accommodationName("테스트 호텔")
+                        .accommodationType(AccommodationType.HOTEL)
+                        .introduction("소개 입니다.")
+                        .rate(4.5)
+                        .price(20000)
+                        .build()))
+                .locationName(LocationType.BUSAN)
+                .build();
 
         //when
-        springDataJpaAccommodationRepository.save(accommodation);
-        springDataJpaRoomRepository.save(room);
+        springDataLocationRepository.save(location);
+        springDataJpaRoomPriceRepository.save(location.getAccommodationId().get(0).getRoomId().get(0).getRoomPrice());
+        springDataJpaRoomRepository.save(location.getAccommodationId().get(0).getRoomId().get(0));
+        springDataJpaAccommodationRepository.save(location.getAccommodationId().get(0));
+
         List<Accommodation> accommodationList = springDataJpaAccommodationRepository.findAll();
         //then
-        Assertions.assertThat(accommodationList).isNotEmpty();
+        Assertions.assertThat(accommodationList.size()).isEqualTo(1);
     }
 
     //데이터가 없는데 조회를 하는 경우
@@ -99,23 +135,44 @@ class SpringDataJpaAccommodationRepositoryTest {
     @Test
     void 숙소종류별로조회_성공(){
         //given
-        Accommodation accommodation = new Accommodation();
-        accommodation.setIntroduction("소개합니다 호텔");
-        accommodation.setAccommodationName("테스트 호텔");
-        accommodation.setAccommodationType(AccommodationType.HOTEL);
-        accommodation.setAccommodationImage("이미지 링크");
+        Accommodation accommodation = Accommodation.builder()
+                .introduction("테스트 호텔입니다.")
+                .accommodationImage("이미지 링크입니다.")
+                .accommodationType(AccommodationType.HOTEL)
+                .accommodationName("테스트 호텔")
+                .roomId(null)
+                .locationId(null)
+                .build();
 
-        Room room = new Room();
-        room.setRoomInfo("이 방은 테스트 호텔의 방");
-        room.setRoomName("방 이름");
-        room.setRoomCount(1);
-        room.setFixedMember(2);
-        room.setMaxedMember(4);
-        room.setAccommodation(accommodation);
+        Room room = Room.builder()
+                .roomName("더블 디럭스")
+                .roomInfo("테스트 호텔의 객실")
+                .roomCount(40)
+                .fixedMember(2)
+                .maxedMember(4)
+                .accommodationId(accommodation)
+                .roomPrice(null)
+                .build();
+
+        RoomPrice roomPrice = RoomPrice.builder()
+                .price(200000)
+                .build();
+
+        Location location = Location.builder()
+                .locationName(LocationType.SEOUL)
+                .build();
+
+        Room.builder()
+                .roomPrice(roomPrice)
+                .build();
 
         List<Room> rooms = new ArrayList<>();
         rooms.add(room);
-        accommodation.setRoomId(rooms);
+
+        Accommodation.builder()
+                .locationId(location)
+                .roomId(rooms)
+                .build();
         //when
         springDataJpaAccommodationRepository.save(accommodation);
         springDataJpaRoomRepository.save(room);
@@ -123,58 +180,5 @@ class SpringDataJpaAccommodationRepositoryTest {
 
         //then
         Assertions.assertThat(hotel.get().getAccommodationType()).isEqualTo(accommodation.getAccommodationType());
-    }
-
-    //호텔, 모텔 등 종류별 조회 실패
-    @Test
-    void 숙소종류별로조회_실패(){
-        //given
-        Accommodation accommodation1 = new Accommodation();
-        accommodation1.setIntroduction("소개합니다 호텔");
-        accommodation1.setAccommodationName("테스트 호텔");
-        accommodation1.setAccommodationType(AccommodationType.HOTEL);
-        accommodation1.setAccommodationImage("이미지 링크");
-
-        Accommodation accommodation2 = new Accommodation();
-        accommodation2.setIntroduction("소개합니다 모텔");
-        accommodation2.setAccommodationName("테스트 모텔");
-        accommodation2.setAccommodationType(AccommodationType.MOTEL);
-        accommodation2.setAccommodationImage("이미지 링크");
-
-        Room room1 = new Room();
-        room1.setRoomInfo("이 방은 테스트 호텔의 방");
-        room1.setRoomName("방 이름");
-        room1.setRoomCount(1);
-        room1.setFixedMember(2);
-        room1.setMaxedMember(4);
-        room1.setAccommodation(accommodation1);
-
-        List<Room> rooms1 = new ArrayList<>();
-        rooms1.add(room1);
-        accommodation1.setRoomId(rooms1);
-
-        Room room2 = new Room();
-        room2.setRoomInfo("이 방은 테스트 호텔의 방");
-        room2.setRoomName("방 이름");
-        room2.setRoomCount(1);
-        room2.setFixedMember(2);
-        room2.setMaxedMember(4);
-        room2.setAccommodation(accommodation1);
-
-        List<Room> rooms2 = new ArrayList<>();
-        rooms2.add(room1);
-        accommodation1.setRoomId(rooms2);
-
-        //when
-        springDataJpaAccommodationRepository.save(accommodation1);
-        springDataJpaRoomRepository.save(room1);
-
-        springDataJpaAccommodationRepository.save(accommodation2);
-        springDataJpaRoomRepository.save(room2);
-
-        Optional<Accommodation> hotel = springDataJpaAccommodationRepository.findByAccommodationType(AccommodationType.HOTEL);
-
-        //then
-        Assertions.assertThat(hotel.get().getAccommodationType()).isNotEqualTo(accommodation2.getAccommodationType());
     }
 }

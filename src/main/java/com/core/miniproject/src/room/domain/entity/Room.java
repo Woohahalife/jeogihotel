@@ -1,14 +1,15 @@
-package com.core.miniproject.src.room.domain;
+package com.core.miniproject.src.room.domain.entity;
 
-import com.core.miniproject.src.accommodation.domain.Accommodation;
+import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
+import com.core.miniproject.src.roomprice.domain.RoomPrice;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 public class Room {
 
     @Id
@@ -18,13 +19,13 @@ public class Room {
 
     @ManyToOne
     @JoinColumn(name="accommodation_id")
-    private Accommodation accommodation;
-
-    @Column(name="room_info")
-    private String roomInfo;
+    private Accommodation accommodationId;
 
     @Column(name = "room_name")
     private String roomName;
+
+    @Column(name="room_info")
+    private String roomInfo;
 
     @Column(name = "room_count")
     private int roomCount;
@@ -34,6 +35,9 @@ public class Room {
 
     @Column(name="maxed_member")
     private int maxedMember;
+
+    @OneToOne(mappedBy = "room")
+    private RoomPrice roomPrice;
 
 
 }

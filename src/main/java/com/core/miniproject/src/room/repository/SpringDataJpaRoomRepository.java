@@ -1,6 +1,6 @@
 package com.core.miniproject.src.room.repository;
 
-import com.core.miniproject.src.room.domain.Room;
+import com.core.miniproject.src.room.domain.entity.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
