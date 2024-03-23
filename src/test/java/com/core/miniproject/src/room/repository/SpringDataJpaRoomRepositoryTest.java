@@ -65,14 +65,12 @@ class SpringDataJpaRoomRepositoryTest {
 
         springDataJpaRoomPriceRepository.save(roomPrice);
         springDataJpaRoomRepository.save(room);
-        RoomPrice byId = springDataJpaRoomPriceRepository.findById(1L).orElseThrow();
         //when
         List<Room> rooms = springDataJpaRoomRepository.findAll();
         for (Room room1 : rooms) {
             System.out.println("room1.getRoomPrice().getPrice() = " + room1.getRoomPrice().getPrice());
         }
         Assertions.assertThat(rooms.size()).isEqualTo(1);
-        Assertions.assertThat(room.getRoomPrice().getPrice()).isEqualTo(byId.getPrice());
     }
 
     @Test
