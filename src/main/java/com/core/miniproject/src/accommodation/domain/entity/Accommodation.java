@@ -43,7 +43,7 @@ public class Accommodation {
     @Column(name="accommodation_image")
     private String accommodationImage;
 
-    //해당 숙소의 별점의 평균을 출력
+    //해당 숙소의 별점의 평균을 출력하는 쿼리
     @Formula("select avg(r.rate) from rate r where r.accommodation_id = accommodation_id")
     private double rate;
 
