@@ -1,7 +1,6 @@
 package com.core.miniproject.src.room.domain.dto;
 
 
-import com.core.miniproject.src.roomprice.domain.RoomPrice;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,4 +17,5 @@ public class RoomRequest {
     private int fixedMember;
     private int maxedMember;
     private int price;
+    private double avgRate;
 }

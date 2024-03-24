@@ -1,5 +1,8 @@
 package com.core.miniproject.src.room.repository;
 
+import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
+import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
+import com.core.miniproject.src.accommodation.repository.SpringDataJpaAccommodationRepository;
 import com.core.miniproject.src.room.domain.entity.Room;
 import com.core.miniproject.src.roomprice.domain.RoomPrice;
 import com.core.miniproject.src.roomprice.repository.SpringDataJpaRoomPriceRepository;
@@ -7,16 +10,15 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
 import java.util.List;
-import java.util.Optional;
 
 @DataJpaTest
 class SpringDataJpaRoomRepositoryTest {
 
     @Autowired
+    SpringDataJpaAccommodationRepository springDataJpaAccommodationRepository;
+    @Autowired
     SpringDataJpaRoomRepository springDataJpaRoomRepository;
-
     @Autowired
     SpringDataJpaRoomPriceRepository springDataJpaRoomPriceRepository;
 
@@ -78,6 +80,31 @@ class SpringDataJpaRoomRepositoryTest {
         List<Room> rooms = springDataJpaRoomRepository.findAll();
         //then
         Assertions.assertThat(rooms).isEmpty();
+    }
+
+    @Test
+    void findAllByAccommodationId_성공(){
+        //given
+        //Location->Accommodation->Room->RoomPrice
+        Accommodation accommodation = Accommodation.builder()
+                .accommodationName("테스트 호텔")
+                .accommodationType(AccommodationType.HOTEL)
+                .build();
+        Room room = Room.builder()
+                .accommodationId(accommodation)
+                .roomInfo("테스트 테스트")
+                .build();
+        RoomPrice roomPrice = RoomPrice.builder()
+                .price(20000)
+                .room(room)
+                .build();
+        //when
+        springDataJpaAccommodationRepository.save(accommodation);
+        springDataJpaRoomRepository.save(room);
+        springDataJpaRoomPriceRepository.save(roomPrice);
+
+        List<Room> rooms = springDataJpaRoomRepository.findAllByAccommodationId(1L);
+        Assertions.assertThat(rooms.size()).isEqualTo(1);
     }
 
 

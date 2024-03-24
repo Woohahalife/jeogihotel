@@ -2,6 +2,7 @@ package com.core.miniproject.src.room.repository;
 
 import com.core.miniproject.src.room.domain.entity.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,7 +13,8 @@ public interface SpringDataJpaRoomRepository extends JpaRepository<Room, Long> {
     @Override
     Room save(Room room);
 
-    @Override
-    List<Room> findAll();
+    @Query("select r from Room r join r.roomPrice rp where r.accommodationId.id = ?1")
+    List<Room> findAllByAccommodationId(Long accommodationId);
 
+    
 }

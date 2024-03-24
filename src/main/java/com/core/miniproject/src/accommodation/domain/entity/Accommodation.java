@@ -35,7 +35,6 @@ public class Accommodation {
     @Column(name="accommodation_name")
     private String accommodationName;
 
-
     @Column(name="accommodation_type")
     @Enumerated(EnumType.STRING)
     private AccommodationType accommodationType;
