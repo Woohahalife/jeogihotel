@@ -87,7 +87,7 @@ class SpringDataJpaRoomRepositoryTest {
     }
 
     @Test
-    void findAllByAccommodationId_성공(){
+    void findAllByAccommodationId_success(){
         //given
         //Location->Accommodation->Room->RoomPrice
         Accommodation accommodation = Accommodation.builder()
