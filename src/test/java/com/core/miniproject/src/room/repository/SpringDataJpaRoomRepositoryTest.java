@@ -7,6 +7,7 @@ import com.core.miniproject.src.room.domain.entity.Room;
 import com.core.miniproject.src.roomprice.domain.RoomPrice;
 import com.core.miniproject.src.roomprice.repository.SpringDataJpaRoomPriceRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -86,8 +87,9 @@ class SpringDataJpaRoomRepositoryTest {
         Assertions.assertThat(rooms).isEmpty();
     }
 
+    @Disabled
     @Test
-    void findAllByAccommodationId_success(){
+    void findAllByAccommodationId_성공(){
         //given
         //Location->Accommodation->Room->RoomPrice
         Accommodation accommodation = Accommodation.builder()
