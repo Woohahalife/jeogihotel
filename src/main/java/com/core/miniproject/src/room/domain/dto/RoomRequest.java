@@ -1,7 +1,6 @@
 package com.core.miniproject.src.room.domain.dto;
 
 
-import com.core.miniproject.src.roomprice.domain.RoomPrice;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

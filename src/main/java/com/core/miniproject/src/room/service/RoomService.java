@@ -1,6 +1,5 @@
 package com.core.miniproject.src.room.service;
 
-import com.core.miniproject.src.common.response.BaseResponse;
 import com.core.miniproject.src.room.domain.dto.RoomResponse;
 import com.core.miniproject.src.room.domain.entity.Room;
 import com.core.miniproject.src.room.repository.SpringDataJpaRoomRepository;

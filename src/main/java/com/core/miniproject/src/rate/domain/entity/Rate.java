@@ -4,8 +4,6 @@ import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @Getter
 @AllArgsConstructor
