@@ -87,7 +87,6 @@ class SpringDataJpaRoomRepositoryTest {
         Assertions.assertThat(rooms).isEmpty();
     }
 
-    @Disabled
     @Test
     void findAllByAccommodationId_성공(){
         //given
@@ -96,20 +95,21 @@ class SpringDataJpaRoomRepositoryTest {
                 .accommodationName("테스트 호텔")
                 .accommodationType(AccommodationType.HOTEL)
                 .build();
+        springDataJpaAccommodationRepository.save(accommodation);
+
         Room room = Room.builder()
                 .accommodationId(accommodation)
                 .roomInfo("테스트 테스트")
                 .build();
+        springDataJpaRoomRepository.save(room);
+
         RoomPrice roomPrice = RoomPrice.builder()
                 .price(20000)
                 .room(room)
                 .build();
-        //when
-        springDataJpaAccommodationRepository.save(accommodation);
-        springDataJpaRoomRepository.save(room);
         springDataJpaRoomPriceRepository.save(roomPrice);
 
-        List<Room> rooms = springDataJpaRoomRepository.findAllByAccommodationId(1L);
+        List<Room> rooms = springDataJpaRoomRepository.findAllByAccommodationId(accommodation.getId());
         Assertions.assertThat(rooms.size()).isEqualTo(1);
     }
 
