@@ -18,4 +18,5 @@ public class RoomRequest {
     private int fixedMember;
     private int maxedMember;
     private int price;
+    private double avgRate;
 }

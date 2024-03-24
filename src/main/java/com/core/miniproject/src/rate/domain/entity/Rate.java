@@ -6,7 +6,7 @@ import lombok.*;
 
 import java.util.List;
 
-@Entity(name = "rate")
+@Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

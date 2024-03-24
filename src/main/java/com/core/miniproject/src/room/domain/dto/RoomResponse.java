@@ -16,6 +16,7 @@ public class RoomResponse {
     private int fixedMember;
     private int maxedMember;
     private int price;
+    private double avgRate;
 
     public static RoomResponse toClient(Room room){
         return RoomResponse.builder()
@@ -24,6 +25,7 @@ public class RoomResponse {
                 .fixedMember(room.getFixedMember())
                 .maxedMember(room.getMaxedMember())
                 .price(room.getRoomPrice().getPrice())
+                .avgRate(room.getAvgRate())
                 .build();
     }
 }
