@@ -25,6 +25,8 @@ public enum BaseResponseStatus {
     PRINCIPAL_IS_NOT_FOUND(false, BAD_REQUEST.value(), "사용자 인증 주체 정보가 존재하지 않습니다."),
     DUPLICAE_EMAIL(false, BAD_REQUEST.value(), "가입된 이메일이 이미 존재합니다."),
     INVALID_PASSWORD(false, BAD_REQUEST.value(), "아이디나 비밀번호가 일지하지 않습니다."),
+    INVALID_DATE_SETTING(false, BAD_REQUEST.value(), "입실 & 퇴실일자 설정이 유효하지 않습니다."),
+    EMAIL_IS_NOT_VALIDATE(false, BAD_REQUEST.value(), "해당 접근이 올바르지 않습니다."),
     /**
      * 500
      */
