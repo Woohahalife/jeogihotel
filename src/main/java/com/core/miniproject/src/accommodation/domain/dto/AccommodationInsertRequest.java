@@ -18,6 +18,7 @@ public class AccommodationInsertRequest {
     private String accommodationImage;
     private String introduction;
     private int price;
-    private LocationType location;
+    private LocationType locationName;
+    private double discountRate;
 
 }
