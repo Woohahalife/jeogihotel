@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer -> AbstractHttpConfigurer.disable())
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/**").permitAll()
+                                .requestMatchers("/public-api/**", "/h2-console/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 
@@ -47,7 +47,7 @@ public class SecurityConfig {
                 );
 
         http
-                .addFilterAt(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

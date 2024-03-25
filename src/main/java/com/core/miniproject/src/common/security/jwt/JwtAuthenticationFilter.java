@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain) throws ServletException, IOException {
 
         if (checkPublicApi(request, response, filterChain)) { // /public-api : 필터 무시
-//            System.out.println(request.getRequestURI() + " 필터 작동 X 확인");
+            System.out.println(request.getRequestURI() + " 필터 작동 X 확인");
             return;
         }
 
@@ -49,6 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throw new BaseException(BaseResponseStatus.INVALID_ERROR, "필터 통과 X");
         }
 
+        filterChain.doFilter(request, response);
     }
 
     private void configureAuthenticatedUser(UserDetails userDetails) {
@@ -60,16 +61,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authToken);
     }
 
-    // accessToken으로부터 회원 정보 추출해 UserDetails로 넘김
-    private UserDetails parseUserEmail(String accessToken) {
-
-        String userEmail = jwtTokenGenerator.getUserEmail(accessToken);
-        return memberPrincipalService.loadUserByUsername(userEmail);
-    }
-
     private String parseBearerToken(HttpServletRequest request) {
 
         String authorization = extractAuthorization(request);
+        log.info("[JwtTokenFilter] Extract authorization for Jwt token: {}", authorization);
         return authorization.split(" ")[1]; // Bearer 빼고 토큰값만 추출
 
     }
@@ -82,6 +77,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throw new BaseException(BaseResponseStatus.NOT_BEARER_TOKEN);
         }
         return authorization;
+    }
+
+    // accessToken으로부터 회원 정보 추출해 UserDetails로 넘김
+    private UserDetails parseUserEmail(String accessToken) {
+
+        String userEmail = jwtTokenGenerator.getUserEmail(accessToken);
+        return memberPrincipalService.loadUserByUsername(userEmail);
     }
 
     private boolean checkPublicApi(HttpServletRequest request,
