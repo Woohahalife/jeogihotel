@@ -2,8 +2,6 @@ package com.core.miniproject.src.accommodation.controller;
 
 import com.core.miniproject.src.accommodation.domain.dto.AccommodationInsertRequest;
 import com.core.miniproject.src.accommodation.domain.dto.AccommodationInsertResponse;
-import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
-import com.core.miniproject.src.accommodation.service.AccommodationDiscountService;
 import com.core.miniproject.src.accommodation.service.AccommodationService;
 import com.core.miniproject.src.common.response.BaseResponse;
 import com.core.miniproject.src.common.security.JwtAuthentication;
@@ -33,6 +31,4 @@ public class AccommodationController {
 
         return BaseResponse.response(accommodationInsertResponse);
     }
-
-
 }
