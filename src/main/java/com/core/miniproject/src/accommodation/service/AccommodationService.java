@@ -1,9 +1,11 @@
 package com.core.miniproject.src.accommodation.service;
 
+import com.core.miniproject.src.accommodation.domain.dto.AccommodationInsertRequest;
+import com.core.miniproject.src.accommodation.domain.dto.AccommodationInsertResponse;
 import com.core.miniproject.src.accommodation.domain.dto.AccommodationResponse;
 import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import com.core.miniproject.src.accommodation.repository.SpringDataJpaAccommodationRepository;
-import com.core.miniproject.src.common.response.BaseResponse;
+import com.core.miniproject.src.common.security.principal.MemberInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,4 +39,14 @@ public class AccommodationService {
         }
         return accommodationResponses;
     }
+
+//    public AccommodationInsertResponse createAccommodation(
+//            AccommodationInsertRequest request,
+//            MemberInfo memberInfo)
+//    {
+//        acc
+//
+//
+//
+//    }
 }
