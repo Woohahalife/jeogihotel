@@ -18,11 +18,10 @@ public class Location {
     @Column(name = "location_id")
     private Long id;
 
-    @OneToMany(mappedBy = "locationId")
-    @Column(name = "accommodation_id")
-    private List<Accommodation> accommodationId;
+    @OneToMany(mappedBy = "location")
+    private List<Accommodation> accommodation;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "location_name")
+    @Column(name = "location_name", unique = true)
     private LocationType locationName;
 }
