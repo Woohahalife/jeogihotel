@@ -1,7 +1,6 @@
 package com.core.miniproject.src.common.security;
 
 import com.core.miniproject.src.common.exception.BaseException;
-import com.core.miniproject.src.common.response.BaseResponseStatus;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
 import com.core.miniproject.src.common.security.principal.MemberPrincipal;
 import com.core.miniproject.src.member.repository.MemberRepository;
@@ -18,6 +17,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import static com.core.miniproject.src.common.response.BaseResponseStatus.EMAIL_NOT_FOUND;
+import static com.core.miniproject.src.common.response.BaseResponseStatus.PRINCIPAL_IS_NOT_FOUND;
 
 @Slf4j
 @Component
@@ -37,22 +37,20 @@ public class AuthMemberResolver implements HandlerMethodArgumentResolver {
             ModelAndViewContainer mavContainer,
             NativeWebRequest webRequest,
             WebDataBinderFactory binderFactory
-    ) throws Exception {
-
+    ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // 인증된 사용자가 아닌 경우 예외 처리
+        // 사용자가 인증되지 않은 경우 예외 처리
         if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails userDetails)) {
-            throw new BaseException(BaseResponseStatus.NOT_AUTHENTICATED_USER);
+            throw new BaseException(EMAIL_NOT_FOUND);
         }
 
         MemberPrincipal memberPrincipal = memberRepository.findByMemberEmail(userDetails.getUsername())
                 .map(MemberPrincipal::new)
                 .orElseThrow(() -> new BaseException(EMAIL_NOT_FOUND));
 
-        return MemberInfo.toParameter(
-                memberPrincipal.getMember()
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.PRINCIPAL_IS_NOT_FOUND))
-        );
+        return MemberInfo
+                .toParameter(memberPrincipal.getMember()
+                        .orElseThrow(() -> new BaseException(PRINCIPAL_IS_NOT_FOUND)));
     }
 }

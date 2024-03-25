@@ -5,7 +5,7 @@ import com.core.miniproject.src.common.security.jwt.AccessToken;
 import com.core.miniproject.src.member.domain.dto.MemberJoinRequest;
 import com.core.miniproject.src.member.domain.dto.MemberJoinResponse;
 import com.core.miniproject.src.member.domain.dto.MemberLoginRequest;
-import com.core.miniproject.src.member.domain.dto.UserLoginResponse;
+import com.core.miniproject.src.member.domain.dto.MemberLoginResponse;
 import com.core.miniproject.src.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,11 +34,11 @@ public class MemberPublicController {
     }
 
     @PostMapping("/v1/member/login")
-    public BaseResponse<UserLoginResponse> login(@RequestBody MemberLoginRequest request) {
+    public BaseResponse<MemberLoginResponse> login(@RequestBody MemberLoginRequest request) {
         log.info("[Post Mapping - User is attempting to login with username: {}", request.getEmail());
 
         AccessToken accessToken = memberService.login(request);
 
-        return response(UserLoginResponse.toClient(accessToken));
+        return response(MemberLoginResponse.toClient(accessToken));
     }
 }

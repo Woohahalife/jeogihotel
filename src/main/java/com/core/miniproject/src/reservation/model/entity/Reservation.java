@@ -1,6 +1,7 @@
 package com.core.miniproject.src.reservation.model.entity;
 
 import com.core.miniproject.src.common.constant.IsVisited;
+import com.core.miniproject.src.member.domain.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 @Getter
 @Builder
 @AllArgsConstructor
+@Table(indexes = @Index(name = "IX_reservation_member_id", columnList = "member_id"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reservation {
 
@@ -36,5 +38,9 @@ public class Reservation {
 
     @Column(name = "is_visited")
     private IsVisited isVisited;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)) // 테스트 및 조작 유연성을 위한 외래키 제약조건 해제
+    private Member member;
 
 }

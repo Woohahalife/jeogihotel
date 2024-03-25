@@ -87,7 +87,6 @@ class RoomRepositoryTest {
         Assertions.assertThat(rooms).isEmpty();
     }
 
-    @Disabled
     @Test
     void findAllByAccommodationId_성공(){
         //given
