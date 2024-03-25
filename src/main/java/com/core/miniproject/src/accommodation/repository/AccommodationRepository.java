@@ -25,4 +25,12 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
 
     @Query("select a from Accommodation a where a.accommodationType = ?1 and a.locationId.locationName = ?2")
     List<Accommodation> findByAccommodationTypeAndLocationType(AccommodationType aType, LocationType lType);
+
+    @Query(""" 
+       select a 
+       from Accommodation a join Room r on a.id=r.accommodationId.id
+       where a.locationId.locationName=?1 
+       and r.fixedMember=?2 
+       """)
+    List<Accommodation> findByLocationTypeAndFixedNumber(LocationType type, int fixedMember);
 }

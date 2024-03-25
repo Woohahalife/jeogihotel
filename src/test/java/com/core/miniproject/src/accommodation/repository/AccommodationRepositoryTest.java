@@ -273,4 +273,57 @@ class AccommodationRepositoryTest {
         //then
         Assertions.assertThat(seoulHotel.get(0).getAccommodationType()).isEqualTo(accommodation.getAccommodationType());
     }
+
+    @Test
+    void 숙소위치와인원수별로조회_성공() {
+
+        //given
+        Location location = Location.builder()
+                .locationName(LocationType.SEOUL)
+                .build();
+
+
+        Accommodation accommodation = Accommodation.builder()
+                .introduction("테스트 호텔입니다.")
+                .accommodationImage("이미지 링크입니다.")
+                .accommodationType(AccommodationType.HOTEL)
+                .accommodationName("테스트 호텔")
+                .roomId(null)
+                .locationId(location)
+                .build();
+
+        Room room = Room.builder()
+                .roomName("더블 디럭스")
+                .roomInfo("테스트 호텔의 객실")
+                .roomCount(40)
+                .fixedMember(2)
+                .maxedMember(4)
+                .accommodationId(accommodation)
+                .roomPrice(null)
+                .build();
+
+        RoomPrice roomPrice = RoomPrice.builder()
+                .price(200000)
+                .build();
+
+
+        Room.builder()
+                .roomPrice(roomPrice)
+                .build();
+
+        //when
+        locationRepository.save(location);
+        accommodationRepository.save(accommodation);
+        roomRepository.save(room);
+
+        List<Accommodation> accommodations = accommodationRepository.findByLocationTypeAndFixedNumber(
+                accommodation.getLocationId().getLocationName(),
+                room.getFixedMember());
+
+
+        //then
+        //숙소의 정보를 넘겨 주기 때문에 객실에 대한 정보는 가지고 오지 않아도 됨.
+        Assertions.assertThat(accommodations.get(0).getAccommodationName()).isEqualTo(accommodation.getAccommodationName());
+
+    }
 }
