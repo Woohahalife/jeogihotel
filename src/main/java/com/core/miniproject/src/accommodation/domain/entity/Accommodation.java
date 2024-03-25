@@ -49,4 +49,9 @@ public class Accommodation {
     // 객실 가격 중 최소값을 반환하는 쿼리
     @Formula("select min(rp.price) from room_price rp join room r on rp.room_id = r.room_id where r.accommodation_id = accommodation_id")
     private int price;
+
+    @OneToOne
+    @JoinColumn(name = "discount_id")
+    private Discount discount;
+
 }
