@@ -8,7 +8,7 @@ import org.hibernate.annotations.Formula;
 
 import java.util.List;
 
-@Entity(name = "accommodation")
+@Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

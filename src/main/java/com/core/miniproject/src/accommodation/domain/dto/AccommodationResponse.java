@@ -2,12 +2,8 @@ package com.core.miniproject.src.accommodation.domain.dto;
 
 import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
-import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.location.domain.entity.LocationType;
-import com.core.miniproject.src.room.domain.entity.Room;
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @Builder
@@ -16,19 +12,23 @@ import java.util.List;
 @AllArgsConstructor
 public class AccommodationResponse {
 
+    private Long id; //id 추가
     private String accommodationName;
     private AccommodationType accommodationType;
     private String accommodationImage;
     private String introduction;
+    private LocationType locationType; //위치 추가
     private double rate;
     private int price;
 
     public static AccommodationResponse toClient(Accommodation accommodation){
         return AccommodationResponse.builder()
+                .id(accommodation.getId())
                 .accommodationName(accommodation.getAccommodationName())
                 .accommodationType(accommodation.getAccommodationType())
                 .accommodationImage(accommodation.getAccommodationImage())
                 .introduction(accommodation.getIntroduction())
+                .locationType(accommodation.getLocationId().getLocationName())
                 .rate(accommodation.getRate())
                 .price(accommodation.getPrice())
                 .build();
