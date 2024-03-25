@@ -4,11 +4,11 @@ import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
 import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.location.domain.entity.LocationType;
-import com.core.miniproject.src.location.repository.SpringDataLocationRepository;
+import com.core.miniproject.src.location.repository.LocationRepository;
 import com.core.miniproject.src.room.domain.entity.Room;
-import com.core.miniproject.src.room.repository.SpringDataJpaRoomRepository;
+import com.core.miniproject.src.room.repository.RoomRepository;
 import com.core.miniproject.src.roomprice.domain.RoomPrice;
-import com.core.miniproject.src.roomprice.repository.SpringDataJpaRoomPriceRepository;
+import com.core.miniproject.src.roomprice.repository.RoomPriceRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +16,19 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 //테스트 코드 커밋
 @DataJpaTest
-class SpringDataJpaAccommodationRepositoryTest {
+class AccommodationRepositoryTest {
 
     @Autowired
-    SpringDataJpaAccommodationRepository springDataJpaAccommodationRepository;
+    AccommodationRepository accommodationRepository;
     @Autowired
-    SpringDataJpaRoomRepository springDataJpaRoomRepository;
+    RoomRepository roomRepository;
     @Autowired
-    SpringDataJpaRoomPriceRepository springDataJpaRoomPriceRepository;
+    RoomPriceRepository roomPriceRepository;
     @Autowired
-    SpringDataLocationRepository springDataLocationRepository;
+    LocationRepository locationRepository;
 
     @Test //room 테이블 연관관계 추가
     void create(){
@@ -70,7 +69,7 @@ class SpringDataJpaAccommodationRepositoryTest {
                 .locationId(location) // Location 설정
                 .build();
         //when
-        Accommodation newAccomm = springDataJpaAccommodationRepository.save(accommodation);
+        Accommodation newAccomm = accommodationRepository.save(accommodation);
 
         //then
         System.out.println("newAccomm.getLocationId() = " + newAccomm.getLocationId());
@@ -104,12 +103,12 @@ class SpringDataJpaAccommodationRepositoryTest {
                 .build();
 
         //when
-        springDataLocationRepository.save(location);
-        springDataJpaRoomPriceRepository.save(location.getAccommodationId().get(0).getRoomId().get(0).getRoomPrice());
-        springDataJpaRoomRepository.save(location.getAccommodationId().get(0).getRoomId().get(0));
-        springDataJpaAccommodationRepository.save(location.getAccommodationId().get(0));
+        locationRepository.save(location);
+        roomPriceRepository.save(location.getAccommodationId().get(0).getRoomId().get(0).getRoomPrice());
+        roomRepository.save(location.getAccommodationId().get(0).getRoomId().get(0));
+        accommodationRepository.save(location.getAccommodationId().get(0));
 
-        List<Accommodation> accommodationList = springDataJpaAccommodationRepository.findAll();
+        List<Accommodation> accommodationList = accommodationRepository.findAll();
         //then
         Assertions.assertThat(accommodationList.size()).isEqualTo(1);
     }
@@ -120,7 +119,7 @@ class SpringDataJpaAccommodationRepositoryTest {
         //given
 
         //when
-        List<Accommodation> accommodationList = springDataJpaAccommodationRepository.findAll();
+        List<Accommodation> accommodationList = accommodationRepository.findAll();
         //then
         Assertions.assertThat(accommodationList).isEmpty();
     }
@@ -168,11 +167,110 @@ class SpringDataJpaAccommodationRepositoryTest {
                 .roomId(rooms)
                 .build();
         //when
-        springDataJpaAccommodationRepository.save(accommodation);
-        springDataJpaRoomRepository.save(room);
-        Optional<Accommodation> hotel = springDataJpaAccommodationRepository.findByAccommodationType(AccommodationType.HOTEL);
+        accommodationRepository.save(accommodation);
+        roomRepository.save(room);
+        List<Accommodation> hotel = accommodationRepository.findByAccommodationType(AccommodationType.HOTEL);
 
         //then
-        Assertions.assertThat(hotel.get().getAccommodationType()).isEqualTo(accommodation.getAccommodationType());
+        Assertions.assertThat(hotel.get(0).getAccommodationType()).isEqualTo(accommodation.getAccommodationType());
+    }
+
+    @Test
+    void 숙소위치별로조회_성공(){
+
+        //given
+        Location location = Location.builder()
+                .locationName(LocationType.SEOUL)
+                .build();
+
+        Accommodation accommodation = Accommodation.builder()
+                .introduction("테스트 호텔입니다.")
+                .accommodationImage("이미지 링크입니다.")
+                .accommodationType(AccommodationType.HOTEL)
+                .accommodationName("테스트 호텔")
+                .roomId(null)
+                .locationId(location)
+                .build();
+
+        Room room = Room.builder()
+                .roomName("더블 디럭스")
+                .roomInfo("테스트 호텔의 객실")
+                .roomCount(40)
+                .fixedMember(2)
+                .maxedMember(4)
+                .accommodationId(accommodation)
+                .roomPrice(null)
+                .build();
+
+        RoomPrice roomPrice = RoomPrice.builder()
+                .price(200000)
+                .build();
+
+
+        Room.builder()
+                .roomPrice(roomPrice)
+                .build();
+
+        List<Room> rooms = new ArrayList<>();
+        rooms.add(room);
+        //when
+        locationRepository.save(location);
+        accommodationRepository.save(accommodation);
+        roomRepository.save(room);
+        List<Accommodation> seoulHotel = accommodationRepository.findByLocationType(LocationType.SEOUL);
+        System.out.println("getLocationName = " + seoulHotel.get(0).getLocationId().getLocationName());
+
+        //then
+        Assertions.assertThat(seoulHotel.get(0).getLocationId().getLocationName()).isEqualTo(accommodation.getLocationId().getLocationName());
+    }
+
+    @Test
+    void 숙소위치와타입별로조회_성공(){
+
+        //given
+        Location location = Location.builder()
+                .locationName(LocationType.SEOUL)
+                .build();
+
+        Accommodation accommodation = Accommodation.builder()
+                .introduction("테스트 호텔입니다.")
+                .accommodationImage("이미지 링크입니다.")
+                .accommodationType(AccommodationType.HOTEL)
+                .accommodationName("테스트 호텔")
+                .roomId(null)
+                .locationId(location)
+                .build();
+
+        Room room = Room.builder()
+                .roomName("더블 디럭스")
+                .roomInfo("테스트 호텔의 객실")
+                .roomCount(40)
+                .fixedMember(2)
+                .maxedMember(4)
+                .accommodationId(accommodation)
+                .roomPrice(null)
+                .build();
+
+        RoomPrice roomPrice = RoomPrice.builder()
+                .price(200000)
+                .build();
+
+
+        Room.builder()
+                .roomPrice(roomPrice)
+                .build();
+
+        List<Room> rooms = new ArrayList<>();
+        rooms.add(room);
+        //when
+        locationRepository.save(location);
+        accommodationRepository.save(accommodation);
+        roomRepository.save(room);
+        List<Accommodation> seoulHotel = accommodationRepository.findByAccommodationTypeAndLocationType(
+                accommodation.getAccommodationType(),
+                accommodation.getLocationId().getLocationName());
+
+        //then
+        Assertions.assertThat(seoulHotel.get(0).getAccommodationType()).isEqualTo(accommodation.getAccommodationType());
     }
 }
