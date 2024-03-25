@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 @Builder
 @AllArgsConstructor
-//@Table(indexes = @Index(name = "IX_reservation_member_id", columnList = "member_id"))
+@Table(indexes = @Index(name = "IX_reservation_member_id", columnList = "member_id"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reservation {
 
@@ -40,8 +40,7 @@ public class Reservation {
     private IsVisited isVisited;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    //foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)) // 테스트 및 조작 유연성을 위한 외래키 제약조건 해제
     private Member member;
 
 }
