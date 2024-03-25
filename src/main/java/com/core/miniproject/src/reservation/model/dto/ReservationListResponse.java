@@ -24,7 +24,7 @@ public class ReservationListResponse {
 
     public static ReservationListResponse toClient(Reservation reservation) {
         return ReservationListResponse.builder()
-//                .memberId()
+                .memberId(reservation.getMember().getId())
                 .roomName(reservation.getRoomName())
                 .checkIn(reservation.getCheckIn())
                 .checkOut(reservation.getCheckOut())
