@@ -1,6 +1,7 @@
 package com.core.miniproject.src.reservation.repository;
 
 import com.core.miniproject.src.common.constant.IsVisited;
+import com.core.miniproject.src.member.domain.entity.Member;
 import com.core.miniproject.src.reservation.model.entity.Reservation;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -32,6 +33,7 @@ public class ReservationRepositoryTest {
                 .fixedNumber(2)
                 .maxedNumber(4)
                 .isVisited(IsVisited.VISITED)
+                .member(Member.builder().id(1L).build())
                 .build();
 
         // when
