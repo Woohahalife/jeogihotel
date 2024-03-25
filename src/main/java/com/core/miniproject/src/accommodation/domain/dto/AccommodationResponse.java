@@ -28,7 +28,7 @@ public class AccommodationResponse {
                 .accommodationType(accommodation.getAccommodationType())
                 .accommodationImage(accommodation.getAccommodationImage())
                 .introduction(accommodation.getIntroduction())
-                .locationType(accommodation.getLocationId().getLocationName())
+                .locationType(accommodation.getLocation().getLocationName())
                 .rate(accommodation.getRate())
                 .price(accommodation.getPrice())
                 .build();
