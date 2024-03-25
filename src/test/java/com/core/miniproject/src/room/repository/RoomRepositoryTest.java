@@ -2,10 +2,10 @@ package com.core.miniproject.src.room.repository;
 
 import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
-import com.core.miniproject.src.accommodation.repository.SpringDataJpaAccommodationRepository;
+import com.core.miniproject.src.accommodation.repository.AccommodationRepository;
 import com.core.miniproject.src.room.domain.entity.Room;
 import com.core.miniproject.src.roomprice.domain.RoomPrice;
-import com.core.miniproject.src.roomprice.repository.SpringDataJpaRoomPriceRepository;
+import com.core.miniproject.src.roomprice.repository.RoomPriceRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -18,14 +18,14 @@ import java.util.List;
 @DataJpaTest
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class SpringDataJpaRoomRepositoryTest {
+class RoomRepositoryTest {
 
     @Autowired
-    SpringDataJpaAccommodationRepository springDataJpaAccommodationRepository;
+    AccommodationRepository accommodationRepository;
     @Autowired
-    SpringDataJpaRoomRepository springDataJpaRoomRepository;
+    RoomRepository roomRepository;
     @Autowired
-    SpringDataJpaRoomPriceRepository springDataJpaRoomPriceRepository;
+    RoomPriceRepository roomPriceRepository;
 
     @Test
     void create() {
@@ -45,8 +45,8 @@ class SpringDataJpaRoomRepositoryTest {
                 .build();
 
         //when
-        RoomPrice newRoomPrice = springDataJpaRoomPriceRepository.save(roomPrice);
-        Room newRoom = springDataJpaRoomRepository.save(room);
+        RoomPrice newRoomPrice = roomPriceRepository.save(roomPrice);
+        Room newRoom = roomRepository.save(room);
 
         //then
         Assertions.assertThat(newRoom.getRoomPrice()).isEqualTo(newRoomPrice);
@@ -70,10 +70,10 @@ class SpringDataJpaRoomRepositoryTest {
                 .roomPrice(roomPrice)
                 .build();
 
-        springDataJpaRoomPriceRepository.save(roomPrice);
-        springDataJpaRoomRepository.save(room);
+        roomPriceRepository.save(roomPrice);
+        roomRepository.save(room);
         //when
-        List<Room> rooms = springDataJpaRoomRepository.findAll();
+        List<Room> rooms = roomRepository.findAll();
         for (Room room1 : rooms) {
             System.out.println("room1.getRoomPrice().getPrice() = " + room1.getRoomPrice().getPrice());
         }
@@ -82,7 +82,7 @@ class SpringDataJpaRoomRepositoryTest {
 
     @Test
     void findAll_실패() {
-        List<Room> rooms = springDataJpaRoomRepository.findAll();
+        List<Room> rooms = roomRepository.findAll();
         //then
         Assertions.assertThat(rooms).isEmpty();
     }
@@ -104,11 +104,11 @@ class SpringDataJpaRoomRepositoryTest {
                 .room(room)
                 .build();
         //when
-        springDataJpaAccommodationRepository.save(accommodation);
-        springDataJpaRoomRepository.save(room);
-        springDataJpaRoomPriceRepository.save(roomPrice);
+        accommodationRepository.save(accommodation);
+        roomRepository.save(room);
+        roomPriceRepository.save(roomPrice);
 
-        List<Room> rooms = springDataJpaRoomRepository.findAllByAccommodationId(accommodation.getId());
+        List<Room> rooms = roomRepository.findAllByAccommodationId(accommodation.getId());
 
         Assertions.assertThat(rooms.size()).isEqualTo(1);
     }

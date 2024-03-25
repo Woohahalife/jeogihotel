@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SpringDataJpaRoomPriceRepository extends JpaRepository<RoomPrice, Long> {
+public interface RoomPriceRepository extends JpaRepository<RoomPrice, Long> {
 
     @Override
     RoomPrice save(RoomPrice roomPrice);

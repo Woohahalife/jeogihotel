@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SpringDataJpaRateRepository extends JpaRepository<Rate, Long> {
+public interface RateRepository extends JpaRepository<Rate, Long> {
     @Override
     Rate save(Rate rate);
 }
