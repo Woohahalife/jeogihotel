@@ -6,10 +6,10 @@ import com.core.miniproject.src.location.domain.entity.LocationType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AccommodationRepository extends JpaRepository<Accommodation, Long>{
@@ -19,6 +19,8 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
 
     @Override
     List<Accommodation> findAll();
+
+    Optional<Accommodation> findById(Long id);
 
     List<Accommodation> findByAccommodationType(AccommodationType accommodationType);
 

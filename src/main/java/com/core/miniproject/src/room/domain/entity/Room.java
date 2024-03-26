@@ -40,7 +40,6 @@ public class Room {
     @Column(name="room_images")
     private String roomImage;
 
-    @Column(name="price")
     private Integer price;
 
     @Formula("select avg(r.rate) from rate r where r.accommodation_id = accommodation_id")
