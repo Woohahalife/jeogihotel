@@ -21,7 +21,7 @@ public class AccommodationController {
 
     private final AccommodationService accommodationService;
 
-    @PostMapping("/v1/accommodaion/admin")
+    @PostMapping("/v1/accommodation/admin")
     public BaseResponse<AccommodationInsertResponse> createAccommodation(
             @RequestBody AccommodationInsertRequest request,
             @JwtAuthentication MemberInfo memberInfo) {
