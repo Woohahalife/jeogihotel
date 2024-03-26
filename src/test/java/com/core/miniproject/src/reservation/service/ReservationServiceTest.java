@@ -123,6 +123,7 @@ class ReservationServiceTest {
                 .fixedNumber(request1.getFixedMember())
                 .maxedNumber(request1.getMaxedMember())
                 .isVisited(IsVisited.VISITED)
+                .member(Member.builder().id(1L).build())
                 .build();
 
         Reservation expectedReservation2 = Reservation.builder()
@@ -132,6 +133,7 @@ class ReservationServiceTest {
                 .fixedNumber(request2.getFixedMember())
                 .maxedNumber(request2.getMaxedMember())
                 .isVisited(IsVisited.VISITED)
+                .member(Member.builder().id(1L).build())
                 .build();
 
         BDDMockito.given(reservationRepository.findAllReservation(member.getId())).willReturn(Arrays.asList(expectedReservation1, expectedReservation2));

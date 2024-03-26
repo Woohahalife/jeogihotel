@@ -21,7 +21,7 @@ public class Room {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="accommodation_id")
+    @JoinColumn(name="accommodation_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Accommodation accommodationId;
 
     @Column(name = "room_name")
@@ -43,9 +43,10 @@ public class Room {
     @Column(name="room_images")
     private String roomImage;
 
-    @OneToOne(mappedBy = "room")
+    @OneToOne
+    @JoinColumn(name = "room_price_id")
     //InvalidDataAccessApiUsageException: org.hibernate.TransientPropertyValueException 해결위해 영속성 전이
-    @Cascade(CascadeType.PERSIST)
+//    @Cascade(CascadeType.PERSIST)
     private RoomPrice roomPrice;
 
     @Formula("select avg(r.rate) from rate r where r.accommodation_id = accommodation_id")
