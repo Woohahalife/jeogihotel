@@ -78,6 +78,7 @@ class ReservationServiceTest {
                 .fixedNumber(request.getFixedMember())
                 .maxedNumber(request.getMaxedMember())
                 .isVisited(IsVisited.VISITED)
+                .member(member)
                 .build();
 
         BDDMockito.given(reservationRepository.save(argThat(reservation -> reservation.getRoomName().equals("객실1"))))
