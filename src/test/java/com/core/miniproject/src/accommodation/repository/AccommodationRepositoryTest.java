@@ -8,13 +8,10 @@ import com.core.miniproject.src.location.domain.entity.LocationType;
 import com.core.miniproject.src.location.repository.LocationRepository;
 import com.core.miniproject.src.room.domain.entity.Room;
 import com.core.miniproject.src.room.repository.RoomRepository;
-import com.core.miniproject.src.roomprice.domain.RoomPrice;
-import com.core.miniproject.src.roomprice.repository.RoomPriceRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,9 +24,9 @@ class AccommodationRepositoryTest {
     @Autowired
     RoomRepository roomRepository;
     @Autowired
-    RoomPriceRepository roomPriceRepository;
-    @Autowired
     LocationRepository locationRepository;
+    @Autowired
+    DiscountRepository discountRepository;
 
     @Test //room 테이블 연관관계 추가
     void create(){
@@ -39,9 +36,7 @@ class AccommodationRepositoryTest {
                 .roomCount(200)
                 .fixedMember(2)
                 .maxedMember(4)
-                .roomPrice(RoomPrice.builder()
-                        .price(200000)
-                        .build())
+                .price(200000)
                 .build();
 
         Room room2 = Room.builder()
@@ -50,9 +45,7 @@ class AccommodationRepositoryTest {
                 .roomCount(150)
                 .fixedMember(2)
                 .maxedMember(3)
-                .roomPrice(RoomPrice.builder()
-                        .price(250000)
-                        .build())
+                .price(200000)
                 .build();
         // Accommodation 생성
         Accommodation accommodation = Accommodation.builder()
@@ -69,7 +62,7 @@ class AccommodationRepositoryTest {
 
         //then
         System.out.println("newAccomm.getLocationId() = " + newAccomm.getLocation());
-        Assertions.assertThat(newAccomm.getRoomId().get(0).getRoomPrice().getPrice()).isEqualTo(200000);
+        Assertions.assertThat(newAccomm.getRoomId().get(0).getPrice()).isEqualTo(200000);
     }
 
     @Test
@@ -81,9 +74,7 @@ class AccommodationRepositoryTest {
                 .roomCount(200)
                 .fixedMember(2)
                 .maxedMember(4)
-                .roomPrice(RoomPrice.builder()
-                        .price(200000)
-                        .build())
+                .price(200000)
                 .build();
 
         Room room2 = Room.builder()
@@ -92,9 +83,7 @@ class AccommodationRepositoryTest {
                 .roomCount(150)
                 .fixedMember(2)
                 .maxedMember(3)
-                .roomPrice(RoomPrice.builder()
-                        .price(250000)
-                        .build())
+                .price(200000)
                 .build();
 
         Accommodation accommodation = Accommodation.builder()
@@ -147,9 +136,7 @@ class AccommodationRepositoryTest {
                 .roomCount(200)
                 .fixedMember(2)
                 .maxedMember(4)
-                .roomPrice(RoomPrice.builder()
-                        .price(200000)
-                        .build())
+                .price(20000)
                 .build();
 
         Room room2 = Room.builder()
@@ -158,9 +145,7 @@ class AccommodationRepositoryTest {
                 .roomCount(150)
                 .fixedMember(2)
                 .maxedMember(3)
-                .roomPrice(RoomPrice.builder()
-                        .price(250000)
-                        .build())
+                .price(20000)
                 .build();
 
         Accommodation accommodation = Accommodation.builder()
@@ -192,9 +177,7 @@ class AccommodationRepositoryTest {
                 .roomCount(200)
                 .fixedMember(2)
                 .maxedMember(4)
-                .roomPrice(RoomPrice.builder()
-                        .price(200000)
-                        .build())
+                .price(200000)
                 .build();
 
         Room room2 = Room.builder()
@@ -203,9 +186,7 @@ class AccommodationRepositoryTest {
                 .roomCount(150)
                 .fixedMember(2)
                 .maxedMember(3)
-                .roomPrice(RoomPrice.builder()
-                        .price(250000)
-                        .build())
+                .price(200000)
                 .build();
 
         Location location = Location.builder()
@@ -242,9 +223,7 @@ class AccommodationRepositoryTest {
                 .roomCount(200)
                 .fixedMember(2)
                 .maxedMember(4)
-                .roomPrice(RoomPrice.builder()
-                        .price(200000)
-                        .build())
+                .price(200000)
                 .build();
 
         Room room2 = Room.builder()
@@ -253,9 +232,7 @@ class AccommodationRepositoryTest {
                 .roomCount(150)
                 .fixedMember(2)
                 .maxedMember(3)
-                .roomPrice(RoomPrice.builder()
-                        .price(250000)
-                        .build())
+                .price(200000)
                 .build();
 
         Location location = Location.builder()
@@ -292,6 +269,11 @@ class AccommodationRepositoryTest {
                 .locationName(LocationType.SEOUL)
                 .build();
 
+        Discount discount = Discount.builder()
+                .discountRate(0.3)
+                .build();
+
+        Discount newDiscount = discountRepository.save(discount);
 
         Accommodation accommodation = Accommodation.builder()
                 .introduction("테스트 호텔입니다.")
@@ -300,6 +282,7 @@ class AccommodationRepositoryTest {
                 .accommodationName("테스트 호텔")
                 .roomId(null)
                 .location(location)
+                .discount(newDiscount)
                 .build();
 
         Room room = Room.builder()
@@ -309,17 +292,9 @@ class AccommodationRepositoryTest {
                 .fixedMember(2)
                 .maxedMember(4)
                 .accommodationId(accommodation)
-                .roomPrice(null)
-                .build();
-
-        RoomPrice roomPrice = RoomPrice.builder()
                 .price(200000)
                 .build();
 
-
-        Room.builder()
-                .roomPrice(roomPrice)
-                .build();
 
         //when
         locationRepository.save(location);
