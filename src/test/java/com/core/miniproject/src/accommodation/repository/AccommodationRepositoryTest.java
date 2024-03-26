@@ -289,7 +289,7 @@ class AccommodationRepositoryTest {
                 .accommodationType(AccommodationType.HOTEL)
                 .accommodationName("테스트 호텔")
                 .roomId(null)
-                .locationId(location)
+                .location(location)
                 .build();
 
         Room room = Room.builder()
@@ -317,7 +317,7 @@ class AccommodationRepositoryTest {
         roomRepository.save(room);
 
         List<Accommodation> accommodations = accommodationRepository.findByLocationTypeAndFixedNumber(
-                accommodation.getLocationId().getLocationName(),
+                accommodation.getLocation().getLocationName(),
                 room.getFixedMember());
 
 
