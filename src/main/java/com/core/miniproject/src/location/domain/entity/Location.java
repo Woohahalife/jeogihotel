@@ -18,7 +18,7 @@ public class Location {
     @Column(name = "location_id")
     private Long id;
 
-    @OneToMany(mappedBy = "location")
+    @OneToMany(mappedBy = "location", cascade = CascadeType.REMOVE)
     private List<Accommodation> accommodation;
 
     @Enumerated(EnumType.STRING)

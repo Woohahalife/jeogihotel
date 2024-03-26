@@ -16,9 +16,9 @@ public class RoomPrice {
     @Column(name = "room_price_id")
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
+//    @OneToOne
+//    @JoinColumn(name = "room_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+//    private Room room;
 
     @Column(name = "price")
     private int price;

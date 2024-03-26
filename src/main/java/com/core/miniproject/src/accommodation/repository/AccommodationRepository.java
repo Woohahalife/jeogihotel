@@ -5,6 +5,7 @@ import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
 import com.core.miniproject.src.location.domain.entity.LocationType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
 
     List<Accommodation> findByAccommodationType(AccommodationType accommodationType);
 
-    @Query("select a from Accommodation a where a.location.locationName = ?1 ")
+    @Query("select a from Accommodation a where a.location.locationName = ?1")
     List<Accommodation> findByLocationType(LocationType locationType);
 
     @Query("select a from Accommodation a where a.accommodationType = ?1 and a.location.locationName = ?2")
