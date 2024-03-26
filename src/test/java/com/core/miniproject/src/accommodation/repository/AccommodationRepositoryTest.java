@@ -6,12 +6,18 @@ import com.core.miniproject.src.accommodation.domain.entity.Discount;
 import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.location.domain.entity.LocationType;
 import com.core.miniproject.src.location.repository.LocationRepository;
+import com.core.miniproject.src.rate.domain.entity.Rate;
+import com.core.miniproject.src.rate.repository.RateRepository;
 import com.core.miniproject.src.room.domain.entity.Room;
 import com.core.miniproject.src.room.repository.RoomRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,6 +33,10 @@ class AccommodationRepositoryTest {
     LocationRepository locationRepository;
     @Autowired
     DiscountRepository discountRepository;
+    @Autowired
+    RateRepository rateRepository;
+    @PersistenceContext
+    EntityManager entityManager;
 
     @Test //room 테이블 연관관계 추가
     void create(){
@@ -309,6 +319,57 @@ class AccommodationRepositoryTest {
         //then
         //숙소의 정보를 넘겨 주기 때문에 객실에 대한 정보는 가지고 오지 않아도 됨.
         Assertions.assertThat(accommodations.get(0).getAccommodationName()).isEqualTo(accommodation.getAccommodationName());
-
     }
+
+    @Test
+    @Transactional
+    void 별점_평균_업데이트_성공(){
+        //given
+        Location location = Location.builder()
+                .locationName(LocationType.SEOUL)
+                .build();
+
+        Discount discount = Discount.builder()
+                .discountRate(0.3)
+                .build();
+
+        Discount newDiscount = discountRepository.save(discount);
+
+        Accommodation accommodation = Accommodation.builder()
+                .introduction("테스트 호텔입니다.")
+                .accommodationImage("이미지 링크입니다.")
+                .accommodationType(AccommodationType.HOTEL)
+                .accommodationName("테스트 호텔")
+                .roomId(null)
+                .location(location)
+                .discount(newDiscount)
+                .build();
+
+        Room room = Room.builder()
+                .roomName("더블 디럭스")
+                .roomInfo("테스트 호텔의 객실")
+                .roomCount(40)
+                .fixedMember(2)
+                .maxedMember(4)
+                .accommodationId(accommodation)
+                .price(200000)
+                .build();
+
+        Rate rate= Rate.builder()
+                .accommodation(accommodation)
+                .rate(4.5)
+                .build();
+
+        //when
+        locationRepository.save(location);
+        Accommodation newAccommodation = accommodationRepository.save(accommodation);
+        roomRepository.save(room);
+        Rate newRate = rateRepository.save(rate);
+        accommodationRepository.updateRate(newAccommodation.getId());
+        entityManager.refresh(newAccommodation);
+
+        //then
+        Assertions.assertThat(newAccommodation.getRate()).isEqualTo(newRate.getRate());
+    }
+
 }

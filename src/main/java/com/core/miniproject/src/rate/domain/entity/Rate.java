@@ -17,7 +17,7 @@ public class Rate {
 
     @ManyToOne
     @JoinColumn(name = "accommodation_id")
-    private Accommodation accommodationId;
+    private Accommodation accommodation;
 
     @Column(name = "rate")
     private double rate;
