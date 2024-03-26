@@ -6,8 +6,6 @@ import com.core.miniproject.src.accommodation.domain.entity.Discount;
 import com.core.miniproject.src.accommodation.repository.AccommodationRepository;
 import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.room.domain.entity.Room;
-import com.core.miniproject.src.roomprice.domain.RoomPrice;
-import com.core.miniproject.src.roomprice.repository.RoomPriceRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -25,8 +23,6 @@ class RoomRepositoryTest {
     AccommodationRepository AccommodationRepository;
     @Autowired
     RoomRepository roomRepository;
-    @Autowired
-    RoomPriceRepository roomPriceRepository;
 
     @Test
     void create() {
@@ -38,9 +34,7 @@ class RoomRepositoryTest {
                 .fixedMember(2)
                 .maxedMember(4)
                 .accommodationId(null)
-                .roomPrice(RoomPrice.builder()
-                        .price(200000)
-                        .build())
+                .price(200000)
                 .build();
 
         //when
@@ -48,17 +42,11 @@ class RoomRepositoryTest {
 
         //then
 //        Assertions.assertThat(newRoom.getRoomPrice()).isEqualTo(roomPrice);
-        Assertions.assertThat(room.getRoomPrice().getPrice()).isEqualTo(newRoom.getRoomPrice().getPrice());
+        Assertions.assertThat(room.getPrice()).isEqualTo(newRoom.getPrice());
     }
 
     @Test
     void findAll_성공() {
-        RoomPrice roomPrice = RoomPrice.builder()
-                .price(200000)
-//                .room(room)
-                .build();
-        RoomPrice savedRoomPrice = roomPriceRepository.save(roomPrice);
-
         Room room = Room.builder()
                 .roomName("더블 디럭스")
                 .roomInfo("테스트 호텔의 객실")
@@ -66,7 +54,7 @@ class RoomRepositoryTest {
                 .fixedMember(2)
                 .maxedMember(4)
                 .accommodationId(null)
-                .roomPrice(savedRoomPrice)
+                .price(200000)
                 .build();
 
         roomRepository.save(room);
@@ -76,7 +64,7 @@ class RoomRepositoryTest {
         //when
         List<Room> rooms = roomRepository.findAll();
         for (Room room1 : rooms) {
-            System.out.println("room1.getRoomPrice().getPrice() = " + room1.getRoomPrice().getPrice());
+            System.out.println("room1.getRoomPrice().getPrice() = " + room1.getPrice());
         }
         Assertions.assertThat(rooms.size()).isEqualTo(1);
     }
@@ -101,15 +89,12 @@ class RoomRepositoryTest {
         Room room = Room.builder()
                 .accommodationId(accommodation)
                 .roomInfo("테스트 테스트")
+                .price(220000)
                 .build();
-        RoomPrice roomPrice = RoomPrice.builder()
-                .price(20000)
-//                .room(room)
-                .build();
+
         //when
         AccommodationRepository.save(accommodation);
         roomRepository.save(room);
-        roomPriceRepository.save(roomPrice);
 
         List<Room> rooms = roomRepository.findAllByAccommodationId(accommodation.getId());
 

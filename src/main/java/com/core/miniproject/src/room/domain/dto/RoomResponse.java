@@ -24,7 +24,7 @@ public class RoomResponse {
                 .roomInfo(room.getRoomInfo())
                 .fixedMember(room.getFixedMember())
                 .maxedMember(room.getMaxedMember())
-                .price(room.getRoomPrice().getPrice())
+                .price(room.getPrice())
                 .avgRate(room.getAvgRate())
                 .build();
     }

@@ -22,6 +22,4 @@ public class Rate {
     @Column(name = "rate")
     private double rate;
 
-    //memberId
-
 }

@@ -1,11 +1,8 @@
 package com.core.miniproject.src.room.domain.entity;
 
 import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
-import com.core.miniproject.src.roomprice.domain.RoomPrice;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Formula;
 
 @Entity
@@ -43,11 +40,8 @@ public class Room {
     @Column(name="room_images")
     private String roomImage;
 
-    @OneToOne
-    @JoinColumn(name = "room_price_id")
-    //InvalidDataAccessApiUsageException: org.hibernate.TransientPropertyValueException 해결위해 영속성 전이
-//    @Cascade(CascadeType.PERSIST)
-    private RoomPrice roomPrice;
+    @Column(name="price")
+    private Integer price;
 
     @Formula("select avg(r.rate) from rate r where r.accommodation_id = accommodation_id")
     private double avgRate;

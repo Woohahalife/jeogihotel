@@ -13,7 +13,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Override
     Room save(Room room);
 
-    @Query("select r from Room r join r.roomPrice rp where r.accommodationId.id = ?1")
+    @Query("select r from Room r where r.accommodationId.id = ?1")
     List<Room> findAllByAccommodationId(Long accommodationId);
 
     
