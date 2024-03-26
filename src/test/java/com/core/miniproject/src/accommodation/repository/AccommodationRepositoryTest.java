@@ -66,13 +66,13 @@ class AccommodationRepositoryTest {
                 .accommodationType(AccommodationType.HOTEL)
                 .accommodationName("테스트 호텔")
                 .roomId(Arrays.asList(room1, room2)) // Room 리스트 설정
-                .locationId(location) // Location 설정
+                .location(location) // Location 설정
                 .build();
         //when
         Accommodation newAccomm = accommodationRepository.save(accommodation);
 
         //then
-        System.out.println("newAccomm.getLocationId() = " + newAccomm.getLocationId());
+        System.out.println("newAccomm.getLocationId() = " + newAccomm.getLocation());
         Assertions.assertThat(newAccomm.getRoomId().get(0).getRoomPrice().getPrice()).isEqualTo(200000);
     }
 
@@ -81,7 +81,7 @@ class AccommodationRepositoryTest {
         //given
         //Location->Accommodation->Room->RoomPrice
         Location location = Location.builder()
-                .accommodationId(Arrays.asList(Accommodation.builder()
+                .accommodation(Arrays.asList(Accommodation.builder()
                         .roomId(Arrays.asList(Room.builder()
                                 .roomCount(20)
                                 .roomPrice(RoomPrice.builder()
@@ -104,9 +104,9 @@ class AccommodationRepositoryTest {
 
         //when
         locationRepository.save(location);
-        roomPriceRepository.save(location.getAccommodationId().get(0).getRoomId().get(0).getRoomPrice());
-        roomRepository.save(location.getAccommodationId().get(0).getRoomId().get(0));
-        accommodationRepository.save(location.getAccommodationId().get(0));
+        roomPriceRepository.save(location.getAccommodation().get(0).getRoomId().get(0).getRoomPrice());
+        roomRepository.save(location.getAccommodation().get(0).getRoomId().get(0));
+        accommodationRepository.save(location.getAccommodation().get(0));
 
         List<Accommodation> accommodationList = accommodationRepository.findAll();
         //then
@@ -134,7 +134,7 @@ class AccommodationRepositoryTest {
                 .accommodationType(AccommodationType.HOTEL)
                 .accommodationName("테스트 호텔")
                 .roomId(null)
-                .locationId(null)
+                .location(null)
                 .build();
 
         Room room = Room.builder()
@@ -163,7 +163,7 @@ class AccommodationRepositoryTest {
         rooms.add(room);
 
         Accommodation.builder()
-                .locationId(location)
+                .location(location)
                 .roomId(rooms)
                 .build();
         //when
@@ -189,7 +189,7 @@ class AccommodationRepositoryTest {
                 .accommodationType(AccommodationType.HOTEL)
                 .accommodationName("테스트 호텔")
                 .roomId(null)
-                .locationId(location)
+                .location(location)
                 .build();
 
         Room room = Room.builder()
@@ -218,10 +218,10 @@ class AccommodationRepositoryTest {
         accommodationRepository.save(accommodation);
         roomRepository.save(room);
         List<Accommodation> seoulHotel = accommodationRepository.findByLocationType(LocationType.SEOUL);
-        System.out.println("getLocationName = " + seoulHotel.get(0).getLocationId().getLocationName());
+        System.out.println("getLocationName = " + seoulHotel.get(0).getLocation().getLocationName());
 
         //then
-        Assertions.assertThat(seoulHotel.get(0).getLocationId().getLocationName()).isEqualTo(accommodation.getLocationId().getLocationName());
+        Assertions.assertThat(seoulHotel.get(0).getLocation().getLocationName()).isEqualTo(accommodation.getLocation().getLocationName());
     }
 
     @Test
@@ -238,7 +238,7 @@ class AccommodationRepositoryTest {
                 .accommodationType(AccommodationType.HOTEL)
                 .accommodationName("테스트 호텔")
                 .roomId(null)
-                .locationId(location)
+                .location(location)
                 .build();
 
         Room room = Room.builder()
@@ -268,7 +268,7 @@ class AccommodationRepositoryTest {
         roomRepository.save(room);
         List<Accommodation> seoulHotel = accommodationRepository.findByAccommodationTypeAndLocationType(
                 accommodation.getAccommodationType(),
-                accommodation.getLocationId().getLocationName());
+                accommodation.getLocation().getLocationName());
 
         //then
         Assertions.assertThat(seoulHotel.get(0).getAccommodationType()).isEqualTo(accommodation.getAccommodationType());

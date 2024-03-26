@@ -27,6 +27,10 @@ public enum BaseResponseStatus {
     INVALID_PASSWORD(false, BAD_REQUEST.value(), "아이디나 비밀번호가 일지하지 않습니다."),
     INVALID_DATE_SETTING(false, BAD_REQUEST.value(), "입실 & 퇴실일자 설정이 유효하지 않습니다."),
     EMAIL_IS_NOT_VALIDATE(false, BAD_REQUEST.value(), "해당 접근이 올바르지 않습니다."),
+    DUPLICATE_DISCOUNTRATE(false, BAD_REQUEST.value(), "할인율이 중복입니다"),
+    DISCOUNT_NOT_FOUND(false, BAD_REQUEST.value(), "할인율 정보를 찾을 수 없습니다."),
+    LOCATION_NOT_FOUND(false, BAD_REQUEST.value(), "지역 정보를 찾을 수 없습니다."),
+    DUPLICATE_LOCATION(false, BAD_REQUEST.value(), "지역 데이터 중복입니다."),
     /**
      * 500
      */
