@@ -23,13 +23,52 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class SwaggerConfig {
 
-        String[] paths = {"/member"}; // 기능별 root url 구분
+        String root = "com.core.miniproject.src";
+        String[] paths = {
+                ".accommodation.controller",
+                ".location.controller",
+                ".member.controller",
+                ".rate.controller",
+                ".reservation.controller"
+        };
 
         @Bean
-        public GroupedOpenApi getUserApi() { // root url에 따라 명세 구분
+        public GroupedOpenApi getEntireApi() {
                 return GroupedOpenApi.builder()
-                        .group("member")
-                        .pathsToMatch(paths[0] + "/**")
+                        .group("Entire")
+                        .packagesToScan(root)
+                        .build();
+        }
+
+        @Bean
+        public GroupedOpenApi getAccommodationApi() {
+                return GroupedOpenApi.builder()
+                        .group("Accommodation & Room")
+                        .packagesToScan(root + paths[0], root + paths[1])
+                        .build();
+        }
+
+        @Bean
+        public GroupedOpenApi getMemberApi() {
+                return GroupedOpenApi.builder()
+                        .group("Member")
+                        .packagesToScan(root + paths[2])
+                        .build();
+        }
+
+        @Bean
+        public GroupedOpenApi getRateApi() {
+                return GroupedOpenApi.builder()
+                        .group("Rate")
+                        .packagesToScan(root + paths[3])
+                        .build();
+        }
+
+        @Bean
+        public GroupedOpenApi getReservationApi() {
+                return GroupedOpenApi.builder()
+                        .group("Reservation")
+                        .packagesToScan(root + paths[4])
                         .build();
         }
 

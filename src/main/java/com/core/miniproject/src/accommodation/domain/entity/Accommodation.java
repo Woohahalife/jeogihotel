@@ -32,6 +32,7 @@ public class Accommodation {
 
     @Column(name="introduction")
     private String introduction;
+
     @Column(name="accommodation_name")
     private String accommodationName;
 

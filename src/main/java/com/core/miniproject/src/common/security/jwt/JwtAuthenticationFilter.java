@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain) throws ServletException, IOException {
 
         if (checkPublicApi(request, response, filterChain)) { // /public-api : 필터 무시
-            System.out.println(request.getRequestURI() + " 필터 작동 X 확인");
+//            System.out.println(request.getRequestURI() + " 필터 작동 X 확인");
             return;
         }
 
