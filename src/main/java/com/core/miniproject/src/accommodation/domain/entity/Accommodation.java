@@ -4,7 +4,6 @@ import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.room.domain.entity.Room;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Formula;
 
 import java.util.List;
 
@@ -43,7 +42,8 @@ public class Accommodation {
     private String accommodationImage;
 
     //해당 숙소의 별점의 평균을 출력하는 쿼리
-//   @Formula("select avg(r.rate) from rate r where r.accommodation_id = accommodation_id")
+    //select avg(r.rate) from rate r where accommodation_id=r.accommodation_id
+    @Column(name = "rate")
     private Double rate;
 
     // 객실 가격 중 최소값을 반환하는 쿼리
@@ -53,5 +53,9 @@ public class Accommodation {
     @ManyToOne
     @JoinColumn(name = "discount_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Discount discount;
+
+    public Double getRate() {
+        return this.rate != null ? this.rate : 0.0; // 기본값으로 0.0을 반환하도록 수정
+    }
 
 }

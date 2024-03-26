@@ -4,6 +4,7 @@ import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
 import com.core.miniproject.src.location.domain.entity.LocationType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -34,4 +35,16 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
        and r.fixedMember=?2 
        """)
     List<Accommodation> findByLocationTypeAndFixedNumber(LocationType type, int fixedMember);
+
+
+    //save 후 숙소 평점의 평균 값을 가져와서 기존 rate를 update 해줌.
+    @Modifying
+    @Query("""
+        update Accommodation a
+        set a.rate = (select avg(r.rate) from Rate r where r.accommodation.id=?1)
+        where a.id=?1
+    """)
+    void updateRate(Long id);
+
+
 }

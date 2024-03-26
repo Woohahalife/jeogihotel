@@ -14,6 +14,9 @@ import com.core.miniproject.src.common.security.principal.MemberInfo;
 import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.location.domain.entity.LocationType;
 import com.core.miniproject.src.location.repository.LocationRepository;
+import com.core.miniproject.src.rate.repository.RateRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,7 @@ public class AccommodationService {
     private final AccommodationRepository accommodationRepository;
     private final DiscountRepository discountRepository;
     private final LocationRepository locationRepository;
+    @PersistenceContext EntityManager entityManager;
 
     @Transactional
     public AccommodationInsertResponse createAccommodation(
@@ -37,8 +41,9 @@ public class AccommodationService {
             MemberInfo memberInfo) {
         Accommodation accommodation =
                 getAccommodationPerDisCountAndLocation(request);
-
         Accommodation savedAccommodation = accommodationRepository.save(accommodation);
+        accommodationRepository.updateRate(savedAccommodation.getId());
+        entityManager.refresh(savedAccommodation);
 
         return AccommodationInsertResponse.toClient(savedAccommodation);
     }
