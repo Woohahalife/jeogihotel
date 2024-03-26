@@ -105,6 +105,13 @@ public class AccommodationService {
         return getAccommodationResponses(responses, accommodations);
     }
 
+    @Transactional
+    public List<AccommodationResponse> findByLocationAndPersonal(LocationType type, int fixedMember){
+        List<AccommodationResponse> responses = new ArrayList<>();
+        List<Accommodation> accommodations = accommodationRepository.findByLocationTypeAndFixedNumber(type, fixedMember);
+        return getAccommodationResponses(responses, accommodations);
+    }
+
     private List<AccommodationResponse> getAccommodationResponses(List<AccommodationResponse> responses, List<Accommodation> accommodations) {
         for (Accommodation accommodation : accommodations) {
             AccommodationResponse response = AccommodationResponse.toClient(accommodation);

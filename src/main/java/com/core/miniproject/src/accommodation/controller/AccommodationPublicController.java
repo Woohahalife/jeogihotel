@@ -78,4 +78,19 @@ public class AccommodationPublicController {
         return BaseResponse.response(responses);
     }
 
+    @GetMapping("/v1/accommodation/location/{location_type}/personal/{personal}")
+    public BaseResponse<List<AccommodationResponse>> findByLocationAndPersonal(
+            @PathVariable("location_type") LocationType locationType,
+            @PathVariable("personal") int fixedMember
+    ){
+        List<AccommodationResponse> responses = accommodationService.findByLocationAndPersonal(locationType, fixedMember);
+        for (AccommodationResponse response : responses) {
+            log.info("accommodationId= {} accommodationName= {} accommodationType= {} accommodationImage= {} introduction= {} location= {} rate={} price={}",
+                    response.getId(), response.getAccommodationName(), response.getAccommodationType(),
+                    response.getAccommodationImage(), response.getIntroduction(),
+                    response.getLocationType(), response.getRate(), response.getPrice());
+        }
+        return BaseResponse.response(responses);
+    }
+
 }
