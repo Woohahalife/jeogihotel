@@ -43,7 +43,7 @@ public class Accommodation {
     private String accommodationImage;
 
     //해당 숙소의 별점의 평균을 출력하는 쿼리
-//    @Formula("select avg(r.rate) from rate r where r.accommodation_id = accommodation_id")
+//   @Formula("select avg(r.rate) from rate r where r.accommodation_id = accommodation_id")
     private Double rate;
 
     // 객실 가격 중 최소값을 반환하는 쿼리
