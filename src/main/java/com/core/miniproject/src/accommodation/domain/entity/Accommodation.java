@@ -49,6 +49,7 @@ public class Accommodation {
     private List<Rate> rates = new ArrayList<>();
 
 //    @Formula("select min(rp.price) from room_price rp join room r on rp.room_id = r.room_id where r.accommodation_id = accommodation_id")
+    @Column(name = "price")
     private Integer price;
 
     @ManyToOne
