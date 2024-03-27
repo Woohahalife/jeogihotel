@@ -35,7 +35,8 @@ public enum BaseResponseStatus {
     SET_REQUIRED_INFORMAION(false, BAD_REQUEST.value(), "생성에 필요한 필수 정보가 누락되었습니다."),
     ERROR_SETTING_NUM_OF_PEOPLE(false, BAD_REQUEST.value(), "설정된 인원 수를 다시 확인해주세요"),
     DUPLICATE_LOCATION(false, BAD_REQUEST.value(), "지역 데이터 중복입니다."),
-
+    RATE_OUT_OF_BOUND_OVER(false, BAD_REQUEST.value(), "평가는 5점을 넘을 수 없습니다."),
+    RATE_OUT_OF_BOUND_UNDER(false, BAD_REQUEST.value(), "평가는 0점을 넘어야 합니다."),
     /**
      * 500
      */

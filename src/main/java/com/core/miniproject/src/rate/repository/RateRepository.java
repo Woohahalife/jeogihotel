@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RateRepository extends JpaRepository<Rate, Long> {
@@ -14,4 +15,6 @@ public interface RateRepository extends JpaRepository<Rate, Long> {
 
     @Query("select r from Rate r where r.accommodation.id=?1 ")
     List<Rate> findByAccommodationId(Long id);
+
+    Optional<Rate> findByRate(Double rate);
 }

@@ -75,16 +75,9 @@ public class AccommodationService {
      * */
     @Transactional
     public List<AccommodationResponse> findAllAccommodation() {
-        List<AccommodationResponse> accommodationResponses = new ArrayList<>();
+        List<AccommodationResponse> responses = new ArrayList<>();
         List<Accommodation> accommodations = accommodationRepository.findAll();
-        for (Accommodation accommodation : accommodations) {
-            accommodationResponses.add(AccommodationResponse.toClient(accommodation));
-            log.info("Accommodation: accommodationName= {}, accommodationType= {} accommodationImage= {} introduction= {} price= {} rate= {}"
-                    , accommodation.getAccommodationName(), accommodation.getAccommodationType(),
-                    accommodation.getAccommodationImage(), accommodation.getIntroduction(),
-                    accommodation.getPrice(), accommodation.getRate());
-        }
-        return accommodationResponses;
+        return getAccommodationResponses(responses, accommodations);
     }
 
     //타입별 숙소 조회
@@ -119,6 +112,8 @@ public class AccommodationService {
 
     private List<AccommodationResponse> getAccommodationResponses(List<AccommodationResponse> responses, List<Accommodation> accommodations) {
         for (Accommodation accommodation : accommodations) {
+            accommodationRepository.updateRate(accommodation.getId());
+            entityManager.refresh(accommodation);
             AccommodationResponse response = AccommodationResponse.toClient(accommodation);
             log.info("Accommodation: accommodationName= {}, accommodationType= {} accommodationImage= {} introduction= {} price= {} rate= {}"
                     , accommodation.getAccommodationName(), accommodation.getAccommodationType(),
