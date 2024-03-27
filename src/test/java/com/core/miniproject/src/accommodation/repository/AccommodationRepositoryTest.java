@@ -41,6 +41,7 @@ class AccommodationRepositoryTest {
     EntityManager entityManager;
 
     @Test //room 테이블 연관관계 추가
+    @Transactional
     void create(){
         Room room1 = Room.builder()
                 .roomName("테스트 호텔 디럭스 룸")
@@ -78,6 +79,7 @@ class AccommodationRepositoryTest {
     }
 
     @Test
+    @Transactional
     void 전체_목록_조회_성공(){
         // given
         Room room1 = Room.builder()
@@ -129,6 +131,7 @@ class AccommodationRepositoryTest {
 
     //데이터가 없는데 조회를 하는 경우
     @Test
+    @Transactional
     void 전체_목록_조회_실패(){
         //given
 
@@ -140,6 +143,7 @@ class AccommodationRepositoryTest {
 
     //호텔, 모텔 등 종류별 조회
     @Test
+    @Transactional
     void 숙소종류별로조회_성공(){
         //given
         Room room1 = Room.builder()
@@ -181,6 +185,7 @@ class AccommodationRepositoryTest {
     }
 
     @Test
+    @Transactional
     void 숙소위치별로조회_성공(){
         //given
         Room room1 = Room.builder()
@@ -226,6 +231,7 @@ class AccommodationRepositoryTest {
     }
 
     @Test
+    @Transactional
     void 숙소위치와타입별로조회_성공(){
 
         //given
@@ -274,6 +280,7 @@ class AccommodationRepositoryTest {
     }
 
     @Test
+    @Transactional
     void 숙소위치와인원수별로조회_성공() {
 
         //given
@@ -367,76 +374,55 @@ class AccommodationRepositoryTest {
         Rate newRate = rateRepository.save(rate);
         roomRepository.save(room);
 
-        Accommodation result = accommodationRepository.findByAccommodationId(1L).orElseThrow();
+        Accommodation result = accommodationRepository.findByAccommodationId(newAccommodation.getId()).orElseThrow();
 
         //then
         Assertions.assertThat(newRate.getRate()).isEqualTo(4.5);
-        Assertions.assertThat(result.getId()).isEqualTo(1L);
+//        Assertions.assertThat(result.getId()).isEqualTo(1L);
         Assertions.assertThat(result.getIntroduction()).isEqualTo("테스트 호텔입니다.");
         Assertions.assertThat(result.getAverageRate()).isEqualTo(4.5);
-
     }
 
-    // TODO : 변화된 로직 맞추어 테스트 재구성 필요
-    @Disabled
     @Test
     @Transactional
     void 가격과_별점_업데이트_성공(){
         //given
-        Location location = Location.builder()
-                .locationName(LocationType.SEOUL)
-                .build();
-
-        Discount discount = Discount.builder()
-                .discountRate(0.3)
-                .build();
-
-        Discount newDiscount = discountRepository.save(discount);
-
-        Accommodation accommodation = Accommodation.builder()
-                .introduction("테스트 호텔입니다.")
-                .accommodationImage("이미지 링크입니다.")
-                .accommodationType(AccommodationType.HOTEL)
-                .accommodationName("테스트 호텔")
-                .roomId(null)
-                .location(location)
-                .discount(newDiscount)
-                .build();
-
         Room room1 = Room.builder()
                 .roomName("더블 디럭스")
                 .roomInfo("테스트 호텔의 객실")
                 .roomCount(40)
                 .fixedMember(2)
                 .maxedMember(4)
-                .accommodationId(accommodation)
                 .price(200000)
                 .build();
+
         Room room2 = Room.builder()
                 .roomName("더블 디럭스")
                 .roomInfo("테스트 호텔의 객실")
                 .roomCount(40)
                 .fixedMember(2)
                 .maxedMember(4)
-                .accommodationId(accommodation)
                 .price(100000)
                 .build();
 
-        Rate rate= Rate.builder()
-                .accommodation(accommodation)
-                .rate(4.5)
+        Accommodation accommodation = Accommodation.builder()
+                .introduction("테스트 호텔입니다.")
+                .accommodationImage("이미지 링크입니다.")
+                .accommodationType(AccommodationType.HOTEL)
+                .accommodationName("테스트 호텔")
+                .rates(Collections.singletonList(Rate.builder().build()))
+                .location(Location.builder().id(1L).build())
+                .discount(Discount.builder().id(1L).build())
+                .roomId(Arrays.asList(room1, room2))
                 .build();
-        //when
-        locationRepository.save(location);
+
         Accommodation newAccommodation = accommodationRepository.save(accommodation);
-        roomRepository.save(room1);
-        roomRepository.save(room2);
-        rateRepository.save(rate);
-        accommodationRepository.updatePrice(newAccommodation.getId());
-        entityManager.refresh(newAccommodation);
+
+        //when
+        Accommodation accommodation1 = accommodationRepository.findById(newAccommodation.getId()).orElseThrow();
 
         //then
-        Assertions.assertThat(newAccommodation.getPrice()).isEqualTo(room2.getPrice());
+        Assertions.assertThat(accommodation1.getMinPrice()).isEqualTo(room2.getPrice());
     }
 
 }

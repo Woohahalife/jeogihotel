@@ -22,12 +22,12 @@ public class Accommodation {
     private Long id;
 
     //location_id 참조 관계 설정
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "location_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Location location;
 
     //room_id 참조 관계 설정
-    @OneToMany(mappedBy = "accommodationId", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "accommodationId", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @Column(name = "room_id")
     private List<Room> roomId;
 
@@ -71,5 +71,20 @@ public class Accommodation {
         }
 
         return Math.ceil(sum / rates.size() * 100.0) / 100.0;
+    }
+
+    public Integer getMinPrice() {
+        if (roomId == null || roomId.isEmpty()) { // 객실이 없기 때문에 표시될 minPrice가 정해지지 않음
+            return 0;
+        }
+
+        Integer minPrice = Integer.MAX_VALUE;
+
+        for(Room room : roomId) {
+            if(room.getPrice() < minPrice) {
+                minPrice = room.getPrice();
+            }
+        }
+        return minPrice;
     }
 }

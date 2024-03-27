@@ -30,7 +30,7 @@ public class AccommodationInsertResponse {
                 .introduction(accommodation.getIntroduction())
                 .rate(accommodation.getAverageRate())
                 .discount(accommodation.getDiscount().getDiscountRate())
-                .price(accommodation.getPrice())
+                .price(accommodation.getMinPrice())
                 .location(LocationResponse.toClient(accommodation.getLocation()))
                 .build();
     }
