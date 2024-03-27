@@ -8,6 +8,7 @@ import com.core.miniproject.src.common.constant.Role;
 import com.core.miniproject.src.common.exception.BaseException;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
 import com.core.miniproject.src.location.domain.entity.Location;
+import com.core.miniproject.src.rate.domain.entity.Rate;
 import com.core.miniproject.src.room.domain.dto.RoomInsertRequest;
 import com.core.miniproject.src.room.domain.dto.RoomInsertResponse;
 import com.core.miniproject.src.room.domain.entity.Room;
@@ -26,6 +27,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.json.JacksonTester;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static com.core.miniproject.src.common.response.BaseResponseStatus.ACCOMMODATION_DOES_NOT_EXIST;
@@ -56,7 +58,7 @@ public class RoomServiceTest {
             .accommodationImage("숙소 이미지")
             .location(Location.builder().id(1L).build())
             .discount(Discount.builder().id(1L).build())
-            .rate(5.0)
+            .rates(Collections.singletonList(Rate.builder().id(1L).build()))
             .build();
 
     @BeforeEach

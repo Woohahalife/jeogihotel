@@ -19,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 //테스트 코드 커밋
@@ -103,7 +104,7 @@ class AccommodationRepositoryTest {
                 .accommodationName("accommodationName")
                 .accommodationType(AccommodationType.MOTEL)
                 .accommodationImage("image")
-                .rate(5.0)
+                .rates(Collections.singletonList(Rate.builder().id(1L).build()))
                 .discount(Discount.builder().id(1L).discountRate(10.0).build())
                 .build();
 
@@ -165,7 +166,7 @@ class AccommodationRepositoryTest {
                 .accommodationName("accommodationName")
                 .accommodationType(AccommodationType.MOTEL)
                 .accommodationImage("image")
-                .rate(5.0)
+                .rates(Collections.singletonList(Rate.builder().id(1L).build()))
                 .discount(Discount.builder().id(1L).discountRate(10.0).build())
                 .build();
 
@@ -210,7 +211,7 @@ class AccommodationRepositoryTest {
                 .accommodationName("accommodationName")
                 .accommodationType(AccommodationType.MOTEL)
                 .accommodationImage("image")
-                .rate(5.0)
+                .rates(Collections.singletonList(Rate.builder().id(1L).build()))
                 .discount(Discount.builder().id(1L).discountRate(10.0).build())
                 .build();
         //when
@@ -256,7 +257,7 @@ class AccommodationRepositoryTest {
                 .accommodationName("accommodationName")
                 .accommodationType(AccommodationType.MOTEL)
                 .accommodationImage("image")
-                .rate(5.0)
+                .rates(Collections.singletonList(Rate.builder().id(1L).build()))
                 .discount(Discount.builder().id(1L).discountRate(10.0).build())
                 .build();
 
@@ -335,6 +336,19 @@ class AccommodationRepositoryTest {
 
         Discount newDiscount = discountRepository.save(discount);
 
+        Room room = Room.builder()
+                .roomName("더블 디럭스")
+                .roomInfo("테스트 호텔의 객실")
+                .roomCount(40)
+                .fixedMember(2)
+                .maxedMember(4)
+                .price(200000)
+                .build();
+
+        Rate rate= Rate.builder()
+                .rate(4.5)
+                .build();
+
         Accommodation accommodation = Accommodation.builder()
                 .introduction("테스트 호텔입니다.")
                 .accommodationImage("이미지 링크입니다.")
@@ -343,33 +357,23 @@ class AccommodationRepositoryTest {
                 .roomId(null)
                 .location(location)
                 .discount(newDiscount)
-                .build();
-
-        Room room = Room.builder()
-                .roomName("더블 디럭스")
-                .roomInfo("테스트 호텔의 객실")
-                .roomCount(40)
-                .fixedMember(2)
-                .maxedMember(4)
-                .accommodationId(accommodation)
-                .price(200000)
-                .build();
-
-        Rate rate= Rate.builder()
-                .accommodation(accommodation)
-                .rate(4.5)
+                .rates(Collections.singletonList(rate))
                 .build();
 
         //when
         locationRepository.save(location);
         Accommodation newAccommodation = accommodationRepository.save(accommodation);
-        roomRepository.save(room);
         Rate newRate = rateRepository.save(rate);
-        accommodationRepository.updateRate(newAccommodation.getId());
-        entityManager.refresh(newAccommodation);
+        roomRepository.save(room);
+
+        Accommodation result = accommodationRepository.findByAccommodationId(1L).orElseThrow();
 
         //then
-        Assertions.assertThat(newAccommodation.getRate()).isEqualTo(newRate.getRate());
+        Assertions.assertThat(newRate.getRate()).isEqualTo(4.5);
+        Assertions.assertThat(result.getId()).isEqualTo(1L);
+        Assertions.assertThat(result.getIntroduction()).isEqualTo("테스트 호텔입니다.");
+        Assertions.assertThat(result.getAverageRate()).isEqualTo(4.5);
+
     }
 
 }

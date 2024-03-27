@@ -28,7 +28,7 @@ public class AccommodationInsertResponse {
                 .accommodationType(accommodation.getAccommodationType())
                 .accommodationImage(accommodation.getAccommodationImage())
                 .introduction(accommodation.getIntroduction())
-                .rate(accommodation.getRate())
+                .rate(accommodation.getAverageRate())
                 .discount(accommodation.getDiscount().getDiscountRate())
                 .price(accommodation.getPrice())
                 .location(LocationResponse.toClient(accommodation.getLocation()))

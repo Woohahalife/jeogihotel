@@ -1,10 +1,12 @@
 package com.core.miniproject.src.accommodation.domain.entity;
 
 import com.core.miniproject.src.location.domain.entity.Location;
+import com.core.miniproject.src.rate.domain.entity.Rate;
 import com.core.miniproject.src.room.domain.entity.Room;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,12 +44,10 @@ public class Accommodation {
     @Column(name="accommodation_image")
     private String accommodationImage;
 
-    //해당 숙소의 별점의 평균을 출력하는 쿼리
-    //select avg(r.rate) from rate r where accommodation_id=r.accommodation_id
-    @Column(name = "rate")
-    private Double rate;
+    @Builder.Default
+    @OneToMany(mappedBy = "accommodation", cascade = CascadeType.REMOVE)
+    private List<Rate> rates = new ArrayList<>();
 
-    // 객실 가격 중 최소값을 반환하는 쿼리
 //    @Formula("select min(rp.price) from room_price rp join room r on rp.room_id = r.room_id where r.accommodation_id = accommodation_id")
     private Integer price;
 
@@ -55,8 +55,20 @@ public class Accommodation {
     @JoinColumn(name = "discount_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Discount discount;
 
-    public Double getRate() {
-        return this.rate != null ? this.rate : 0.0; // 기본값으로 0.0을 반환하도록 수정
-    }
+//    public Double getRate() {
+//        return this.getRates() != null ? this.getRate() : 0.0; // 기본값으로 0.0을 반환하도록 수정
+//    }
 
+    public Double getAverageRate() {
+        if (rates == null || rates.isEmpty()) {
+            return 0.0;
+        }
+
+        double sum = 0.0;
+        for (Rate rate : rates) {
+            sum += rate.getRate();
+        }
+
+        return Math.ceil(sum / rates.size() * 100.0) / 100.0;
+    }
 }
