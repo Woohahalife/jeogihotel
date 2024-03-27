@@ -72,7 +72,7 @@ public class RoomServiceTest {
     void room_저장_성공() {
         // given
         RoomInsertRequest request =
-                new RoomInsertRequest("객실1", "객실정보1", 50, 2, 4, "이미지", 20000);
+                new RoomInsertRequest("객실1", "객실정보1", 50, 2, 4, "이미지", 30000);
 
         BDDMockito.given(accommodationRepository.findById(any())).willReturn(Optional.of(accommodation));
 
