@@ -7,6 +7,7 @@ import com.core.miniproject.src.reservation.model.dto.ReservationInsertRequest;
 import com.core.miniproject.src.reservation.model.dto.ReservationInsertResponse;
 import com.core.miniproject.src.reservation.model.dto.ReservationListResponse;
 import com.core.miniproject.src.reservation.service.ReservationService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import static com.core.miniproject.src.common.response.BaseResponse.response;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Tag(name = "예약 생성 & 수정 & 삭제 api", description = "할인율 관련 api - 보안 설정 X")
 public class ReservationController {
 
     private final ReservationService reservationService;
@@ -48,3 +50,4 @@ public class ReservationController {
         return response(reservationListResponse);
     }
 }
+

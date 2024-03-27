@@ -25,50 +25,18 @@ public class SwaggerConfig {
 
         String root = "com.core.miniproject.src";
         String[] paths = {
-                ".accommodation.controller",
-                ".location.controller",
-                ".member.controller",
-                ".rate.controller",
-                ".reservation.controller"
+                root + ".accommodation.controller",
+                root + ".location.controller",
+                root + ".member.controller",
+                root + ".rate.controller",
+                root + ".reservation.controller"
         };
 
         @Bean
         public GroupedOpenApi getEntireApi() {
                 return GroupedOpenApi.builder()
                         .group("Entire")
-                        .packagesToScan(root)
-                        .build();
-        }
-
-        @Bean
-        public GroupedOpenApi getAccommodationApi() {
-                return GroupedOpenApi.builder()
-                        .group("Accommodation & Room")
-                        .packagesToScan(root + paths[0], root + paths[1])
-                        .build();
-        }
-
-        @Bean
-        public GroupedOpenApi getMemberApi() {
-                return GroupedOpenApi.builder()
-                        .group("Member")
-                        .packagesToScan(root + paths[2])
-                        .build();
-        }
-
-        @Bean
-        public GroupedOpenApi getRateApi() {
-                return GroupedOpenApi.builder()
-                        .group("Rate")
-                        .packagesToScan(root + paths[3])
-                        .build();
-        }
-
-        @Bean
-        public GroupedOpenApi getReservationApi() {
-                return GroupedOpenApi.builder()
-                        .group("Reservation")
-                        .packagesToScan(root + paths[4])
+                        .packagesToScan(paths)
                         .build();
         }
 

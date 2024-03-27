@@ -6,6 +6,7 @@ import com.core.miniproject.src.common.security.principal.MemberInfo;
 import com.core.miniproject.src.room.domain.dto.RoomInsertRequest;
 import com.core.miniproject.src.room.domain.dto.RoomInsertResponse;
 import com.core.miniproject.src.room.service.RoomService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import static com.core.miniproject.src.common.response.BaseResponse.response;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Tag(name = "객실 생성 & 수정 & 삭제 api", description = "객실 관련 api - 보안 접근 필요")
 public class RoomController {
 
     private final RoomService roomService;
