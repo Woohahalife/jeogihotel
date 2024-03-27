@@ -8,8 +8,6 @@ import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
 import com.core.miniproject.src.accommodation.domain.entity.Discount;
 import com.core.miniproject.src.accommodation.repository.AccommodationRepository;
 import com.core.miniproject.src.accommodation.repository.DiscountRepository;
-import com.core.miniproject.src.common.exception.BaseException;
-import com.core.miniproject.src.common.response.BaseResponseStatus;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
 import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.location.domain.entity.LocationType;
@@ -21,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,7 +57,6 @@ public class AccommodationService {
                 .accommodationImage(request.getAccommodationImage())
                 .accommodationType(request.getAccommodationType())
                 .introduction(request.getIntroduction())
-                .price(request.getPrice())
                 .discount(discount)
                 .location(location)
                 .build();

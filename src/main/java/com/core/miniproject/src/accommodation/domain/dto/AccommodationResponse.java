@@ -30,7 +30,7 @@ public class AccommodationResponse {
                 .introduction(accommodation.getIntroduction())
                 .locationType(accommodation.getLocation().getLocationName())
                 .rate(accommodation.getAverageRate()) // 별점 평균 조회
-                .price(accommodation.getPrice())
+                .price(accommodation.getMinPrice())
                 .build();
     }
 
