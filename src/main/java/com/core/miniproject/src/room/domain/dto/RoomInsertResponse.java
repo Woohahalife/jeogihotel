@@ -10,7 +10,6 @@ import lombok.*;
 @Builder
 public class RoomInsertResponse {
 
-    //TODO : rate 필드 추가해야함
     private Long roomId;
     private String roomName;
     private String roomInfo;
