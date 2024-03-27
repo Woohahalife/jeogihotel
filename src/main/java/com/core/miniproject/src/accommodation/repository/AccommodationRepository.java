@@ -65,21 +65,4 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
        and r.fixedMember=?2
        """)
     List<Accommodation> findByLocationTypeAndFixedNumber(LocationType type, int fixedMember);
-
-
-    //save 후 숙소 평점의 평균 값을 가져와서 기존 rate를 update 해줌.
-    @Query("""
-        update Accommodation a
-        set a.price=(select min(r.price) from Room r where r.accommodationId.id=?1)
-        where a.id=?1   
-            """)
-    void updatePrice(Long id);
-
-//    @Modifying
-//    @Query("""
-//        update Accommodation a
-//        set a.rates = (select avg(r.rate) from Rate r where r.accommodation.id=?1)
-//        where a.id=?1
-//    """)
-//    void updateRate(Long id);
 }

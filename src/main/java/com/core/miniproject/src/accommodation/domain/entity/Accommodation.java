@@ -22,12 +22,12 @@ public class Accommodation {
     private Long id;
 
     //location_id 참조 관계 설정
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "location_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Location location;
 
     //room_id 참조 관계 설정
-    @OneToMany(mappedBy = "accommodationId", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "accommodationId", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @Column(name = "room_id")
     private List<Room> roomId;
 
