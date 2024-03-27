@@ -90,4 +90,5 @@ public class RoomService {
             throw new BaseException(ERROR_SETTING_NUMBER_OF_GUEST);
         }
     }
+
 }

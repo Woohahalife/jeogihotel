@@ -1,6 +1,7 @@
 package com.core.miniproject.src.room.domain.dto;
 
 
+import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import com.core.miniproject.src.room.domain.entity.Room;
 import lombok.*;
 
@@ -16,7 +17,6 @@ public class RoomResponse {
     private int fixedMember;
     private int maxedMember;
     private int price;
-    private double avgRate;
 
     public static RoomResponse toClient(Room room){
         return RoomResponse.builder()
@@ -25,7 +25,6 @@ public class RoomResponse {
                 .fixedMember(room.getFixedMember())
                 .maxedMember(room.getMaxedMember())
                 .price(room.getPrice())
-                .avgRate(room.getAvgRate())
                 .build();
     }
 }
