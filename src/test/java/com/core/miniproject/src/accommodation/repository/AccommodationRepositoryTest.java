@@ -372,4 +372,65 @@ class AccommodationRepositoryTest {
         Assertions.assertThat(newAccommodation.getRate()).isEqualTo(newRate.getRate());
     }
 
+    @Test
+    @Transactional
+    void 가격과_별점_업데이트_성공(){
+        //given
+        Location location = Location.builder()
+                .locationName(LocationType.SEOUL)
+                .build();
+
+        Discount discount = Discount.builder()
+                .discountRate(0.3)
+                .build();
+
+        Discount newDiscount = discountRepository.save(discount);
+
+        Accommodation accommodation = Accommodation.builder()
+                .introduction("테스트 호텔입니다.")
+                .accommodationImage("이미지 링크입니다.")
+                .accommodationType(AccommodationType.HOTEL)
+                .accommodationName("테스트 호텔")
+                .roomId(null)
+                .location(location)
+                .discount(newDiscount)
+                .build();
+
+        Room room1 = Room.builder()
+                .roomName("더블 디럭스")
+                .roomInfo("테스트 호텔의 객실")
+                .roomCount(40)
+                .fixedMember(2)
+                .maxedMember(4)
+                .accommodationId(accommodation)
+                .price(200000)
+                .build();
+        Room room2 = Room.builder()
+                .roomName("더블 디럭스")
+                .roomInfo("테스트 호텔의 객실")
+                .roomCount(40)
+                .fixedMember(2)
+                .maxedMember(4)
+                .accommodationId(accommodation)
+                .price(100000)
+                .build();
+
+        Rate rate= Rate.builder()
+                .accommodation(accommodation)
+                .rate(4.5)
+                .build();
+        //when
+        locationRepository.save(location);
+        Accommodation newAccommodation = accommodationRepository.save(accommodation);
+        roomRepository.save(room1);
+        roomRepository.save(room2);
+        rateRepository.save(rate);
+        accommodationRepository.updateRate(newAccommodation.getId());
+        accommodationRepository.updatePrice(newAccommodation.getId());
+        entityManager.refresh(newAccommodation);
+
+        //then
+        Assertions.assertThat(newAccommodation.getPrice()).isEqualTo(room2.getPrice());
+    }
+
 }

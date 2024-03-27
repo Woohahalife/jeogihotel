@@ -21,9 +21,9 @@ public class RoomPublicController {
     private final RoomService roomService;
 
     @GetMapping("/v1/accommodation/{accommodationId}")
-    public BaseResponse<List<RoomResponse>> findAllRoomByAccommodationId(@PathVariable("accommodationId") int accommodationId){
+    public BaseResponse<List<RoomResponse>> findAllRoomByAccommodationId(@PathVariable("accommodationId") Long accommodationId){
 
-        List<RoomResponse> roomResponses = roomService.findAllRoomByAccommodationId((long)accommodationId);
+        List<RoomResponse> roomResponses = roomService.findAllRoomByAccommodationId(accommodationId);
 
         return BaseResponse.response(roomResponses);
     }

@@ -48,5 +48,13 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
     """)
     void updateRate(Long id);
 
+    @Modifying
+    @Query("""
+        update Accommodation a
+        set a.price=(select min(r.price) from Room r where r.accommodationId.id=?1)
+        where a.id=?1   
+            """)
+    void updatePrice(Long id);
+
 
 }

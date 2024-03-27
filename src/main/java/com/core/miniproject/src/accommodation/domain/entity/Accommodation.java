@@ -49,6 +49,7 @@ public class Accommodation {
 
     // 객실 가격 중 최소값을 반환하는 쿼리
 //    @Formula("select min(rp.price) from room_price rp join room r on rp.room_id = r.room_id where r.accommodation_id = accommodation_id")
+    @Column(name = "price")
     private Integer price;
 
     @ManyToOne
@@ -57,6 +58,10 @@ public class Accommodation {
 
     public Double getRate() {
         return this.rate != null ? this.rate : 0.0; // 기본값으로 0.0을 반환하도록 수정
+    }
+
+    public Integer getPrice() {
+        return this.price != null ? this.price : 0; // 기본값으로 0을 반환하도록 수정
     }
 
 }

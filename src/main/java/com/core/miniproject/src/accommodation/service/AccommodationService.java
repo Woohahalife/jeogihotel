@@ -43,6 +43,7 @@ public class AccommodationService {
                 getAccommodationPerDisCountAndLocation(request);
         Accommodation savedAccommodation = accommodationRepository.save(accommodation);
         accommodationRepository.updateRate(savedAccommodation.getId());
+        accommodationRepository.updatePrice(savedAccommodation.getId());
         entityManager.refresh(savedAccommodation);
 
         return AccommodationInsertResponse.toClient(savedAccommodation);
@@ -113,6 +114,7 @@ public class AccommodationService {
     private List<AccommodationResponse> getAccommodationResponses(List<AccommodationResponse> responses, List<Accommodation> accommodations) {
         for (Accommodation accommodation : accommodations) {
             accommodationRepository.updateRate(accommodation.getId());
+            accommodationRepository.updatePrice(accommodation.getId());
             entityManager.refresh(accommodation);
             AccommodationResponse response = AccommodationResponse.toClient(accommodation);
             log.info("Accommodation: accommodationName= {}, accommodationType= {} accommodationImage= {} introduction= {} price= {} rate= {}"
