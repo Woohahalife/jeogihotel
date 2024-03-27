@@ -29,7 +29,7 @@ public class AccommodationResponse {
                 .accommodationImage(accommodation.getAccommodationImage())
                 .introduction(accommodation.getIntroduction())
                 .locationType(accommodation.getLocation().getLocationName())
-                .rate(accommodation.getRate())
+                .rate(accommodation.getAverageRate()) // 별점 평균 조회
                 .price(accommodation.getPrice())
                 .build();
     }

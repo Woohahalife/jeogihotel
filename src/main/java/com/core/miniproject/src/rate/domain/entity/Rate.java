@@ -16,7 +16,7 @@ public class Rate {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "accommodation_id")
+    @JoinColumn(name = "accommodation_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Accommodation accommodation;
 
     @Column(name = "rate")

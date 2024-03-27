@@ -25,13 +25,7 @@ public class AccommodationPublicController {
     @GetMapping("/v1/accommodation")
     public BaseResponse<List<AccommodationResponse>> findAll(){
         List<AccommodationResponse> responses = accommodationService.findAllAccommodation();
-        for (AccommodationResponse response : responses) {
-            log.info("accommodationId= {} accommodationName= {} accommodationType= {} accommodationImage= {} introduction= {} location= {} rate={} price={}",
-                    response.getId(), response.getAccommodationName(), response.getAccommodationType(),
-                    response.getAccommodationImage(), response.getIntroduction(),
-                    response.getLocationType(), response.getRate(), response.getPrice());
 
-        }
         return BaseResponse.response(responses);
     }
 
@@ -40,12 +34,7 @@ public class AccommodationPublicController {
             @PathVariable("location_type")LocationType locationType
     ){
         List<AccommodationResponse> responses = accommodationService.findAccommodationByLocation(locationType);
-        for (AccommodationResponse response : responses) {
-            log.info("accommodationId= {} accommodationName= {} accommodationType= {} accommodationImage= {} introduction= {} location= {} rate={} price={}",
-                    response.getId(), response.getAccommodationName(), response.getAccommodationType(),
-                    response.getAccommodationImage(), response.getIntroduction(),
-                    response.getLocationType(), response.getRate(), response.getPrice());
-        }
+
         return BaseResponse.response(responses);
     }
 
@@ -54,12 +43,7 @@ public class AccommodationPublicController {
             @PathVariable("accommodation_type") AccommodationType accommodationType
     ){
         List<AccommodationResponse> responses = accommodationService.findAccommodationByType(accommodationType);
-        for (AccommodationResponse response : responses) {
-            log.info("accommodationId= {} accommodationName= {} accommodationType= {} accommodationImage= {} introduction= {} location= {} rate={} price={}",
-                    response.getId(), response.getAccommodationName(), response.getAccommodationType(),
-                    response.getAccommodationImage(), response.getIntroduction(),
-                    response.getLocationType(), response.getRate(), response.getPrice());
-        }
+
         return BaseResponse.response(responses);
     }
 
@@ -69,12 +53,7 @@ public class AccommodationPublicController {
             @PathVariable("location_type") LocationType locationType
     ){
         List<AccommodationResponse> responses = accommodationService.findByAccommodationAndLocation(accommodationType, locationType);
-        for (AccommodationResponse response : responses) {
-            log.info("accommodationId= {} accommodationName= {} accommodationType= {} accommodationImage= {} introduction= {} location= {} rate={} price={}",
-                    response.getId(), response.getAccommodationName(), response.getAccommodationType(),
-                    response.getAccommodationImage(), response.getIntroduction(),
-                    response.getLocationType(), response.getRate(), response.getPrice());
-        }
+
         return BaseResponse.response(responses);
     }
 
@@ -84,12 +63,7 @@ public class AccommodationPublicController {
             @PathVariable("personal") int fixedMember
     ){
         List<AccommodationResponse> responses = accommodationService.findByLocationAndPersonal(locationType, fixedMember);
-        for (AccommodationResponse response : responses) {
-            log.info("accommodationId= {} accommodationName= {} accommodationType= {} accommodationImage= {} introduction= {} location= {} rate={} price={}",
-                    response.getId(), response.getAccommodationName(), response.getAccommodationType(),
-                    response.getAccommodationImage(), response.getIntroduction(),
-                    response.getLocationType(), response.getRate(), response.getPrice());
-        }
+
         return BaseResponse.response(responses);
     }
 
