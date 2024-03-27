@@ -41,22 +41,22 @@ public class RoomService {
     }
 
     @Transactional
-    public List<RoomResponse> findAllRoomByAccommodationId(Long accommodaitonId){
+    public List<RoomResponse> findAllRoomByAccommodationId(Long accommodaitonId) {
         List<RoomResponse> responses = new ArrayList<>();
         List<Room> rooms = roomRepository.findAllByAccommodationId(accommodaitonId);
+
         for (Room room : rooms) {
             RoomResponse response = RoomResponse.toClient(room);
             responses.add(response);
         }
+
         return responses;
     }
 
-
     private Room getRoomForRequest(RoomInsertRequest request, Accommodation accommodation) {
-        //TODO : rate 필드 추가해야함
-
         numberOfPeopleValidate(request);
         requiredInfoValidate(request);
+        roomPricePolicyValidate(request); // 가격 설정 정책을 지키지 못했다는 것을 따로 표시하기 위해 검증문 분리 설정
 
         return Room.builder()
                 .roomName(request.getRoomName())
@@ -71,23 +71,27 @@ public class RoomService {
     }
 
     private void requiredInfoValidate(RoomInsertRequest request) {
-        if(request.getPrice() <= 0 ||
-           request.getRoomImage().isEmpty() ||
+        if(request.getRoomImage().isEmpty() ||
            request.getRoomName().isEmpty() ||
            request.getRoomInfo().isEmpty() ||
            request.getRoomCount() <= 0) {
-            throw new BaseException(SET_REQUIRED_INFORMAION);
+            throw new BaseException(SET_REQUIRED_INFORMATION);
         }
     }
 
     private void numberOfPeopleValidate(RoomInsertRequest request) {
-
-        if(request.getFixedNumber() <= 0 || request.getMaxedNumber() <= 0) {
+        if(request.getFixedNumber() < 1 || request.getMaxedNumber() >= 10) {
             throw new BaseException(ERROR_SETTING_NUM_OF_PEOPLE);
         }
 
         if(request.getFixedNumber() > request.getMaxedNumber()) {
             throw new BaseException(ERROR_SETTING_NUMBER_OF_GUEST);
+        }
+    }
+
+    private void roomPricePolicyValidate(RoomInsertRequest request) {
+        if(request.getPrice() < 30000) {
+            throw new BaseException(FAILURE_PRICING_POLICY);
         }
     }
 

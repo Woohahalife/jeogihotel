@@ -2,7 +2,6 @@ package com.core.miniproject.src.common.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -32,11 +31,12 @@ public enum BaseResponseStatus {
     DISCOUNT_NOT_FOUND(false, BAD_REQUEST.value(), "할인율 정보를 찾을 수 없습니다."),
     LOCATION_NOT_FOUND(false, BAD_REQUEST.value(), "지역 정보를 찾을 수 없습니다."),
     ERROR_SETTING_NUMBER_OF_GUEST(false, BAD_REQUEST.value(), "객실 인원 수 설정이 올바르지 않습니다."),
-    SET_REQUIRED_INFORMAION(false, BAD_REQUEST.value(), "생성에 필요한 필수 정보가 누락되었습니다."),
+    SET_REQUIRED_INFORMATION(false, BAD_REQUEST.value(), "생성에 필요한 필수 정보가 누락되었습니다."),
     ERROR_SETTING_NUM_OF_PEOPLE(false, BAD_REQUEST.value(), "설정된 인원 수를 다시 확인해주세요"),
     DUPLICATE_LOCATION(false, BAD_REQUEST.value(), "지역 데이터 중복입니다."),
     RATE_OUT_OF_BOUND_OVER(false, BAD_REQUEST.value(), "평가는 5점을 넘을 수 없습니다."),
     RATE_OUT_OF_BOUND_UNDER(false, BAD_REQUEST.value(), "평가는 0점을 넘어야 합니다."),
+    FAILURE_PRICING_POLICY(false, BAD_REQUEST.value(), "객실의 최소 가격은 30000원 이상이어야 합니다."),
     /**
      * 500
      */
