@@ -84,7 +84,6 @@ public class RoomServiceTest {
                 .maxedMember(request.getMaxedNumber())
                 .roomImage(request.getRoomImage())
                 .accommodationId(accommodation)
-                .avgRate(5.0)
                 .build();
 
         BDDMockito.given(roomRepository.save(argThat(room -> room.getRoomName().equals("객실1"))))
