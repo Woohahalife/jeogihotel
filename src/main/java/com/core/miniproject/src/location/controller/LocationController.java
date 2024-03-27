@@ -6,6 +6,7 @@ import com.core.miniproject.src.common.security.principal.MemberInfo;
 import com.core.miniproject.src.location.domain.dto.LocationRequest;
 import com.core.miniproject.src.location.domain.dto.LocationResponse;
 import com.core.miniproject.src.location.service.LocationService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import static com.core.miniproject.src.common.response.BaseResponse.response;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Tag(name = "지역 생성 & 수정 & 삭제 api", description = "지역 관련 api - 보안 접근 필요")
 public class LocationController {
 
     private final LocationService locationService;

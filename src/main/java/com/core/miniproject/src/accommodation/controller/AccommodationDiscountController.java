@@ -7,6 +7,7 @@ import com.core.miniproject.src.accommodation.service.AccommodationDiscountServi
 import com.core.miniproject.src.common.response.BaseResponse;
 import com.core.miniproject.src.common.security.JwtAuthentication;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,7 @@ import static com.core.miniproject.src.common.response.BaseResponse.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Tag(name = "할인율 생성 & 수정 & 삭제 api", description = "숙소-할인율 관련 api - 보안 접근 필요")
 public class AccommodationDiscountController {
 
     private final AccommodationDiscountService discountService;

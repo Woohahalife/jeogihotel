@@ -5,6 +5,7 @@ import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
 import com.core.miniproject.src.accommodation.service.AccommodationService;
 import com.core.miniproject.src.common.response.BaseResponse;
 import com.core.miniproject.src.location.domain.entity.LocationType;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/public-api")
+@Tag(name = "숙소 조회 api", description = "숙소 관련 api - 보안 설정 X")
 public class AccommodationPublicController {
 
     private final AccommodationService accommodationService;
