@@ -11,6 +11,8 @@ import com.core.miniproject.src.reservation.model.dto.ReservationInsertResponse;
 import com.core.miniproject.src.reservation.model.dto.ReservationListResponse;
 import com.core.miniproject.src.reservation.model.entity.Reservation;
 import com.core.miniproject.src.reservation.repository.ReservationRepository;
+import com.core.miniproject.src.room.domain.entity.Room;
+import com.core.miniproject.src.room.repository.RoomRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -45,8 +47,12 @@ class ReservationServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
+
     @Mock
     private ReservationRepository reservationRepository;
+
+    @Mock
+    private RoomRepository roomRepository;
 
     MemberInfo memberInfo = new MemberInfo(1L, "string", Role.USER);
     Member member = Member.builder()
@@ -56,20 +62,31 @@ class ReservationServiceTest {
             .phoneNumber("phoneNumber")
             .build();
 
+    Room room = Room.builder()
+            .id(1L)
+            .roomImage("객실1")
+            .roomCount(1)
+            .roomInfo("정보")
+            .price(30000)
+            .fixedMember(2)
+            .maxedMember(4)
+            .build();
+
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         JacksonTester.initFields(this, new ObjectMapper());
-        reservationService = new ReservationService(memberRepository, reservationRepository);
+        reservationService = new ReservationService(memberRepository, roomRepository, reservationRepository);
     }
 
     @Test
     void reservaion_저장_성공() {
         // given
-        ReservationInsertRequest request = new ReservationInsertRequest("객실1", LocalDate.now(), LocalDate.now().plusDays(1), 20000, 2, 4);
+        ReservationInsertRequest request = new ReservationInsertRequest(1L, "객실1", LocalDate.now(), LocalDate.now().plusDays(1), 2, 4);
 
         BDDMockito.given(memberRepository.findByMemberEmail(any())).willReturn(Optional.of(member)); // memberInfo의 getEmail을 사용하기 때문에 주입되는 파라미터를 정의함
+        BDDMockito.given(roomRepository.findById(any())).willReturn(Optional.of(room));
 
         Reservation expectedReservation = Reservation.builder()
                 .roomName(request.getRoomName())
@@ -79,13 +96,14 @@ class ReservationServiceTest {
                 .maxedNumber(request.getMaxedMember())
                 .isVisited(IsVisited.VISITED)
                 .member(member)
+                .room(room)
                 .build();
 
         BDDMockito.given(reservationRepository.save(argThat(reservation -> reservation.getRoomName().equals("객실1"))))
                 .willReturn(expectedReservation);
 
         // when
-        ReservationInsertResponse reservationInsertResponse = reservationService.insertReservation(request, memberInfo);
+        ReservationInsertResponse reservationInsertResponse = reservationService.registerReservation(request, memberInfo);
 
         // then
         BDDMockito.verify(memberRepository).findByMemberEmail(memberInfo.getEmail());
@@ -100,11 +118,11 @@ class ReservationServiceTest {
 
     @Test
     void insertReservationValidate_유효하지_않은_날짜_예외_발생() {
-        ReservationInsertRequest invalidRequest = new ReservationInsertRequest("객실1", LocalDate.now(), LocalDate.now(), 20000, 2, 4);
+        ReservationInsertRequest invalidRequest = new ReservationInsertRequest(1L, "객실1", LocalDate.now(), LocalDate.now(), 2, 4);
 
         BDDMockito.given(memberRepository.findByMemberEmail(memberInfo.getEmail())).willReturn(Optional.of(member));
 
-        assertThatThrownBy(() -> reservationService.insertReservation(invalidRequest, memberInfo))
+        assertThatThrownBy(() -> reservationService.registerReservation(invalidRequest, memberInfo))
                 .isInstanceOf(BaseException.class)
                 .hasMessage(INVALID_DATE_SETTING.getMessage());
     }
@@ -112,8 +130,8 @@ class ReservationServiceTest {
     @Test
     void 모든_reservation_조회_성공() {
         // given
-        ReservationInsertRequest request1 = new ReservationInsertRequest("객실1", LocalDate.now(), LocalDate.now().plusDays(1), 20000, 2, 4);
-        ReservationInsertRequest request2 = new ReservationInsertRequest("객실2", LocalDate.now().plusDays(1), LocalDate.now().plusDays(2), 20000, 2, 4);
+        ReservationInsertRequest request1 = new ReservationInsertRequest(1L, "객실1", LocalDate.now(), LocalDate.now(), 2, 4);
+        ReservationInsertRequest request2 = new ReservationInsertRequest(2L, "객실2", LocalDate.now().plusDays(1), LocalDate.now().plusDays(2), 2, 4);
 
         BDDMockito.given(memberRepository.findByMemberEmail(memberInfo.getEmail())).willReturn(Optional.of(member));
 
@@ -125,6 +143,7 @@ class ReservationServiceTest {
                 .maxedNumber(request1.getMaxedMember())
                 .isVisited(IsVisited.VISITED)
                 .member(Member.builder().id(1L).build())
+                .room(room)
                 .build();
 
         Reservation expectedReservation2 = Reservation.builder()
@@ -135,6 +154,7 @@ class ReservationServiceTest {
                 .maxedNumber(request2.getMaxedMember())
                 .isVisited(IsVisited.VISITED)
                 .member(Member.builder().id(1L).build())
+                .room(room)
                 .build();
 
         BDDMockito.given(reservationRepository.findAllReservation(member.getId())).willReturn(Arrays.asList(expectedReservation1, expectedReservation2));
@@ -176,7 +196,8 @@ class ReservationServiceTest {
                 .withMessageContaining(EMAIL_NOT_FOUND.getMessage());
     }
 
-    @Test // 아직 실패 케이스
+    @Test
+        // 아직 실패 케이스
     void 이메일이_다름() {
 
         Member member = Member.builder()

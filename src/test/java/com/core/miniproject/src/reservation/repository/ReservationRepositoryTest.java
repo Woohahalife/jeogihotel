@@ -3,6 +3,7 @@ package com.core.miniproject.src.reservation.repository;
 import com.core.miniproject.src.common.constant.IsVisited;
 import com.core.miniproject.src.member.domain.entity.Member;
 import com.core.miniproject.src.reservation.model.entity.Reservation;
+import com.core.miniproject.src.room.domain.entity.Room;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -34,6 +35,7 @@ public class ReservationRepositoryTest {
                 .maxedNumber(4)
                 .isVisited(IsVisited.VISITED)
                 .member(Member.builder().id(1L).build())
+                .room(Room.builder().id(1L).build())
                 .build();
 
         // when

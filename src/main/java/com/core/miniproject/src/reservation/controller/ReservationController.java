@@ -27,7 +27,7 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping("/v1/reservation/insert")
-    public BaseResponse<ReservationInsertResponse> insertReservation(
+    public BaseResponse<ReservationInsertResponse> registerReservation(
             @RequestBody ReservationInsertRequest request,
             @JwtAuthentication MemberInfo memberInfo)
     {
@@ -35,7 +35,7 @@ public class ReservationController {
         log.info("Post Mapping - Create a new reservation - member_id : {}, member_email : {}, request : {}",
                 memberInfo.getId(), memberInfo.getEmail(), request);
 
-        return response(reservationService.insertReservation(request, memberInfo));
+        return response(reservationService.registerReservation(request, memberInfo));
     }
 
     @GetMapping("v1/reservation")

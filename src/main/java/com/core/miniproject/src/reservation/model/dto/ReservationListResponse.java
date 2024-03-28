@@ -2,6 +2,7 @@ package com.core.miniproject.src.reservation.model.dto;
 
 import com.core.miniproject.src.common.constant.IsVisited;
 import com.core.miniproject.src.reservation.model.entity.Reservation;
+import com.core.miniproject.src.room.domain.dto.RoomResponse;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class ReservationListResponse {
     private int fixedNumber;
     private int maxedNumber;
     private IsVisited isVisited;
+    private RoomResponse room;
 
     public static ReservationListResponse toClient(Reservation reservation) {
         return ReservationListResponse.builder()
@@ -32,6 +34,7 @@ public class ReservationListResponse {
                 .fixedNumber(reservation.getFixedNumber())
                 .maxedNumber(reservation.getMaxedNumber())
                 .isVisited(reservation.getIsVisited())
+                .room(RoomResponse.toClient(reservation.getRoom()))
                 .build();
     }
 }

@@ -27,7 +27,7 @@ public class Accommodation {
     private Location location;
 
     //room_id 참조 관계 설정
-    @OneToMany(mappedBy = "accommodationId", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "accommodationId", cascade = CascadeType.REMOVE)
     @Column(name = "room_id")
     private List<Room> roomId;
 

@@ -14,10 +14,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ReservationInsertRequest {
 
+    private Long roomId; // 예약을 하려는 객실 id값
     private String roomName;
     private LocalDate checkIn;
     private LocalDate checkOut;
-    private int price;
     private int fixedMember;
     private int maxedMember;
 
