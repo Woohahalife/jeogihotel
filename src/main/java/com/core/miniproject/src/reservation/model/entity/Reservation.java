@@ -2,6 +2,7 @@ package com.core.miniproject.src.reservation.model.entity;
 
 import com.core.miniproject.src.common.constant.IsVisited;
 import com.core.miniproject.src.member.domain.entity.Member;
+import com.core.miniproject.src.room.domain.entity.Room;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -43,4 +44,7 @@ public class Reservation {
     @JoinColumn(name = "member_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)) // 테스트 및 조작 유연성을 위한 외래키 제약조건 해제
     private Member member;
 
+    @ManyToOne
+    @JoinColumn(name = "room_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private Room room;
 }

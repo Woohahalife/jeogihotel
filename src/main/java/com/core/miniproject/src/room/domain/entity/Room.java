@@ -1,9 +1,12 @@
 package com.core.miniproject.src.room.domain.entity;
 
 import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
+import com.core.miniproject.src.reservation.model.entity.Reservation;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Formula;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -42,5 +45,10 @@ public class Room {
 
     @Column(name = "price")
     private Integer price;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE)
+    @Column(name = "reservation_id")
+    private List<Reservation> reservations;
+
 
 }

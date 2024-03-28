@@ -29,6 +29,8 @@ public enum BaseResponseStatus {
     ACCOMMODATION_DOES_NOT_EXIST(false, BAD_REQUEST.value(), "해당 숙소가 존재하지 않습니다."),
     DUPLICATE_DISCOUNTRATE(false, BAD_REQUEST.value(), "할인율이 중복입니다"),
     DISCOUNT_NOT_FOUND(false, BAD_REQUEST.value(), "할인율 정보를 찾을 수 없습니다."),
+    ROOM_NOT_FOUND(false, BAD_REQUEST.value(), "객실 정보를 찾을 수 없습니다."),
+    NO_ROOMS_REMAINING(false, BAD_REQUEST.value(), "잔여 객실이 없습니다."),
     LOCATION_NOT_FOUND(false, BAD_REQUEST.value(), "지역 정보를 찾을 수 없습니다."),
     ERROR_SETTING_NUMBER_OF_GUEST(false, BAD_REQUEST.value(), "객실 인원 수 설정이 올바르지 않습니다."),
     SET_REQUIRED_INFORMATION(false, BAD_REQUEST.value(), "생성에 필요한 필수 정보가 누락되었습니다."),
