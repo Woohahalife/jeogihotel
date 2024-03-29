@@ -140,7 +140,7 @@ public class AccommodationService {
 
     public AccommodationResponse getAccommodationDetail(Long accommodationId) {
 
-        Accommodation accommodation = accommodationRepository.findById(accommodationId)
+        Accommodation accommodation = accommodationRepository.findByAccommodationId(accommodationId)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.ACCOMMODATION_DOES_NOT_EXIST));
 
         return AccommodationResponse.toClient(accommodation);

@@ -8,7 +8,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -28,9 +30,10 @@ public class Accommodation {
     private Location location;
 
     //room_id 참조 관계 설정
+    @Builder.Default
     @OneToMany(mappedBy = "accommodationId", cascade = CascadeType.REMOVE)
     @Column(name = "room_id")
-    private List<Room> roomId;
+    private Set<Room> roomId = new HashSet<>();;
 
     @Column(name="introduction")
     private String introduction;
@@ -44,7 +47,7 @@ public class Accommodation {
 
     @Builder.Default
     @OneToMany(mappedBy = "accommodation", cascade = CascadeType.REMOVE)
-    private List<Rate> rates = new ArrayList<>();
+    private Set<Rate> rates = new HashSet<>();
 
 //    @Formula("select min(rp.price) from room_price rp join room r on rp.room_id = r.room_id where r.accommodation_id = accommodation_id")
     @Column(name = "price")

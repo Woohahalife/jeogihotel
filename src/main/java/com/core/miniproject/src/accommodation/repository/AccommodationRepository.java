@@ -6,6 +6,7 @@ import com.core.miniproject.src.location.domain.entity.LocationType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,15 +24,18 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
     @Query("""
             SELECT a
             FROM Accommodation a
-            LEFT JOIN a.rates
-            LEFT JOIN a.images
+            LEFT JOIN FETCH a.roomId
+            LEFT JOIN FETCH a.rates
+            LEFT JOIN FETCH a.images
             """)
     List<Accommodation> getAllAccommodation();
 
     @Query("""
             select a
             from Accommodation a
-            LEFT JOIN a.rates
+            LEFT JOIN FETCH a.roomId
+            LEFT JOIN FETCH a.rates
+            LEFT JOIN FETCH a.images
             where a.id = ?1
             """)
     Optional<Accommodation> findByAccommodationId(Long id);
@@ -39,7 +43,9 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
     @Query("""
             select a
             from Accommodation a
+            LEFT JOIN FETCH a.roomId
             LEFT JOIN FETCH a.rates
+            LEFT JOIN FETCH a.images
             where a.accommodationType = ?1
             """)
     List<Accommodation> findByAccommodationType(AccommodationType accommodationType);
@@ -47,7 +53,9 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
     @Query("""
             select a
             from Accommodation a
+            LEFT JOIN FETCH a.roomId
             LEFT JOIN FETCH a.rates
+            LEFT JOIN FETCH a.images
             where a.location.locationName = ?1
             """)
     List<Accommodation> findByLocationType(LocationType locationType);
@@ -55,7 +63,9 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
     @Query("""
             select a
             from Accommodation a
-            LEFT JOIN a.rates
+            LEFT JOIN FETCH a.roomId
+            LEFT JOIN FETCH a.rates
+            LEFT JOIN FETCH a.images
             where a.accommodationType = ?1
             and a.location.locationName = ?2
             """)
@@ -63,9 +73,11 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
 
     @Query(""" 
        select a
-       from Accommodation a 
+       from Accommodation a
        join Room r on a.id=r.accommodationId.id
        LEFT JOIN FETCH a.rates
+       LEFT JOIN FETCH a.roomId
+       LEFT JOIN FETCH a.images
        where a.location.locationName=?1
        and r.fixedMember=?2
        """)
