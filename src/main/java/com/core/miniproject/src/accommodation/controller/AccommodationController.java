@@ -2,7 +2,6 @@ package com.core.miniproject.src.accommodation.controller;
 
 import com.core.miniproject.src.accommodation.domain.dto.AccommodationInsertRequest;
 import com.core.miniproject.src.accommodation.domain.dto.AccommodationInsertResponse;
-import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import com.core.miniproject.src.accommodation.service.AccommodationService;
 import com.core.miniproject.src.common.response.BaseResponse;
 import com.core.miniproject.src.common.response.BaseResponseStatus;
@@ -11,7 +10,6 @@ import com.core.miniproject.src.common.security.principal.MemberInfo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j

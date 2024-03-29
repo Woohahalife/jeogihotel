@@ -4,7 +4,6 @@ import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
 import com.core.miniproject.src.location.domain.entity.LocationType;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
