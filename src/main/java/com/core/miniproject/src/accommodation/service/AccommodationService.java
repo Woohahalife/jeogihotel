@@ -30,7 +30,6 @@ public class AccommodationService {
     private final AccommodationRepository accommodationRepository;
     private final DiscountRepository discountRepository;
     private final LocationRepository locationRepository;
-    @PersistenceContext EntityManager entityManager;
 
     @Transactional
     public AccommodationInsertResponse createAccommodation(
@@ -59,6 +58,7 @@ public class AccommodationService {
                 .introduction(request.getIntroduction())
                 .discount(discount)
                 .location(location)
+                .address(request.getAddress())
                 .build();
     }
 

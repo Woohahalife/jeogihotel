@@ -20,6 +20,7 @@ public class AccommodationInsertResponse {
     private double rate;
     private double discount;
     private int price;
+    private String address;
     private LocationResponse location;
 
     public static AccommodationInsertResponse toClient(Accommodation accommodation) {
@@ -31,6 +32,7 @@ public class AccommodationInsertResponse {
                 .rate(accommodation.getAverageRate())
                 .discount(accommodation.getDiscount().getDiscountRate())
                 .price(accommodation.getMinPrice())
+                .address(accommodation.getAddress())
                 .location(LocationResponse.toClient(accommodation.getLocation()))
                 .build();
     }

@@ -10,10 +10,7 @@ import com.core.miniproject.src.rate.domain.entity.Rate;
 import com.core.miniproject.src.rate.repository.RateRepository;
 import com.core.miniproject.src.room.domain.entity.Room;
 import com.core.miniproject.src.room.repository.RoomRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -22,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 //테스트 코드 커밋
 @DataJpaTest
@@ -37,8 +35,6 @@ class AccommodationRepositoryTest {
     DiscountRepository discountRepository;
     @Autowired
     RateRepository rateRepository;
-    @PersistenceContext
-    EntityManager entityManager;
 
     @Test //room 테이블 연관관계 추가
     @Transactional

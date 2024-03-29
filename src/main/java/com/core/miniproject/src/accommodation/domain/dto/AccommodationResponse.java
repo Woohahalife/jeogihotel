@@ -19,6 +19,8 @@ public class AccommodationResponse {
     private String introduction;
     private LocationType locationType; //위치 추가
     private double rate;
+    private double discount;
+    private String address;
     private int price;
 
     public static AccommodationResponse toClient(Accommodation accommodation){
@@ -30,6 +32,8 @@ public class AccommodationResponse {
                 .introduction(accommodation.getIntroduction())
                 .locationType(accommodation.getLocation().getLocationName())
                 .rate(accommodation.getAverageRate()) // 별점 평균 조회
+                .discount(accommodation.getDiscount().getDiscountRate())
+                .address(accommodation.getAddress())
                 .price(accommodation.getMinPrice())
                 .build();
     }

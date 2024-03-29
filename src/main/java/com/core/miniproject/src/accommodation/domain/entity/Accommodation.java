@@ -56,6 +56,12 @@ public class Accommodation {
     @JoinColumn(name = "discount_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Discount discount;
 
+    @Column(name = "address")
+    private String address;
+
+    @Column(name="is_deleted")
+    private boolean isDeleted=false;
+
 //    public Double getRate() {
 //        return this.getRates() != null ? this.getRate() : 0.0; // 기본값으로 0.0을 반환하도록 수정
 //    }
