@@ -2,7 +2,6 @@ package com.core.miniproject.src.accommodation.controller;
 
 import com.core.miniproject.src.accommodation.domain.dto.AccommodationInsertRequest;
 import com.core.miniproject.src.accommodation.domain.dto.AccommodationInsertResponse;
-import com.core.miniproject.src.accommodation.domain.dto.AccommodationResponse;
 import com.core.miniproject.src.accommodation.service.AccommodationService;
 import com.core.miniproject.src.common.response.BaseResponse;
 import com.core.miniproject.src.common.security.JwtAuthentication;
@@ -24,10 +23,12 @@ public class AccommodationController {
     @PostMapping("/v1/accommodation/admin")
     public BaseResponse<AccommodationInsertResponse> createAccommodation(
             @RequestBody AccommodationInsertRequest request,
+
             @JwtAuthentication MemberInfo memberInfo) {
 
+
         AccommodationInsertResponse accommodationInsertResponse =
-                accommodationService.createAccommodation(request, memberInfo);
+                accommodationService.createAccommodation(request, request.getAccommodationImage(), memberInfo);
 
         return BaseResponse.response(accommodationInsertResponse);
     }

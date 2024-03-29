@@ -4,6 +4,7 @@ import com.core.miniproject.src.common.constant.IsVisited;
 import com.core.miniproject.src.common.constant.Role;
 import com.core.miniproject.src.common.exception.BaseException;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
+import com.core.miniproject.src.image.domain.entity.RoomImage;
 import com.core.miniproject.src.member.domain.entity.Member;
 import com.core.miniproject.src.member.repository.MemberRepository;
 import com.core.miniproject.src.reservation.model.dto.ReservationInsertRequest;
@@ -64,7 +65,7 @@ class ReservationServiceTest {
 
     Room room = Room.builder()
             .id(1L)
-            .roomImage("객실1")
+            .roomImage(RoomImage.builder().id(1L).build())
             .roomCount(1)
             .roomInfo("정보")
             .price(30000)

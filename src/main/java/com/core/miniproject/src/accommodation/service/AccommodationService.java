@@ -11,11 +11,12 @@ import com.core.miniproject.src.accommodation.repository.DiscountRepository;
 import com.core.miniproject.src.common.exception.BaseException;
 import com.core.miniproject.src.common.response.BaseResponseStatus;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
+import com.core.miniproject.src.image.domain.entity.AccommodationImage;
+import com.core.miniproject.src.image.repository.AccommodationImageRepository;
+import com.core.miniproject.src.image.service.AccommodationImageService;
 import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.location.domain.entity.LocationType;
 import com.core.miniproject.src.location.repository.LocationRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,20 +33,29 @@ public class AccommodationService {
     private final AccommodationRepository accommodationRepository;
     private final DiscountRepository discountRepository;
     private final LocationRepository locationRepository;
+    private final AccommodationImageRepository imageRepository;
+    private final AccommodationImageService imageService;
 
     @Transactional
     public AccommodationInsertResponse createAccommodation(
             AccommodationInsertRequest request,
-            MemberInfo memberInfo) {
+            List<String> imageRequest, MemberInfo memberInfo)
+    {
         Accommodation accommodation =
-                getAccommodationPerDisCountAndLocation(request);
+                getAccommodationPerDisCountAndLocation(request, imageRequest);
+
+        accommodation.getImages().forEach(image -> image.assignAccommodation(accommodation));
 
         Accommodation savedAccommodation = accommodationRepository.save(accommodation);
+
 
         return AccommodationInsertResponse.toClient(savedAccommodation);
     }
 
-    private Accommodation getAccommodationPerDisCountAndLocation(AccommodationInsertRequest request) {
+    private Accommodation getAccommodationPerDisCountAndLocation(
+            AccommodationInsertRequest request,
+            List<String> imageRequest
+    ) {
 
         Discount discount = discountRepository.findDiscountByRate(request.getDiscountRate())
                 .orElseGet(() -> discountRepository.save(Discount.builder().discountRate(request.getDiscountRate()).build()));
@@ -53,14 +63,22 @@ public class AccommodationService {
         Location location = locationRepository.findLocationByType(request.getLocationName())
                 .orElseGet(() -> locationRepository.save(Location.builder().locationName(request.getLocationName()).build()));
 
+        List<AccommodationImage> images = imageRequest.stream()
+                .map(path -> AccommodationImage.builder()
+                        .imagePath(path)
+                        .build())
+                .collect(Collectors.toList());
+
+        List<AccommodationImage> accommodationImages = imageRepository.saveAll(images);
+
         return Accommodation.builder()
                 .accommodationName(request.getAccommodationName())
-                .accommodationImage(request.getAccommodationImage())
                 .accommodationType(request.getAccommodationType())
                 .introduction(request.getIntroduction())
                 .discount(discount)
                 .location(location)
                 .address(request.getAddress())
+                .images(accommodationImages)
                 .build();
     }
 

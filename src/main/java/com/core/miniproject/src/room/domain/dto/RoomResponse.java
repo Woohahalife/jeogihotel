@@ -16,6 +16,7 @@ public class RoomResponse {
     private String roomInfo;
     private int fixedMember;
     private int maxedMember;
+    private String roomImage;
     private int price;
 
     public static RoomResponse toClient(Room room){
@@ -25,6 +26,7 @@ public class RoomResponse {
                 .fixedMember(room.getFixedMember())
                 .maxedMember(room.getMaxedMember())
                 .price(room.getPrice())
+                .roomImage(room.getRoomImage().getImagePath())
                 .build();
     }
 }

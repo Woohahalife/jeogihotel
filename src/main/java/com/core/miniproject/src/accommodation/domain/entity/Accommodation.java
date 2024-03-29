@@ -1,8 +1,8 @@
 package com.core.miniproject.src.accommodation.domain.entity;
 
+import com.core.miniproject.src.image.domain.entity.AccommodationImage;
 import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.rate.domain.entity.Rate;
-import com.core.miniproject.src.room.domain.dto.RoomResponse;
 import com.core.miniproject.src.room.domain.entity.Room;
 import jakarta.persistence.*;
 import lombok.*;
@@ -42,9 +42,6 @@ public class Accommodation {
     @Enumerated(EnumType.STRING)
     private AccommodationType accommodationType;
 
-    @Column(name="accommodation_image")
-    private String accommodationImage;
-
     @Builder.Default
     @OneToMany(mappedBy = "accommodation", cascade = CascadeType.REMOVE)
     private List<Rate> rates = new ArrayList<>();
@@ -62,6 +59,10 @@ public class Accommodation {
 
     @Column(name="is_deleted")
     private boolean isDeleted=false;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "accommodation")
+    private List<AccommodationImage> images = new ArrayList<>();
 
 //    public Double getRate() {
 //        return this.getRates() != null ? this.getRate() : 0.0; // 기본값으로 0.0을 반환하도록 수정
@@ -94,5 +95,4 @@ public class Accommodation {
         }
         return minPrice;
     }
-
 }

@@ -1,4 +1,4 @@
-package com.core.miniproject.src.aspect;
+package com.core.miniproject.src.common.aspect;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
