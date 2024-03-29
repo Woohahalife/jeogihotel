@@ -2,6 +2,7 @@ package com.core.miniproject.src.accommodation.domain.entity;
 
 import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.rate.domain.entity.Rate;
+import com.core.miniproject.src.room.domain.dto.RoomResponse;
 import com.core.miniproject.src.room.domain.entity.Room;
 import jakarta.persistence.*;
 import lombok.*;
@@ -93,4 +94,5 @@ public class Accommodation {
         }
         return minPrice;
     }
+
 }
