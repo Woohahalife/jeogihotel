@@ -3,6 +3,7 @@ package com.core.miniproject.src.room.service;
 import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import com.core.miniproject.src.accommodation.repository.AccommodationRepository;
 import com.core.miniproject.src.common.exception.BaseException;
+import com.core.miniproject.src.common.response.BaseResponseStatus;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
 import com.core.miniproject.src.room.domain.dto.RoomInsertRequest;
 import com.core.miniproject.src.room.domain.dto.RoomInsertResponse;
@@ -51,6 +52,19 @@ public class RoomService {
         }
 
         return responses;
+    }
+
+    @Transactional
+    public BaseResponseStatus deleteRoom(Long accommodationId, Long roomId, MemberInfo memberInfo){
+        Room room = roomRepository.findById(accommodationId,roomId).orElseThrow(
+                () -> new BaseException(ROOM_NOT_FOUND)
+        );
+        try {
+            roomRepository.deleteById(room.getId());
+            return BaseResponseStatus.DELETE_SUCCESS;
+        }catch (Exception e){
+            throw new BaseException(BaseResponseStatus.DELETE_FAIL);
+        }
     }
 
     private Room getRoomForRequest(RoomInsertRequest request, Accommodation accommodation) {

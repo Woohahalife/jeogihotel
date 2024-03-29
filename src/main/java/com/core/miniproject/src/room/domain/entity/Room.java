@@ -4,9 +4,7 @@ import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import com.core.miniproject.src.reservation.model.entity.Reservation;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.processing.SQL;
 
 import java.util.List;
 

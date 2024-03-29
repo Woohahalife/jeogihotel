@@ -35,8 +35,6 @@ class AccommodationRepositoryTest {
     DiscountRepository discountRepository;
     @Autowired
     RateRepository rateRepository;
-    @PersistenceContext
-    EntityManager entityManager;
 
     @Test //room 테이블 연관관계 추가
     @Transactional

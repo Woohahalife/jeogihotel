@@ -6,12 +6,16 @@ import com.core.miniproject.src.accommodation.domain.entity.Discount;
 import com.core.miniproject.src.accommodation.repository.AccommodationRepository;
 import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.room.domain.entity.Room;
+import jakarta.persistence.Column;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.Commit;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @DataJpaTest
@@ -99,5 +103,33 @@ class RoomRepositoryTest {
         List<Room> rooms = roomRepository.findAllByAccommodationId(accommodation.getId());
 
         Assertions.assertThat(rooms.size()).isEqualTo(1);
+    }
+
+    @Transactional
+    @Test
+    void 삭제_성공_조회_실패(){
+        Accommodation accommodation = Accommodation.builder()
+                .accommodationName("테스트 호텔")
+                .accommodationType(AccommodationType.HOTEL)
+                .discount(Discount.builder().id(1L).build())
+                .location(Location.builder().id(1L).build())
+                .build();
+
+        Room room = Room.builder()
+                .roomName("더블 디럭스")
+                .roomInfo("테스트 호텔의 객실")
+                .roomCount(40)
+                .fixedMember(2)
+                .maxedMember(4)
+                .accommodationId(accommodation)
+                .price(200000)
+                .build();
+        AccommodationRepository.save(accommodation);
+        Room room1 = roomRepository.save(room);
+        roomRepository.deleteById(room1.getId());
+        Room room2 = roomRepository.findById(room1.getId()).orElse(null);
+
+        Assertions.assertThat(room2).isNull();
+
     }
 }
