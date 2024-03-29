@@ -8,7 +8,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class MemberInfo {
 
     private Long id;

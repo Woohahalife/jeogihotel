@@ -16,8 +16,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import static com.core.miniproject.src.common.response.BaseResponseStatus.EMAIL_NOT_FOUND;
-import static com.core.miniproject.src.common.response.BaseResponseStatus.PRINCIPAL_IS_NOT_FOUND;
+import static com.core.miniproject.src.common.response.BaseResponseStatus.*;
 
 @Slf4j
 @Component
@@ -42,7 +41,7 @@ public class AuthMemberResolver implements HandlerMethodArgumentResolver {
 
         // 사용자가 인증되지 않은 경우 예외 처리
         if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails userDetails)) {
-            throw new BaseException(EMAIL_NOT_FOUND);
+            throw new BaseException(NOT_AUTHENTICATED_USER);
         }
 
         MemberPrincipal memberPrincipal = memberRepository.findByMemberEmail(userDetails.getUsername())
