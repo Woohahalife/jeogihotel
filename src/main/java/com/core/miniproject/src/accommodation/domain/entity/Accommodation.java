@@ -96,9 +96,4 @@ public class Accommodation {
         }
         return minPrice;
     }
-
-    public void delete(){
-        this.isDeleted=true;
-    }
-
 }
