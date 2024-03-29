@@ -29,8 +29,8 @@ public class AccommodationResponse {
     private double discount;
     private String address;
     private int price;
-    private List<RoomResponse> room;
     private List<ImageResponse> accommodationImage;
+    private List<RoomResponse> room;
 
     public static AccommodationResponse toClient(Accommodation accommodation){
         return AccommodationResponse.builder()
