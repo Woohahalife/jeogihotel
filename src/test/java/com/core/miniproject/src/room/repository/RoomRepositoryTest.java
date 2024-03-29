@@ -6,14 +6,12 @@ import com.core.miniproject.src.accommodation.domain.entity.Discount;
 import com.core.miniproject.src.accommodation.repository.AccommodationRepository;
 import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.room.domain.entity.Room;
-import jakarta.persistence.Column;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -124,10 +122,10 @@ class RoomRepositoryTest {
                 .accommodationId(accommodation)
                 .price(200000)
                 .build();
-        AccommodationRepository.save(accommodation);
+        Accommodation newAccommodation1= AccommodationRepository.save(accommodation);
         Room room1 = roomRepository.save(room);
         roomRepository.deleteById(room1.getId());
-        Room room2 = roomRepository.findById(room1.getId()).orElse(null);
+        Room room2 = roomRepository.findById(newAccommodation1.getId(),room1.getId()).orElse(null);
 
         Assertions.assertThat(room2).isNull();
 
