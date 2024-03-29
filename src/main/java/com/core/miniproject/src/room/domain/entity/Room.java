@@ -1,6 +1,7 @@
 package com.core.miniproject.src.room.domain.entity;
 
 import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
+import com.core.miniproject.src.image.domain.entity.RoomImage;
 import com.core.miniproject.src.reservation.model.entity.Reservation;
 import jakarta.persistence.*;
 import lombok.*;
@@ -39,16 +40,15 @@ public class Room {
     @Column(name="maxed_member")
     private int maxedMember;
 
-    //이미지 링크 추가
-    @Column(name="room_images")
-    private String roomImage;
-
     @Column(name = "price")
     private Integer price;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE)
     @Column(name = "reservation_id")
     private List<Reservation> reservations;
+
+    @OneToOne(mappedBy = "room", cascade = CascadeType.REMOVE)
+    private RoomImage roomImage;
 
 
 }

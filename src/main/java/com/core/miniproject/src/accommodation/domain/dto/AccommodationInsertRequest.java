@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @ToString
 @NoArgsConstructor
@@ -15,10 +17,10 @@ public class AccommodationInsertRequest {
 
     private String accommodationName;
     private AccommodationType accommodationType;
-    private String accommodationImage;
     private String introduction;
     private String address;
     private LocationType locationName;
     private double discountRate;
+    private List<String> accommodationImage;
 
 }

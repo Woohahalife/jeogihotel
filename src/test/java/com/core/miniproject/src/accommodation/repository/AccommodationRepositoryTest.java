@@ -59,7 +59,6 @@ class AccommodationRepositoryTest {
         // Accommodation 생성
         Accommodation accommodation = Accommodation.builder()
                 .introduction("테스트 호텔입니다.")
-                .accommodationImage("이미지 링크입니다.")
                 .accommodationType(AccommodationType.HOTEL)
                 .accommodationName("테스트 호텔")
                 .roomId(Arrays.asList(room1, room2)) // Room 리스트 설정
@@ -102,7 +101,6 @@ class AccommodationRepositoryTest {
                 .introduction("소개")
                 .accommodationName("accommodationName")
                 .accommodationType(AccommodationType.MOTEL)
-                .accommodationImage("image")
                 .rates(Collections.singletonList(Rate.builder().id(1L).build()))
                 .discount(Discount.builder().id(1L).discountRate(10.0).build())
                 .build();
@@ -166,7 +164,6 @@ class AccommodationRepositoryTest {
                 .introduction("소개")
                 .accommodationName("accommodationName")
                 .accommodationType(AccommodationType.MOTEL)
-                .accommodationImage("image")
                 .rates(Collections.singletonList(Rate.builder().id(1L).build()))
                 .discount(Discount.builder().id(1L).discountRate(10.0).build())
                 .build();
@@ -212,7 +209,6 @@ class AccommodationRepositoryTest {
                 .introduction("소개")
                 .accommodationName("accommodationName")
                 .accommodationType(AccommodationType.MOTEL)
-                .accommodationImage("image")
                 .rates(Collections.singletonList(Rate.builder().id(1L).build()))
                 .discount(Discount.builder().id(1L).discountRate(10.0).build())
                 .build();
@@ -259,7 +255,6 @@ class AccommodationRepositoryTest {
                 .introduction("소개")
                 .accommodationName("accommodationName")
                 .accommodationType(AccommodationType.MOTEL)
-                .accommodationImage("image")
                 .rates(Collections.singletonList(Rate.builder().id(1L).build()))
                 .discount(Discount.builder().id(1L).discountRate(10.0).build())
                 .build();
@@ -292,7 +287,6 @@ class AccommodationRepositoryTest {
 
         Accommodation accommodation = Accommodation.builder()
                 .introduction("테스트 호텔입니다.")
-                .accommodationImage("이미지 링크입니다.")
                 .accommodationType(AccommodationType.HOTEL)
                 .accommodationName("테스트 호텔")
                 .roomId(null)
@@ -355,7 +349,6 @@ class AccommodationRepositoryTest {
 
         Accommodation accommodation = Accommodation.builder()
                 .introduction("테스트 호텔입니다.")
-                .accommodationImage("이미지 링크입니다.")
                 .accommodationType(AccommodationType.HOTEL)
                 .accommodationName("테스트 호텔")
                 .roomId(null)
@@ -403,7 +396,6 @@ class AccommodationRepositoryTest {
 
         Accommodation accommodation = Accommodation.builder()
                 .introduction("테스트 호텔입니다.")
-                .accommodationImage("이미지 링크입니다.")
                 .accommodationType(AccommodationType.HOTEL)
                 .accommodationName("테스트 호텔")
                 .rates(Collections.singletonList(Rate.builder().build()))

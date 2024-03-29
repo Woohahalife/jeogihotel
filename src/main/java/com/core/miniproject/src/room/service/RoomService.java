@@ -4,6 +4,8 @@ import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import com.core.miniproject.src.accommodation.repository.AccommodationRepository;
 import com.core.miniproject.src.common.exception.BaseException;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
+import com.core.miniproject.src.image.domain.entity.RoomImage;
+import com.core.miniproject.src.image.repository.RoomImageRepository;
 import com.core.miniproject.src.room.domain.dto.RoomInsertRequest;
 import com.core.miniproject.src.room.domain.dto.RoomInsertResponse;
 import com.core.miniproject.src.room.domain.dto.RoomResponse;
@@ -26,6 +28,7 @@ public class RoomService {
 
     private final AccommodationRepository accommodationRepository;
     private final RoomRepository roomRepository;
+    private final RoomImageRepository imageRepository;
 
     @Transactional
     public RoomInsertResponse createRoom(
@@ -36,6 +39,8 @@ public class RoomService {
                 .orElseThrow(() -> new BaseException(ACCOMMODATION_DOES_NOT_EXIST));
 
         Room room = getRoomForRequest(request, accommodation);
+
+        room.getRoomImage().assignRoom(room);
 
         return RoomInsertResponse.toClient(roomRepository.save(room));
     }
@@ -58,13 +63,19 @@ public class RoomService {
         requiredInfoValidate(request);
         roomPricePolicyValidate(request); // 가격 설정 정책을 지키지 못했다는 것을 따로 표시하기 위해 검증문 분리 설정
 
+        RoomImage image = RoomImage.builder()
+                .imagePath(request.getRoomImage())
+                .build();
+
+        RoomImage roomImage = imageRepository.save(image);
+
         return Room.builder()
                 .roomName(request.getRoomName())
                 .roomInfo(request.getRoomInfo())
                 .roomCount(request.getRoomCount())
                 .fixedMember(request.getFixedNumber())
                 .maxedMember(request.getMaxedNumber())
-                .roomImage(request.getRoomImage())
+                .roomImage(roomImage)
                 .price(request.getPrice())
                 .accommodationId(accommodation)
                 .build();

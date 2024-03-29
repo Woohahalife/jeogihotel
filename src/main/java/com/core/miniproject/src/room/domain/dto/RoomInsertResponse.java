@@ -27,7 +27,7 @@ public class RoomInsertResponse {
                 .roomCount(room.getRoomCount())
                 .fixedNumber(room.getFixedMember())
                 .maxedNumber(room.getMaxedMember())
-                .roomImage(room.getRoomImage())
+                .roomImage(room.getRoomImage().getImagePath())
                 .price(room.getPrice())
                 .build();
     }

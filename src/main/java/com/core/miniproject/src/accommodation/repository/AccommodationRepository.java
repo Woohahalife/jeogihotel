@@ -21,14 +21,17 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
     List<Accommodation> findAll();
 
     @Query("""
-            SELECT a FROM Accommodation a LEFT JOIN FETCH a.rates
+            SELECT a
+            FROM Accommodation a
+            LEFT JOIN a.rates
+            LEFT JOIN a.images
             """)
     List<Accommodation> getAllAccommodation();
 
     @Query("""
             select a
             from Accommodation a
-            LEFT JOIN FETCH a.rates
+            LEFT JOIN a.rates
             where a.id = ?1
             """)
     Optional<Accommodation> findByAccommodationId(Long id);
@@ -60,7 +63,8 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
 
     @Query(""" 
        select a
-       from Accommodation a join Room r on a.id=r.accommodationId.id
+       from Accommodation a 
+       join Room r on a.id=r.accommodationId.id
        LEFT JOIN FETCH a.rates
        where a.location.locationName=?1
        and r.fixedMember=?2
