@@ -37,7 +37,6 @@ public class AccommodationPublicController {
     }
 
 
-
     @GetMapping("/v1/accommodation/location/{location_type}")
     public BaseResponse<List<AccommodationResponse>> findByLocation(
             @PathVariable("location_type") LocationType locationType
@@ -74,6 +73,15 @@ public class AccommodationPublicController {
         List<AccommodationResponse> responses = accommodationService.findByLocationAndPersonal(locationType, fixedMember);
 
         return BaseResponse.response(responses);
+    }
+
+    @GetMapping("/v1/accommodation/{accommodation_id}/detail")
+    public BaseResponse<AccommodationResponse> getAccommodationDetail(
+            @PathVariable("accommodation_id") Long accommodationId
+    ) {
+        AccommodationResponse response = accommodationService.getAccommodationDetail(accommodationId);
+
+        return BaseResponse.response(response);
     }
 
 }

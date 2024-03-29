@@ -8,6 +8,8 @@ import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
 import com.core.miniproject.src.accommodation.domain.entity.Discount;
 import com.core.miniproject.src.accommodation.repository.AccommodationRepository;
 import com.core.miniproject.src.accommodation.repository.DiscountRepository;
+import com.core.miniproject.src.common.exception.BaseException;
+import com.core.miniproject.src.common.response.BaseResponseStatus;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
 import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.location.domain.entity.LocationType;
@@ -116,6 +118,14 @@ public class AccommodationService {
         return accommodations.stream()
                 .map(AccommodationResponse::toClient)
                 .collect(Collectors.toList());
+    }
+
+    public AccommodationResponse getAccommodationDetail(Long accommodationId) {
+
+        Accommodation accommodation = accommodationRepository.findById(accommodationId)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.ACCOMMODATION_DOES_NOT_EXIST));
+
+        return AccommodationResponse.toClient(accommodation);
     }
 }
 
