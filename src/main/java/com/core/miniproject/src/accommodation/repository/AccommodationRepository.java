@@ -21,7 +21,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
     List<Accommodation> findAll();
 
     @Query("""
-            SELECT a FROM Accommodation a LEFT JOIN FETCH a.rates
+            SELECT a FROM Accommodation a LEFT JOIN FETCH a.rates where a.isDeleted=false
             """)
     List<Accommodation> getAllAccommodation();
 
@@ -29,7 +29,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             select a
             from Accommodation a
             LEFT JOIN FETCH a.rates
-            where a.id = ?1
+            where a.id = ?1 and a.isDeleted=false
             """)
     Optional<Accommodation> findByAccommodationId(Long id);
 
@@ -37,7 +37,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             select a
             from Accommodation a
             LEFT JOIN FETCH a.rates
-            where a.accommodationType = ?1
+            where a.accommodationType = ?1 and a.isDeleted=false
             """)
     List<Accommodation> findByAccommodationType(AccommodationType accommodationType);
 
@@ -45,7 +45,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             select a
             from Accommodation a
             LEFT JOIN FETCH a.rates
-            where a.location.locationName = ?1
+            where a.location.locationName = ?1 and a.isDeleted=false
             """)
     List<Accommodation> findByLocationType(LocationType locationType);
 
@@ -54,7 +54,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             from Accommodation a
             LEFT JOIN a.rates
             where a.accommodationType = ?1
-            and a.location.locationName = ?2
+            and a.location.locationName = ?2 and a.isDeleted=false
             """)
     List<Accommodation> findByAccommodationTypeAndLocationType(AccommodationType aType, LocationType lType);
 
@@ -63,7 +63,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
        from Accommodation a join Room r on a.id=r.accommodationId.id
        LEFT JOIN FETCH a.rates
        where a.location.locationName=?1
-       and r.fixedMember=?2
+       and r.fixedMember=?2 and a.isDeleted=false
        """)
     List<Accommodation> findByLocationTypeAndFixedNumber(LocationType type, int fixedMember);
 
