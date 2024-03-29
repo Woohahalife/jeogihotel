@@ -23,5 +23,6 @@ public class Discount {
     private List<Accommodation> accommodation = new ArrayList<>();
 
     @Column(name = "discount_rate", unique = true)
+    @Builder.Default
     private double discountRate = 0.0;
 }
