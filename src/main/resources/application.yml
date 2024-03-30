@@ -61,7 +61,7 @@ spring:
 ---
 logging:
   file:
-    name: myapp.log
+    name: /var/log/myapp.log
   logback:
     rollingpolicy:
       file-name-pattern: myapp.%d{yyyy-MM-dd}-%i.log
