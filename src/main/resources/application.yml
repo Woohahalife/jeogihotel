@@ -1,20 +1,17 @@
-logging:
-  file:
-    name: myapp.log
-  logback:
-    rollingpolicy:
-      file-name-pattern: myapp.%d{yyyy-MM-dd}-%i.log
-      max-file-size: 10KB
-  pattern:
-    dateformat: Asia/Seoul
+#logging:
+#  file:
+#    name: myapp.log
+#  logback:
+#    rollingpolicy:
+#      file-name-pattern: myapp.%d{yyyy-MM-dd}-%i.log
+#      max-file-size: 10KB
+#  pattern:
+#    dateformat: Asia/Seoul
 
 spring:
   profiles:
     default: dev
     active: dev
-
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
@@ -54,21 +51,30 @@ spring:
   config:
     activate:
       on-profile: local
+  h2:
+    console:
+      enabled: true
   datasource:
-    url: jdbc:mysql://localhost:3307/minidb?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
-    username: root
-    password: 1234
-
-  jpa:
-    hibernate:
-      ddl-auto: create
+    hikari:
+      jdbc-url: jdbc:h2:mem:testdb
 
 ---
+logging:
+  file:
+    name: myapp.log
+  logback:
+    rollingpolicy:
+      file-name-pattern: myapp.%d{yyyy-MM-dd}-%i.log
+      max-file-size: 10KB
+  pattern:
+    dateformat: Asia/Seoul
+
 spring:
   config:
     activate:
       on-profile: dev
   datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://15.164.19.60:3306/minidb?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
     username: user
     password: 1234
@@ -76,5 +82,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 
