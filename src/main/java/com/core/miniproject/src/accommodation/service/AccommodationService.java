@@ -138,6 +138,19 @@ public class AccommodationService {
                 .collect(Collectors.toList());
     }
 
+
+    @Transactional
+    public BaseResponseStatus deleteAccommodation(Long id, MemberInfo memberInfo){
+        Accommodation accommodation = accommodationRepository.findByAccommodationId(id).orElseThrow(
+                () -> new BaseException(BaseResponseStatus.ACCOMMODATION_DOES_NOT_EXIST));
+        try {
+            accommodationRepository.deleteById(accommodation.getId());
+            return BaseResponseStatus.DELETE_SUCCESS;
+        } catch (Exception e) {
+            throw new BaseException(BaseResponseStatus.DELETE_FAIL);
+        }
+    }
+
     public AccommodationResponse getAccommodationDetail(Long accommodationId) {
 
         Accommodation accommodation = accommodationRepository.findByAccommodationId(accommodationId)

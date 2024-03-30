@@ -5,7 +5,7 @@ import com.core.miniproject.src.image.domain.entity.RoomImage;
 import com.core.miniproject.src.reservation.model.entity.Reservation;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.SQLDelete;
 
 import java.util.List;
 
@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
+@SQLDelete(sql = "update room set is_deleted=true where room_id=?")
 public class Room {
 
     @Id
@@ -47,8 +48,13 @@ public class Room {
     @Column(name = "reservation_id")
     private List<Reservation> reservations;
 
+    @Builder.Default
+    @Column(name = "is_deleted")
+    private boolean isDeleted=false;
+    
     @OneToOne(mappedBy = "room", cascade = CascadeType.REMOVE)
     private RoomImage roomImage;
+
 
 
 }

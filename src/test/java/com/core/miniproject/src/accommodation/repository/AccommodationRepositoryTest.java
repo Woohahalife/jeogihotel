@@ -10,16 +10,16 @@ import com.core.miniproject.src.rate.domain.entity.Rate;
 import com.core.miniproject.src.rate.repository.RateRepository;
 import com.core.miniproject.src.room.domain.entity.Room;
 import com.core.miniproject.src.room.repository.RoomRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 //테스트 코드 커밋
 @DataJpaTest
@@ -411,6 +411,65 @@ class AccommodationRepositoryTest {
 
         //then
         Assertions.assertThat(accommodation1.getMinPrice()).isEqualTo(room2.getPrice());
+    }
+    
+    @Test
+    @Transactional
+    void 삭제_성공_조회_실패(){
+        //given
+        Location location = Location.builder()
+                .locationName(LocationType.SEOUL)
+                .build();
+
+        Location newLocation = locationRepository.save(location);
+
+        Discount discount = Discount.builder()
+                .discountRate(10)
+                .build();
+
+        Discount discount1 = discountRepository.save(discount);
+
+        Room room1 = Room.builder()
+                .roomName("더블 디럭스")
+                .roomInfo("테스트 호텔의 객실")
+                .roomCount(40)
+                .fixedMember(2)
+                .maxedMember(4)
+                .price(200000)
+                .build();
+
+        Room room2 = Room.builder()
+                .roomName("더블 디럭스")
+                .roomInfo("테스트 호텔의 객실")
+                .roomCount(40)
+                .fixedMember(2)
+                .maxedMember(4)
+                .price(100000)
+                .build();
+
+
+
+        Accommodation accommodation = Accommodation.builder()
+                .introduction("테스트 호텔입니다.")
+                .accommodationImage("이미지 링크입니다.")
+                .accommodationType(AccommodationType.HOTEL)
+                .accommodationName("테스트 호텔")
+                .rates(Collections.singletonList(Rate.builder().build()))
+                .location(newLocation)
+                .discount(discount1)
+                .roomId(Arrays.asList(room1, room2))
+                .build();
+        
+        accommodationRepository.save(accommodation);
+
+        // when
+        accommodationRepository.deleteById(accommodation.getId());
+
+        // 변경 사항 반영 후에 엔티티 다시 조회
+        Accommodation accommodation1 = accommodationRepository.findByAccommodationId(accommodation.getId()).orElse(null);
+
+        // then is_deleted가 true인 데이터는 조회될 수 없다.
+        Assertions.assertThat(accommodation1).isNull();
     }
 
 }

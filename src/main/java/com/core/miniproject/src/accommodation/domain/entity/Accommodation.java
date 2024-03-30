@@ -6,6 +6,7 @@ import com.core.miniproject.src.rate.domain.entity.Rate;
 import com.core.miniproject.src.room.domain.entity.Room;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
+@SQLDelete(sql="update accommodation set is_deleted=true where accommodation_id=?")
 public class Accommodation {
 
     @Id
@@ -25,7 +27,7 @@ public class Accommodation {
     private Long id;
 
     //location_id 참조 관계 설정
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "location_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Location location;
 
@@ -61,6 +63,7 @@ public class Accommodation {
     private String address;
 
     @Column(name="is_deleted")
+    @Builder.Default
     private boolean isDeleted=false;
 
     @Builder.Default

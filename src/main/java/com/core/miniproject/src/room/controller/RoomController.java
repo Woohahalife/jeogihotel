@@ -1,6 +1,7 @@
 package com.core.miniproject.src.room.controller;
 
 import com.core.miniproject.src.common.response.BaseResponse;
+import com.core.miniproject.src.common.response.BaseResponseStatus;
 import com.core.miniproject.src.common.security.JwtAuthentication;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
 import com.core.miniproject.src.room.domain.dto.RoomInsertRequest;
@@ -35,5 +36,15 @@ public class RoomController {
         RoomInsertResponse roomResponse = roomService.createRoom(accommodationId, request, memberInfo);
 
         return response(roomResponse);
+    }
+
+    @DeleteMapping("/v1/delete/accommodation/{accommodation_id}/room/{room_id}")
+    public BaseResponse<BaseResponseStatus> deleteRoom(
+            @PathVariable("accommodation_id") Long accommodationId,
+            @PathVariable("room_id") Long roomId,
+            @JwtAuthentication MemberInfo memberInfo
+    ){
+        BaseResponseStatus responseStatus = roomService.deleteRoom(accommodationId,roomId,memberInfo);
+        return BaseResponse.response(responseStatus);
     }
 }

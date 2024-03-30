@@ -13,6 +13,7 @@ public enum BaseResponseStatus {
      * 200(OK)
      */
     SUCCESS(true, OK.value(), "요청에 성공했습니다."),
+    DELETE_SUCCESS(false, BAD_REQUEST.value(),"삭제에 성공했습니다."),
 
     /**
      * 400
@@ -39,6 +40,7 @@ public enum BaseResponseStatus {
     RATE_OUT_OF_BOUND_OVER(false, BAD_REQUEST.value(), "평가는 5점을 넘을 수 없습니다."),
     RATE_OUT_OF_BOUND_UNDER(false, BAD_REQUEST.value(), "평가는 0점을 넘어야 합니다."),
     FAILURE_PRICING_POLICY(false, BAD_REQUEST.value(), "객실의 최소 가격은 30000원 이상이어야 합니다."),
+    DELETE_FAIL(false, BAD_REQUEST.value(),"삭제에 실패했습니다."),
 
     TYPE_MISMATCH(false, BAD_REQUEST.value(), "데이터 타입이 맞지 않습니다."),
     /**

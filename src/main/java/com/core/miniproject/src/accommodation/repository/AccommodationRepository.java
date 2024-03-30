@@ -4,7 +4,6 @@ import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
 import com.core.miniproject.src.location.domain.entity.LocationType;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -27,6 +26,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             LEFT JOIN FETCH a.roomId
             LEFT JOIN FETCH a.rates
             LEFT JOIN FETCH a.images
+           where a.isDeleted=false
             """)
     List<Accommodation> getAllAccommodation();
 
@@ -36,7 +36,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             LEFT JOIN FETCH a.roomId
             LEFT JOIN FETCH a.rates
             LEFT JOIN FETCH a.images
-            where a.id = ?1
+            where a.id = ?1 and a.isDeleted=false
             """)
     Optional<Accommodation> findByAccommodationId(Long id);
 
@@ -46,7 +46,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             LEFT JOIN FETCH a.roomId
             LEFT JOIN FETCH a.rates
             LEFT JOIN FETCH a.images
-            where a.accommodationType = ?1
+            where a.accommodationType = ?1 and a.isDeleted=false
             """)
     List<Accommodation> findByAccommodationType(AccommodationType accommodationType);
 
@@ -56,7 +56,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             LEFT JOIN FETCH a.roomId
             LEFT JOIN FETCH a.rates
             LEFT JOIN FETCH a.images
-            where a.location.locationName = ?1
+            where a.location.locationName = ?1 and a.isDeleted=false
             """)
     List<Accommodation> findByLocationType(LocationType locationType);
 
@@ -67,7 +67,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             LEFT JOIN FETCH a.rates
             LEFT JOIN FETCH a.images
             where a.accommodationType = ?1
-            and a.location.locationName = ?2
+            and a.location.locationName = ?2 and a.isDeleted=false
             """)
     List<Accommodation> findByAccommodationTypeAndLocationType(AccommodationType aType, LocationType lType);
 
@@ -79,7 +79,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
        LEFT JOIN FETCH a.roomId
        LEFT JOIN FETCH a.images
        where a.location.locationName=?1
-       and r.fixedMember=?2
+       and r.fixedMember=?2 and a.isDeleted=false
        """)
     List<Accommodation> findByLocationTypeAndFixedNumber(LocationType type, int fixedMember);
 
