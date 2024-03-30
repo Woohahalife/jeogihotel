@@ -1,39 +1,73 @@
-## swagger api 설정
-springdoc:
-  api-docs:
-    version: openapi_3_0 # Open API 스펙 지정
-    path: /public-api/api-docs # api 문서 경로
-  default-consumes-media-type: application/json # 요청 유형 json으로 설정
-  default-produces-media-type: application/json # 요청 유형 json으로 설정
-  swagger-ui: # ui 설정
-    operations-sorter: alpha # 알파벳순 작업 정렬
-    tags-sorter: alpha # 알파벳순 태그 정렬
-    path: /public-api/swagger-ui # ui uri 지정 : localhost:8080/public-api/swagger-ui
-    disable-swagger-default-url: true # 기본 uri 비활성화
-    display-request-duration: true # 요청 실행시간 ui에 표시
-  paths-to-match: # ui에 모든 api 경로 포함
-    - /**
+server:
+  port: 8080
 
-# H2-console 설정
 spring:
-  h2:
-    console:
-      enabled: true
+  profiles:
+    default: dev
+    active: local
+
   datasource:
-    hikari:
-      jdbc-url: jdbc:h2:mem:testdb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
-    # sql 쿼리 콘솔 출력 허용
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show_sql: true
     properties:
       hibernate:
-        # SQL 쿼리에 주석을 추가하여 해당 쿼리가 어떤 Hibernate 쿼리에 해당하는지 식별
-        use_sql_comments: true
-        # 쿼리 포멧팅
+        use_sql_comments: false
         format_sql: true
     open-in-view: false
+
+## swagger api 설정
+springdoc:
+  api-docs:
+    version: openapi_3_0
+    path: /public-api/api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+    path: /public-api/swagger-ui
+    disable-swagger-default-url: true
+    display-request-duration: true
+  paths-to-match:
+    - /**
 
 jwt:
   access-token:
     secret-key: bab2ee005bf1daad5c736636d8b40184520f49df5d1b3303d923137af0b1dc95
     access-expired: 600000
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:mysql://localhost:3307/minidb?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:mysql://15.164.19.60:3306/minidb?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    username: user
+    password: 1234
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+

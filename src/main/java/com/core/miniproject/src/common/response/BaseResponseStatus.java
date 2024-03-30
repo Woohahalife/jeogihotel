@@ -43,6 +43,7 @@ public enum BaseResponseStatus {
     DELETE_FAIL(false, BAD_REQUEST.value(),"삭제에 실패했습니다."),
 
     TYPE_MISMATCH(false, BAD_REQUEST.value(), "데이터 타입이 맞지 않습니다."),
+    JSON_PARSE_ERROR(false, BAD_REQUEST.value(), "유효한 JSON 데이터가 아닙니다. 전달하는 데이터 타입을 확인해주세요."),
     /**
      * 500
      */
