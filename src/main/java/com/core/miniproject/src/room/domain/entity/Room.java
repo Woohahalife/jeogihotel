@@ -3,6 +3,7 @@ package com.core.miniproject.src.room.domain.entity;
 import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import com.core.miniproject.src.image.domain.entity.RoomImage;
 import com.core.miniproject.src.reservation.model.entity.Reservation;
+import com.core.miniproject.src.room.domain.dto.RoomRequest;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -55,6 +56,13 @@ public class Room {
     @OneToOne(mappedBy = "room", cascade = CascadeType.REMOVE)
     private RoomImage roomImage;
 
-
+    public void update(RoomRequest request){
+        this.roomName = request.getRoomName();
+        this.roomInfo = request.getRoomInfo();
+        this.roomCount = request.getRoomCount();
+        this.fixedMember = request.getFixedMember();
+        this.maxedMember = request.getMaxedMember();
+        this.price = request.getPrice();
+    }
 
 }
