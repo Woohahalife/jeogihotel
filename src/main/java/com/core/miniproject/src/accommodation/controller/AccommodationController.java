@@ -24,10 +24,12 @@ public class AccommodationController {
     @PostMapping("/v1/accommodation/admin")
     public BaseResponse<AccommodationInsertResponse> createAccommodation(
             @RequestBody AccommodationInsertRequest request,
+
             @JwtAuthentication MemberInfo memberInfo) {
 
+
         AccommodationInsertResponse accommodationInsertResponse =
-                accommodationService.createAccommodation(request, memberInfo);
+                accommodationService.createAccommodation(request, request.getAccommodationImage(), memberInfo);
 
         return BaseResponse.response(accommodationInsertResponse);
     }

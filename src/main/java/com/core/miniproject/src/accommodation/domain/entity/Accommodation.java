@@ -1,5 +1,6 @@
 package com.core.miniproject.src.accommodation.domain.entity;
 
+import com.core.miniproject.src.image.domain.entity.AccommodationImage;
 import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.rate.domain.entity.Rate;
 import com.core.miniproject.src.room.domain.entity.Room;
@@ -8,7 +9,9 @@ import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -29,9 +32,10 @@ public class Accommodation {
     private Location location;
 
     //room_id 참조 관계 설정
+    @Builder.Default
     @OneToMany(mappedBy = "accommodationId", cascade = CascadeType.REMOVE)
     @Column(name = "room_id")
-    private List<Room> roomId;
+    private Set<Room> roomId = new HashSet<>();;
 
     @Column(name="introduction")
     private String introduction;
@@ -43,12 +47,9 @@ public class Accommodation {
     @Enumerated(EnumType.STRING)
     private AccommodationType accommodationType;
 
-    @Column(name="accommodation_image")
-    private String accommodationImage;
-
     @Builder.Default
     @OneToMany(mappedBy = "accommodation", cascade = CascadeType.REMOVE)
-    private List<Rate> rates = new ArrayList<>();
+    private Set<Rate> rates = new HashSet<>();
 
 //    @Formula("select min(rp.price) from room_price rp join room r on rp.room_id = r.room_id where r.accommodation_id = accommodation_id")
     @Column(name = "price")
@@ -64,6 +65,10 @@ public class Accommodation {
     @Column(name="is_deleted")
     @Builder.Default
     private boolean isDeleted=false;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "accommodation")
+    private List<AccommodationImage> images = new ArrayList<>();
 
 //    public Double getRate() {
 //        return this.getRates() != null ? this.getRate() : 0.0; // 기본값으로 0.0을 반환하도록 수정

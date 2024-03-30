@@ -5,6 +5,7 @@ import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
 import com.core.miniproject.src.location.domain.entity.LocationType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,14 +21,21 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
     List<Accommodation> findAll();
 
     @Query("""
-            SELECT a FROM Accommodation a LEFT JOIN FETCH a.rates where a.isDeleted=false
+            SELECT a
+            FROM Accommodation a
+            LEFT JOIN FETCH a.roomId
+            LEFT JOIN FETCH a.rates
+            LEFT JOIN FETCH a.images
+           where a.isDeleted=false
             """)
     List<Accommodation> getAllAccommodation();
 
     @Query("""
             select a
             from Accommodation a
+            LEFT JOIN FETCH a.roomId
             LEFT JOIN FETCH a.rates
+            LEFT JOIN FETCH a.images
             where a.id = ?1 and a.isDeleted=false
             """)
     Optional<Accommodation> findByAccommodationId(Long id);
@@ -35,7 +43,9 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
     @Query("""
             select a
             from Accommodation a
+            LEFT JOIN FETCH a.roomId
             LEFT JOIN FETCH a.rates
+            LEFT JOIN FETCH a.images
             where a.accommodationType = ?1 and a.isDeleted=false
             """)
     List<Accommodation> findByAccommodationType(AccommodationType accommodationType);
@@ -43,7 +53,9 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
     @Query("""
             select a
             from Accommodation a
+            LEFT JOIN FETCH a.roomId
             LEFT JOIN FETCH a.rates
+            LEFT JOIN FETCH a.images
             where a.location.locationName = ?1 and a.isDeleted=false
             """)
     List<Accommodation> findByLocationType(LocationType locationType);
@@ -51,7 +63,9 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
     @Query("""
             select a
             from Accommodation a
-            LEFT JOIN a.rates
+            LEFT JOIN FETCH a.roomId
+            LEFT JOIN FETCH a.rates
+            LEFT JOIN FETCH a.images
             where a.accommodationType = ?1
             and a.location.locationName = ?2 and a.isDeleted=false
             """)
@@ -59,8 +73,11 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
 
     @Query(""" 
        select a
-       from Accommodation a join Room r on a.id=r.accommodationId.id
+       from Accommodation a
+       join Room r on a.id=r.accommodationId.id
        LEFT JOIN FETCH a.rates
+       LEFT JOIN FETCH a.roomId
+       LEFT JOIN FETCH a.images
        where a.location.locationName=?1
        and r.fixedMember=?2 and a.isDeleted=false
        """)

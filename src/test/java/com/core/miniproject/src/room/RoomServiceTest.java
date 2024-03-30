@@ -7,6 +7,7 @@ import com.core.miniproject.src.accommodation.repository.AccommodationRepository
 import com.core.miniproject.src.common.constant.Role;
 import com.core.miniproject.src.common.exception.BaseException;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
+import com.core.miniproject.src.image.repository.RoomImageRepository;
 import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.rate.domain.entity.Rate;
 import com.core.miniproject.src.room.domain.dto.RoomInsertRequest;
@@ -50,12 +51,14 @@ public class RoomServiceTest {
     @Mock
     private AccommodationRepository accommodationRepository;
 
+    @Mock
+    private RoomImageRepository imageRepository;
+
     MemberInfo memberInfo = new MemberInfo(1L, "string", Role.USER);
     Accommodation accommodation = Accommodation.builder()
             .accommodationName("숙소이름")
             .accommodationType(AccommodationType.HOTEL)
             .introduction("숙소설명")
-            .accommodationImage("숙소 이미지")
             .location(Location.builder().id(1L).build())
             .discount(Discount.builder().id(1L).build())
             .rates(Collections.singletonList(Rate.builder().id(1L).build()))
@@ -65,7 +68,7 @@ public class RoomServiceTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         JacksonTester.initFields(this, new ObjectMapper());
-        roomService = new RoomService(accommodationRepository, roomRepository);
+        roomService = new RoomService(accommodationRepository, roomRepository, imageRepository);
     }
 
     @Test
@@ -82,7 +85,6 @@ public class RoomServiceTest {
                 .roomCount(request.getRoomCount())
                 .fixedMember(request.getFixedNumber())
                 .maxedMember(request.getMaxedNumber())
-                .roomImage(request.getRoomImage())
                 .accommodationId(accommodation)
                 .build();
 
