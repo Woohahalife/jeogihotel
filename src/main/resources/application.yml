@@ -1,10 +1,17 @@
-server:
-  port: 8080
+logging:
+  file:
+    name: myapp.log
+  logback:
+    rollingpolicy:
+      file-name-pattern: myapp.%d{yyyy-MM-dd}-%i.log
+      max-file-size: 10KB
+  pattern:
+    dateformat: Asia/Seoul
 
 spring:
   profiles:
     default: dev
-    active: local
+    active: dev
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
