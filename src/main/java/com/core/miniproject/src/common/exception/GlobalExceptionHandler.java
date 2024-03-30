@@ -5,6 +5,7 @@ import com.core.miniproject.src.common.response.BaseResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -26,6 +27,15 @@ public class GlobalExceptionHandler<T> {
     public ResponseEntity<BaseResponse<T>> MisMatchExceptionHandler(TypeMismatchException e) {
         log.error("[MethodArgumentTypeMismatchException Occurs] error: {} getRequiredType: {} getPropertyName: {}",
                 e.getMessage(), e.getRequiredType(), e.getPropertyName());
+
+        return ResponseEntity.badRequest()
+                .body(BaseResponse.response(BaseResponseStatus.TYPE_MISMATCH));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<BaseResponse<T>> JSONParseExceptionHandler(HttpMessageNotReadableException e) {
+        log.error("[MethodArgumentTypeMismatchException Occurs] error: {} getHttpInputMessage: {}",
+                e.getMessage(), e.getHttpInputMessage());
 
         return ResponseEntity.badRequest()
                 .body(BaseResponse.response(BaseResponseStatus.TYPE_MISMATCH));
