@@ -12,17 +12,21 @@ import lombok.*;
 @Builder
 public class RoomResponse {
 
+    private Long id;
     private String roomName;
     private String roomInfo;
     private int fixedMember;
+    private Integer roomCount;
     private int maxedMember;
     private String roomImage;
     private int price;
 
     public static RoomResponse toClient(Room room){
         return RoomResponse.builder()
+                .id(room.getId())
                 .roomName(room.getRoomName())
                 .roomInfo(room.getRoomInfo())
+                .roomCount(room.getRoomCount())
                 .fixedMember(room.getFixedMember())
                 .maxedMember(room.getMaxedMember())
                 .price(room.getPrice())

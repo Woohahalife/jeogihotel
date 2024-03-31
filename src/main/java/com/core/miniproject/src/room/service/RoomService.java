@@ -9,6 +9,7 @@ import com.core.miniproject.src.image.domain.entity.RoomImage;
 import com.core.miniproject.src.image.repository.RoomImageRepository;
 import com.core.miniproject.src.room.domain.dto.RoomInsertRequest;
 import com.core.miniproject.src.room.domain.dto.RoomInsertResponse;
+import com.core.miniproject.src.room.domain.dto.RoomRequest;
 import com.core.miniproject.src.room.domain.dto.RoomResponse;
 import com.core.miniproject.src.room.domain.entity.Room;
 import com.core.miniproject.src.room.repository.RoomRepository;
@@ -70,6 +71,16 @@ public class RoomService {
         }catch (Exception e){
             throw new BaseException(BaseResponseStatus.DELETE_FAIL);
         }
+    }
+
+    @Transactional
+    public RoomResponse updateRoom(Long accommodationId, Long roomId, RoomRequest request){
+        Room room = roomRepository.findById(accommodationId, roomId).orElseThrow(
+                ()->new BaseException(ROOM_NOT_FOUND)
+        );
+        room.update(request);
+        Room savedRoom = roomRepository.save(room);
+        return RoomResponse.toClient(savedRoom);
     }
 
     private Room getRoomForRequest(RoomInsertRequest request, Accommodation accommodation) {

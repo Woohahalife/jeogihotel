@@ -25,10 +25,10 @@ public class AccommodationResponse {
     private AccommodationType accommodationType;
     private String introduction;
     private LocationType locationType; //위치 추가
-    private double rate;
-    private double discount;
+    private Double rate;
+    private Double discount;
     private String address;
-    private int price;
+    private Integer price;
     private List<ImageResponse> accommodationImage;
     private List<RoomResponse> room;
 

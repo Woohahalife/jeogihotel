@@ -6,6 +6,8 @@ import com.core.miniproject.src.common.security.JwtAuthentication;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
 import com.core.miniproject.src.room.domain.dto.RoomInsertRequest;
 import com.core.miniproject.src.room.domain.dto.RoomInsertResponse;
+import com.core.miniproject.src.room.domain.dto.RoomRequest;
+import com.core.miniproject.src.room.domain.dto.RoomResponse;
 import com.core.miniproject.src.room.service.RoomService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -46,5 +48,15 @@ public class RoomController {
     ){
         BaseResponseStatus responseStatus = roomService.deleteRoom(accommodationId,roomId,memberInfo);
         return BaseResponse.response(responseStatus);
+    }
+
+    @PostMapping("/v1/update/accommodation/{accommodation_id}/room/{room_id}")
+    public BaseResponse<RoomResponse> updateRoom(
+            @PathVariable("accommodation_id") Long accommodationId,
+            @PathVariable("room_id") Long roomId,
+            @RequestBody RoomRequest request
+    ){
+        RoomResponse roomResponse = roomService.updateRoom(accommodationId,roomId,request);
+        return response(roomResponse);
     }
 }
