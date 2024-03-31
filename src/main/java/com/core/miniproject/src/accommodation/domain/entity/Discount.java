@@ -24,5 +24,10 @@ public class Discount {
 
     @Column(name = "discount_rate", unique = true)
     @Builder.Default
-    private double discountRate = 0.0;
+    private Double discountRate = 0.0;
+
+//    public Discount(List<Accommodation> accommodations, Double discountRate){
+//        this.accommodation = accommodations;
+//        this.discountRate=discountRate;
+//    }
 }

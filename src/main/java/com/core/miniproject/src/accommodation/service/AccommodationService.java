@@ -2,6 +2,7 @@ package com.core.miniproject.src.accommodation.service;
 
 import com.core.miniproject.src.accommodation.domain.dto.AccommodationInsertRequest;
 import com.core.miniproject.src.accommodation.domain.dto.AccommodationInsertResponse;
+import com.core.miniproject.src.accommodation.domain.dto.AccommodationRequest;
 import com.core.miniproject.src.accommodation.domain.dto.AccommodationResponse;
 import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
@@ -149,6 +150,21 @@ public class AccommodationService {
         } catch (Exception e) {
             throw new BaseException(BaseResponseStatus.DELETE_FAIL);
         }
+    }
+
+    @Transactional
+    public AccommodationResponse updateAccommodation(Long id, AccommodationRequest request, MemberInfo memberInfo){
+        Accommodation accommodation = accommodationRepository.findByAccommodationId(id).orElseThrow(
+                () -> new BaseException(BaseResponseStatus.ACCOMMODATION_DOES_NOT_EXIST));
+        Location location = locationRepository.findLocationByType(request.getLocationType()).orElseThrow(
+                ()-> new BaseException(BaseResponseStatus.LOCATION_NOT_FOUND)
+        );
+        Discount discount = discountRepository.findDiscountByRate(request.getDiscount()).orElseThrow(
+                ()-> new BaseException(BaseResponseStatus.DISCOUNT_NOT_FOUND)
+        );
+        accommodation.update(request,location,discount);
+        Accommodation accommodation1 = accommodationRepository.save(accommodation);
+        return AccommodationResponse.toClient(accommodation1);
     }
 
     public AccommodationResponse getAccommodationDetail(Long accommodationId) {

@@ -24,4 +24,9 @@ public class Location {
     @Enumerated(EnumType.STRING)
     @Column(name = "location_name", unique = true)
     private LocationType locationName;
+
+//    public Location(List<Accommodation> accommodations , LocationType locationType){
+//        this.accommodation = accommodations;
+//        this.locationName = locationType;
+//    }
 }

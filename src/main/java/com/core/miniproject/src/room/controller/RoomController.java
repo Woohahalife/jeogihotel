@@ -54,9 +54,10 @@ public class RoomController {
     public BaseResponse<RoomResponse> updateRoom(
             @PathVariable("accommodation_id") Long accommodationId,
             @PathVariable("room_id") Long roomId,
-            @RequestBody RoomRequest request
+            @RequestBody RoomRequest request,
+            @JwtAuthentication MemberInfo memberInfo
     ){
-        RoomResponse roomResponse = roomService.updateRoom(accommodationId,roomId,request);
+        RoomResponse roomResponse = roomService.updateRoom(accommodationId,roomId,request, memberInfo);
         return response(roomResponse);
     }
 }

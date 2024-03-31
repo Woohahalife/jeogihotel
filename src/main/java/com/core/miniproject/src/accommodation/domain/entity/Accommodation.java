@@ -1,5 +1,6 @@
 package com.core.miniproject.src.accommodation.domain.entity;
 
+import com.core.miniproject.src.accommodation.domain.dto.AccommodationRequest;
 import com.core.miniproject.src.image.domain.entity.AccommodationImage;
 import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.rate.domain.entity.Rate;
@@ -100,5 +101,14 @@ public class Accommodation {
             }
         }
         return minPrice;
+    }
+
+    public void update(AccommodationRequest request, Location location, Discount discount){
+        this.accommodationType = request.getAccommodationType();
+        this.accommodationName = request.getAccommodationName();
+        this.introduction = request.getIntroduction();
+        this.address = request.getAddress();
+        this.location = location;
+        this.discount = discount;
     }
 }

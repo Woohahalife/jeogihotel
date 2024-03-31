@@ -2,6 +2,8 @@ package com.core.miniproject.src.accommodation.controller;
 
 import com.core.miniproject.src.accommodation.domain.dto.AccommodationInsertRequest;
 import com.core.miniproject.src.accommodation.domain.dto.AccommodationInsertResponse;
+import com.core.miniproject.src.accommodation.domain.dto.AccommodationRequest;
+import com.core.miniproject.src.accommodation.domain.dto.AccommodationResponse;
 import com.core.miniproject.src.accommodation.service.AccommodationService;
 import com.core.miniproject.src.common.response.BaseResponse;
 import com.core.miniproject.src.common.response.BaseResponseStatus;
@@ -34,12 +36,22 @@ public class AccommodationController {
         return BaseResponse.response(accommodationInsertResponse);
     }
 
-    @DeleteMapping("/v1/accommodation/{accommodation_id}")
+    @DeleteMapping("/v1/accommodation/delete/{accommodation_id}")
     public BaseResponse<BaseResponseStatus> deleteAccommodation(
             @PathVariable("accommodation_id") Long accommodationId,
             @JwtAuthentication MemberInfo memberInfo
     ){
         BaseResponseStatus responseStatus = accommodationService.deleteAccommodation(accommodationId, memberInfo);
         return BaseResponse.response(responseStatus);
+    }
+
+    @PostMapping("/v1/accommodation/update/{accommodation_id}")
+    public BaseResponse<AccommodationResponse> updateAccommodation(
+            @PathVariable("accommodation_id") Long accommodationId,
+            @JwtAuthentication MemberInfo memberInfo,
+            @RequestBody AccommodationRequest request
+    ){
+        AccommodationResponse accommodationResponse = accommodationService.updateAccommodation(accommodationId, request, memberInfo);
+        return BaseResponse.response(accommodationResponse);
     }
 }
