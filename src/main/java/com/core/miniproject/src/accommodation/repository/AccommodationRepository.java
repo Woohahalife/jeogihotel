@@ -83,4 +83,5 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
        """)
     List<Accommodation> findByLocationTypeAndFixedNumber(LocationType type, int fixedMember);
 
+
 }

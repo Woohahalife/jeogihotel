@@ -20,5 +20,8 @@ public class AccommodationRequest {
     private AccommodationType accommodationType;
     private String accommodationImage;
     private String introduction;
+    private LocationType locationType;
+    private Double discount;
+    private String address;
 
 }

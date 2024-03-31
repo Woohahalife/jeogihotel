@@ -74,7 +74,7 @@ public class RoomService {
     }
 
     @Transactional
-    public RoomResponse updateRoom(Long accommodationId, Long roomId, RoomRequest request){
+    public RoomResponse updateRoom(Long accommodationId, Long roomId, RoomRequest request, MemberInfo memberInfo){
         Room room = roomRepository.findById(accommodationId, roomId).orElseThrow(
                 ()->new BaseException(ROOM_NOT_FOUND)
         );
