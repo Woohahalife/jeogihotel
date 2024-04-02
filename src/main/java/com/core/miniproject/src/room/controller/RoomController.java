@@ -25,7 +25,7 @@ public class RoomController {
 
     private final RoomService roomService;
 
-    @PostMapping("/v1/{accommodationId}/room")
+    @PostMapping("/v1/accommodation/{accommodationId}/room")
     public BaseResponse<RoomInsertResponse> createRoom(
             @PathVariable("accommodationId") Long accommodationId,
             @RequestBody RoomInsertRequest request,
@@ -40,7 +40,7 @@ public class RoomController {
         return response(roomResponse);
     }
 
-    @DeleteMapping("/v1/delete/accommodation/{accommodation_id}/room/{room_id}")
+    @DeleteMapping("/v1/accommodation/{accommodation_id}/room/{room_id}/delete")
     public BaseResponse<BaseResponseStatus> deleteRoom(
             @PathVariable("accommodation_id") Long accommodationId,
             @PathVariable("room_id") Long roomId,
@@ -50,7 +50,7 @@ public class RoomController {
         return BaseResponse.response(responseStatus);
     }
 
-    @PostMapping("/v1/update/accommodation/{accommodation_id}/room/{room_id}")
+    @PostMapping("/v1/accommodation/{accommodation_id}/room/{room_id}/update")
     public BaseResponse<RoomResponse> updateRoom(
             @PathVariable("accommodation_id") Long accommodationId,
             @PathVariable("room_id") Long roomId,

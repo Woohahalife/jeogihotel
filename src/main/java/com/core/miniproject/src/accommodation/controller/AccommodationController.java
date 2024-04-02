@@ -36,7 +36,7 @@ public class AccommodationController {
         return BaseResponse.response(accommodationInsertResponse);
     }
 
-    @DeleteMapping("/v1/accommodation/delete/{accommodation_id}")
+    @DeleteMapping("/v1/accommodation/{accommodation_id}/delete")
     public BaseResponse<BaseResponseStatus> deleteAccommodation(
             @PathVariable("accommodation_id") Long accommodationId,
             @JwtAuthentication MemberInfo memberInfo
@@ -45,7 +45,7 @@ public class AccommodationController {
         return BaseResponse.response(responseStatus);
     }
 
-    @PostMapping("/v1/accommodation/update/{accommodation_id}")
+    @PostMapping("/v1/accommodation/{accommodation_id}/update")
     public BaseResponse<AccommodationResponse> updateAccommodation(
             @PathVariable("accommodation_id") Long accommodationId,
             @JwtAuthentication MemberInfo memberInfo,
