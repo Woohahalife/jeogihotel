@@ -118,7 +118,9 @@ public class AccommodationService {
 
     //위치별 숙소 조회(수정)
     @Transactional
-    public List<AccommodationResponse> findAccommodationByLocation(LocationType type, Pageable pageable) {
+    public List<AccommodationResponse> findAccommodationByLocation(String text, Pageable pageable) {
+
+        LocationType type = LocationType.getByText(text);
 
         List<Accommodation> accommodations = accommodationRepository.findByLocationType(type, pageable);
 
@@ -128,7 +130,10 @@ public class AccommodationService {
     }
 
     @Transactional
-    public List<AccommodationResponse> findByAccommodationAndLocation(AccommodationType aType, LocationType lType, Pageable pageable) {
+    public List<AccommodationResponse> findByAccommodationAndLocation(String aText, String lText, Pageable pageable) {
+
+        AccommodationType aType = AccommodationType.getByText(aText);
+        LocationType lType = LocationType.getByText(lText);
 
         List<Accommodation> accommodations = accommodationRepository.findByAccommodationTypeAndLocationType(aType, lType, pageable);
         return accommodations.stream()
@@ -137,7 +142,9 @@ public class AccommodationService {
     }
 
     @Transactional
-    public List<AccommodationResponse> findByLocationAndPersonal(LocationType type, int fixedMember, Pageable pageable){
+    public List<AccommodationResponse> findByLocationAndPersonal(String text , int fixedMember, Pageable pageable){
+
+        LocationType type = LocationType.getByText(text);
 
         List<Accommodation> accommodations = accommodationRepository.findByLocationTypeAndFixedNumber(type, fixedMember, pageable);
         return accommodations.stream()
