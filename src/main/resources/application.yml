@@ -23,6 +23,7 @@ spring:
       hibernate:
         use_sql_comments: false
         format_sql: true
+        default_batch_fetch_size: 1000
     open-in-view: false
 
 ## swagger api 설정

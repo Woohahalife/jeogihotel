@@ -80,10 +80,11 @@ public class RoomService {
                 ()->new BaseException(ROOM_NOT_FOUND)
         );
         RoomImage image = getImageForRequest(request, room);
-        RoomImage savedImage = imageRepository.save(image);
-        room.update(request, savedImage);
-        Room savedRoom = roomRepository.save(room);
-        return RoomResponse.toClient(savedRoom);
+
+        room.update(request, image);
+        room.getRoomImage().assignRoom(room);
+
+        return RoomResponse.toClient(room);
     }
 
     private Room getRoomForRequest(RoomInsertRequest request, Accommodation accommodation) {

@@ -20,6 +20,7 @@ import com.core.miniproject.src.location.domain.entity.LocationType;
 import com.core.miniproject.src.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -91,9 +92,12 @@ public class AccommodationService {
      * 2. toClient로 보내줄 데이터로 가공하여 add 후 return
      * */
     @Transactional // 수정 전체 조회
-    public List<AccommodationResponse> findAllAccommodation() {
+    public List<AccommodationResponse> findAllAccommodation(Pageable pageable) {
 
-        List<Accommodation> allAccommodation = accommodationRepository.getAllAccommodation();
+        List<Accommodation> allAccommodation = accommodationRepository.getAllAccommodation(pageable);
+//        int countAccommodation = accommodationRepository.getCountAccommodation();
+//
+//        System.out.println("countAccommodation = " + countAccommodation);
 
         return allAccommodation.stream()
                 .map(AccommodationResponse::toClient)
@@ -102,9 +106,9 @@ public class AccommodationService {
 
     //타입별 숙소 조회(수정)
     @Transactional
-    public List<AccommodationResponse> findAccommodationByType(AccommodationType type) {
+    public List<AccommodationResponse> findAccommodationByType(AccommodationType type, Pageable pageable) {
 
-        List<Accommodation> accommodations = accommodationRepository.findByAccommodationType(type);
+        List<Accommodation> accommodations = accommodationRepository.findByAccommodationType(type, pageable);
         return accommodations.stream()
                 .map(AccommodationResponse::toClient)
                 .collect(Collectors.toList());
@@ -112,9 +116,9 @@ public class AccommodationService {
 
     //위치별 숙소 조회(수정)
     @Transactional
-    public List<AccommodationResponse> findAccommodationByLocation(LocationType type) {
+    public List<AccommodationResponse> findAccommodationByLocation(LocationType type, Pageable pageable) {
 
-        List<Accommodation> accommodations = accommodationRepository.findByLocationType(type);
+        List<Accommodation> accommodations = accommodationRepository.findByLocationType(type, pageable);
 
         return accommodations.stream()
                 .map(AccommodationResponse::toClient)
@@ -122,18 +126,18 @@ public class AccommodationService {
     }
 
     @Transactional
-    public List<AccommodationResponse> findByAccommodationAndLocation(AccommodationType aType, LocationType lType) {
+    public List<AccommodationResponse> findByAccommodationAndLocation(AccommodationType aType, LocationType lType, Pageable pageable) {
 
-        List<Accommodation> accommodations = accommodationRepository.findByAccommodationTypeAndLocationType(aType, lType);
+        List<Accommodation> accommodations = accommodationRepository.findByAccommodationTypeAndLocationType(aType, lType, pageable);
         return accommodations.stream()
                 .map(AccommodationResponse::toClient)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public List<AccommodationResponse> findByLocationAndPersonal(LocationType type, int fixedMember){
+    public List<AccommodationResponse> findByLocationAndPersonal(LocationType type, int fixedMember, Pageable pageable){
 
-        List<Accommodation> accommodations = accommodationRepository.findByLocationTypeAndFixedNumber(type, fixedMember);
+        List<Accommodation> accommodations = accommodationRepository.findByLocationTypeAndFixedNumber(type, fixedMember, pageable);
         return accommodations.stream()
                 .map(AccommodationResponse::toClient)
                 .collect(Collectors.toList());

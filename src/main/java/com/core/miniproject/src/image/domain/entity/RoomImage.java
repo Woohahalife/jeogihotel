@@ -20,7 +20,7 @@ public class RoomImage {
     @Column(name = "r_image_path")
     private String imagePath;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "room_id")
     private Room room;
 

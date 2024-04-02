@@ -53,7 +53,7 @@ public class Room {
     @Column(name = "is_deleted")
     private boolean isDeleted=false;
     
-    @OneToOne(mappedBy = "room", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "room", cascade = CascadeType.ALL)
     private RoomImage roomImage;
 
     public void update(RoomRequest request, RoomImage image){
