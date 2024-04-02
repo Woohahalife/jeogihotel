@@ -27,11 +27,6 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash
 
-      - name: Start Redis
-        uses: supercharge/redis-github-action@1.1.0
-        with:
-          redis-version: 6
-
       - name: Build and Test with Gradle
         run: ./gradlew clean build -x test
         shell: bash
