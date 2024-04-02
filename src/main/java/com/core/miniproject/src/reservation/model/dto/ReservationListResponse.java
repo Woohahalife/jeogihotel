@@ -15,10 +15,12 @@ import java.time.LocalDate;
 public class ReservationListResponse {
 
     private Long memberId;
+    private String accommodationName;
     private String roomName;
     private LocalDate checkIn;
     private LocalDate checkOut;
     private int price;
+    private double discount;
     private int fixedNumber;
     private int maxedNumber;
     private IsVisited isVisited;
@@ -27,10 +29,12 @@ public class ReservationListResponse {
     public static ReservationListResponse toClient(Reservation reservation) {
         return ReservationListResponse.builder()
                 .memberId(reservation.getMember().getId())
+                .accommodationName(reservation.getRoom().getAccommodationId().getAccommodationName())
                 .roomName(reservation.getRoomName())
                 .checkIn(reservation.getCheckIn())
                 .checkOut(reservation.getCheckOut())
                 .price(reservation.getPrice())
+                .discount(reservation.getRoom().getAccommodationId().getDiscount().getDiscountRate())
                 .fixedNumber(reservation.getFixedNumber())
                 .maxedNumber(reservation.getMaxedNumber())
                 .isVisited(reservation.getIsVisited())

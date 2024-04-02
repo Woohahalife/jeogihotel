@@ -9,6 +9,7 @@ import com.core.miniproject.src.common.security.jwt.RefreshTokenService;
 import com.core.miniproject.src.member.domain.dto.MemberJoinRequest;
 import com.core.miniproject.src.member.domain.dto.MemberJoinResponse;
 import com.core.miniproject.src.member.domain.dto.MemberLoginRequest;
+import com.core.miniproject.src.member.domain.dto.MemberLoginResponse;
 import com.core.miniproject.src.member.domain.entity.Member;
 import com.core.miniproject.src.member.repository.MemberRepository;
 import lombok.Data;
@@ -60,7 +61,7 @@ public class MemberService {
                 .build();
     }
 
-    public AccessToken login(MemberLoginRequest request) {
+    public MemberLoginResponse login(MemberLoginRequest request) {
         /*
         로그인 기능
             - email 등록되어 있지 않다면 에러 반환
@@ -76,7 +77,7 @@ public class MemberService {
 
         refreshTokenService.saveRefreshToken(new RefreshToken(String.valueOf(member.getId()), refreshToken, token.getSecretKey()));
 
-        return token;
+        return MemberLoginResponse.toClient(token, member.getId());
     }
 
     private void validatePassword(MemberLoginRequest request, Member member) {

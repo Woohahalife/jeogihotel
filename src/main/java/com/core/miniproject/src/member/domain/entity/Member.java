@@ -23,5 +23,6 @@ public class Member extends BaseEntity {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
 }

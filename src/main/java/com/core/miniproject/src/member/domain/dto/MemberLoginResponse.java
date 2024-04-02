@@ -10,12 +10,14 @@ import lombok.*;
 @AllArgsConstructor
 public class MemberLoginResponse {
 
+    private Long memberId;
     private String secretKey;
     private String grantType;
     private Long expiredIn;
 
-    public static MemberLoginResponse toClient(AccessToken accessToken) {
+    public static MemberLoginResponse toClient(AccessToken accessToken, Long id) {
         return MemberLoginResponse.builder()
+                .memberId(id)
                 .secretKey(accessToken.getSecretKey())
                 .grantType(accessToken.getGrantType())
                 .expiredIn(accessToken.getExpiredIn())
