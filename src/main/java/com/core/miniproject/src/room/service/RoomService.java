@@ -80,10 +80,8 @@ public class RoomService {
                 ()->new BaseException(ROOM_NOT_FOUND)
         );
         RoomImage image = getImageForRequest(request, room);
-        RoomImage savedImage = imageRepository.save(image);
-        room.update(request, savedImage);
-        Room savedRoom = roomRepository.save(room);
-        return RoomResponse.toClient(savedRoom);
+        room.update(request, image);
+        return RoomResponse.toClient(roomRepository.save(room));
     }
 
     private Room getRoomForRequest(RoomInsertRequest request, Accommodation accommodation) {
@@ -136,9 +134,9 @@ public class RoomService {
 
     private RoomImage getImageForRequest (RoomRequest request, Room room){
         if(!request.getImagePath().equals(room.getRoomImage().getImagePath())){
-            return RoomImage.builder()
-                    .imagePath(request.getImagePath())
-                    .build();
+            RoomImage existedImage = room.getRoomImage();
+            existedImage.updateImagePath(request.getImagePath());
+            return existedImage;
         }else{
             return room.getRoomImage();
         }
