@@ -86,6 +86,9 @@ spring:
     username: user
     password: 1234
 
+server:
+  port: 8081
+
   jpa:
     hibernate:
       ddl-auto: update
