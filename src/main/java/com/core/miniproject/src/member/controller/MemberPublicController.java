@@ -38,7 +38,6 @@ public class MemberPublicController {
     @PostMapping("/v1/member/login")
     public BaseResponse<MemberLoginResponse> login(@RequestBody MemberLoginRequest request) {
         log.info("[Post Mapping - User is attempting to login with username: {}", request.getEmail());
-
         MemberLoginResponse login = memberService.login(request);
 
         return response(login);
