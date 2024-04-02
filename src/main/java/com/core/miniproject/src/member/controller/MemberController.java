@@ -3,6 +3,7 @@ package com.core.miniproject.src.member.controller;
 import com.core.miniproject.src.common.response.BaseResponse;
 import com.core.miniproject.src.common.security.jwt.AccessToken;
 import com.core.miniproject.src.member.domain.dto.MemberLoginResponse;
+import com.core.miniproject.src.member.domain.dto.NewTokenResponse;
 import com.core.miniproject.src.member.service.MemberService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +25,11 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/v1/member/token")
-    public BaseResponse<MemberLoginResponse> newToken(@RequestHeader(value = "Authorization") String authorization) {
+    public BaseResponse<NewTokenResponse> newToken(@RequestHeader(value = "Authorization") String authorization) {
         log.info("[Post Mapping - 토큰 재발급입니다.");
 
         AccessToken accessToken = memberService.newToken(authorization);
 
-        return response(MemberLoginResponse.toClient(accessToken));
+        return response(NewTokenResponse.toClient(accessToken));
     }
 }

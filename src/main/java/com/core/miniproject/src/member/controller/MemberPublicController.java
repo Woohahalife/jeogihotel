@@ -39,8 +39,8 @@ public class MemberPublicController {
     public BaseResponse<MemberLoginResponse> login(@RequestBody MemberLoginRequest request) {
         log.info("[Post Mapping - User is attempting to login with username: {}", request.getEmail());
 
-        AccessToken accessToken = memberService.login(request);
+        MemberLoginResponse login = memberService.login(request);
 
-        return response(MemberLoginResponse.toClient(accessToken));
+        return response(login);
     }
 }
