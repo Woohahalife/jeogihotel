@@ -26,4 +26,6 @@ public class AccommodationImage {
     public void assignAccommodation(Accommodation accommodation) {
         this.accommodation = accommodation;
     }
+
+    public void assignImagePath(String imagePath){this.imagePath=imagePath;}
 }

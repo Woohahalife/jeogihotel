@@ -24,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -178,7 +179,9 @@ public class AccommodationService {
         Discount discount = discountRepository.findDiscountByRate(request.getDiscount()).orElseThrow(
                 ()-> new BaseException(BaseResponseStatus.DISCOUNT_NOT_FOUND)
         );
-        accommodation.update(request,location,discount);
+        List<AccommodationImage> images = updateImage(id, request, accommodation);
+        List<AccommodationImage> newImages = imageRepository.saveAll(images);
+        accommodation.update(request,location,discount, newImages);
         Accommodation accommodation1 = accommodationRepository.save(accommodation);
         return AccommodationResponse.toClient(accommodation1);
     }
@@ -189,6 +192,39 @@ public class AccommodationService {
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.ACCOMMODATION_DOES_NOT_EXIST));
 
         return AccommodationResponse.toClient(accommodation);
+    }
+
+    private List<AccommodationImage> updateImage(Long id, AccommodationRequest request, Accommodation accommodation){
+        List<AccommodationImage> images = imageRepository.findAllById(id);
+        List<String> requestImages = request.getAccommodationImage();
+        if (images == null) {
+            images = new ArrayList<>();
+        }else{
+            for(int i = 0; i < request.getAccommodationImage().size(); i++){
+                String imagePath = requestImages.get(i);
+                AccommodationImage image = getByImagePath(images, imagePath);
+                if(image!=null){
+                    image.assignImagePath(imagePath);
+                }else{
+                    AccommodationImage newImage = AccommodationImage.builder()
+                            .accommodation(accommodation)
+                            .imagePath(imagePath)
+                            .build();
+                    images.add(newImage);
+                }
+
+            }
+        }
+        return images;
+    }
+
+    private AccommodationImage getByImagePath(List<AccommodationImage> images, String path){
+        for (AccommodationImage image : images) {
+            if(image.getImagePath().equalsIgnoreCase(path)){
+                return image;
+            }
+        }
+        return null;
     }
 }
 

@@ -103,11 +103,12 @@ public class Accommodation {
         return minPrice;
     }
 
-    public void update(AccommodationRequest request, Location location, Discount discount){
+    public void update(AccommodationRequest request, Location location, Discount discount ,List<AccommodationImage> images){
         this.accommodationType = AccommodationType.getByText(request.getAccommodationType());
         this.accommodationName = request.getAccommodationName();
         this.introduction = request.getIntroduction();
         this.address = request.getAddress();
+        this.images = images;
         this.location = location;
         this.discount = discount;
     }
