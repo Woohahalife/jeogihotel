@@ -44,19 +44,25 @@ springdoc:
 jwt:
   access-token:
     secret-key: bab2ee005bf1daad5c736636d8b40184520f49df5d1b3303d923137af0b1dc95
-    access-expired: 600000
+    access-expired: 1800000
 
 ---
 spring:
   config:
     activate:
       on-profile: local
+
   h2:
     console:
       enabled: true
   datasource:
     hikari:
       jdbc-url: jdbc:h2:mem:testdb
+
+#  data:
+#    redis:
+#      host: localhost
+#      port: 6379
 
 ---
 logging:

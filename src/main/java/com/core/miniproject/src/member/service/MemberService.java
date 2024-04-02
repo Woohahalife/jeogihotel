@@ -2,14 +2,16 @@ package com.core.miniproject.src.member.service;
 
 import com.core.miniproject.src.common.constant.Role;
 import com.core.miniproject.src.common.exception.BaseException;
-import com.core.miniproject.src.common.response.BaseResponseStatus;
 import com.core.miniproject.src.common.security.jwt.AccessToken;
 import com.core.miniproject.src.common.security.jwt.JwtTokenGenerator;
+import com.core.miniproject.src.common.security.jwt.RefreshToken;
+import com.core.miniproject.src.common.security.jwt.RefreshTokenService;
 import com.core.miniproject.src.member.domain.dto.MemberJoinRequest;
 import com.core.miniproject.src.member.domain.dto.MemberJoinResponse;
 import com.core.miniproject.src.member.domain.dto.MemberLoginRequest;
 import com.core.miniproject.src.member.domain.entity.Member;
 import com.core.miniproject.src.member.repository.MemberRepository;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import static com.core.miniproject.src.common.response.BaseResponseStatus.*;
 
+@Data
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final RefreshTokenService refreshTokenService;
     private final JwtTokenGenerator jwtTokenGenerator;
 
     public MemberJoinResponse join(MemberJoinRequest request) {
@@ -57,7 +61,6 @@ public class MemberService {
     }
 
     public AccessToken login(MemberLoginRequest request) {
-
         /*
         로그인 기능
             - email 등록되어 있지 않다면 에러 반환
@@ -68,12 +71,34 @@ public class MemberService {
 
         validatePassword(request, member);
 
-        return jwtTokenGenerator.generateAccessToken(member.getEmail(), member.getRole());
+        AccessToken token = jwtTokenGenerator.generateAccessToken(member.getEmail(), member.getRole());
+        String refreshToken = jwtTokenGenerator.createRefreshToken(member.getEmail());
+
+        refreshTokenService.saveRefreshToken(new RefreshToken(String.valueOf(member.getId()), refreshToken, token.getSecretKey()));
+
+        return token;
     }
 
     private void validatePassword(MemberLoginRequest request, Member member) {
         if(!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
             throw new BaseException(INVALID_PASSWORD);
         }
+    }
+
+    public AccessToken newToken(String authorization) {
+
+        String accessToken = authorization.split(" ")[1];
+
+//        RefreshToken refreshToken = refreshTokenService.getRefreshTokenByMemberId(String.valueOf(member.getId()));
+        RefreshToken refreshToken = refreshTokenService.getRefreshTokenByAccessToken(accessToken);
+
+        Member member = memberRepository.findById(Long.valueOf(refreshToken.getId())).orElseThrow();
+
+        AccessToken token = jwtTokenGenerator.generateAccessToken(member.getEmail(), member.getRole());
+
+        refreshTokenService.updateRefreshToken(new RefreshToken(
+                String.valueOf(refreshToken.getId()), refreshToken.getRefreshToken(), token.getSecretKey()), refreshToken.getAccessToken());
+
+        return token;
     }
 }

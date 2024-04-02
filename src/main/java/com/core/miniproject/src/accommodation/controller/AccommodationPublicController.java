@@ -22,7 +22,6 @@ public class AccommodationPublicController {
 
     private final AccommodationService accommodationService;
 
-
     @GetMapping("/v1/accommodation")
     public BaseResponse<List<AccommodationResponse>> findAll(
             @RequestParam(name = "checkIn", required = false) LocalDate checkIn,
@@ -35,7 +34,6 @@ public class AccommodationPublicController {
 
         return BaseResponse.response(responses);
     }
-
 
     @GetMapping("/v1/accommodation/location/{location_type}")
     public BaseResponse<List<AccommodationResponse>> findByLocation(
@@ -83,5 +81,4 @@ public class AccommodationPublicController {
 
         return BaseResponse.response(response);
     }
-
 }
