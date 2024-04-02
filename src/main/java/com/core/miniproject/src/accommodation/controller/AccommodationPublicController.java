@@ -8,6 +8,8 @@ import com.core.miniproject.src.location.domain.entity.LocationType;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -23,52 +25,62 @@ public class AccommodationPublicController {
     private final AccommodationService accommodationService;
 
     @GetMapping("/v1/accommodation")
-    public BaseResponse<List<AccommodationResponse>> findAll(
-            @RequestParam(name = "checkIn", required = false) LocalDate checkIn,
-            @RequestParam(name = "checkOut", required = false) LocalDate checkOut) {
+    public BaseResponse<List<AccommodationResponse>> findAll(@RequestParam(name = "page", defaultValue = "0") int page,
+                                                             @RequestParam(name = "size", defaultValue = "4") int size) {
 
-        System.out.println("Modified CheckIn: " + checkIn);
-        System.out.println("Modified CheckOut: " + checkOut);
 
-        List<AccommodationResponse> responses = accommodationService.findAllAccommodation();
+        Pageable pageable = PageRequest.of(page, size);
+        List<AccommodationResponse> responses = accommodationService.findAllAccommodation(pageable);
 
         return BaseResponse.response(responses);
     }
 
     @GetMapping("/v1/accommodation/location/{location_type}")
     public BaseResponse<List<AccommodationResponse>> findByLocation(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "4") int size,
             @PathVariable("location_type") LocationType locationType
     ) {
-        List<AccommodationResponse> responses = accommodationService.findAccommodationByLocation(locationType);
+        Pageable pageable = PageRequest.of(page, size);
+        List<AccommodationResponse> responses = accommodationService.findAccommodationByLocation(locationType, pageable);
 
         return BaseResponse.response(responses);
     }
 
     @GetMapping("/v1/accommodation/type/{accommodation_type}")
     public BaseResponse<List<AccommodationResponse>> findByType(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "4") int size,
             @PathVariable("accommodation_type") AccommodationType accommodationType
     ) {
-        List<AccommodationResponse> responses = accommodationService.findAccommodationByType(accommodationType);
+        Pageable pageable = PageRequest.of(page, size);
+        List<AccommodationResponse> responses = accommodationService.findAccommodationByType(accommodationType, pageable);
 
         return BaseResponse.response(responses);
     }
 
     @GetMapping("/v1/accommodation/type/{accommodation_type}/location/{location_type}")
     public BaseResponse<List<AccommodationResponse>> findByType(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "4") int size,
             @PathVariable("accommodation_type") AccommodationType accommodationType,
             @PathVariable("location_type") LocationType locationType
     ) {
-        List<AccommodationResponse> responses = accommodationService.findByAccommodationAndLocation(accommodationType, locationType);
+        Pageable pageable = PageRequest.of(page, size);
+        List<AccommodationResponse> responses = accommodationService.findByAccommodationAndLocation(accommodationType, locationType, pageable);
 
         return BaseResponse.response(responses);
     }
 
     @GetMapping("/v1/accommodation/location/{location_type}/personal/{personal}")
     public BaseResponse<List<AccommodationResponse>> findByLocationAndPersonal(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "4") int size,
             @PathVariable("location_type") LocationType locationType,
             @PathVariable("personal") int fixedMember
     ) {
-        List<AccommodationResponse> responses = accommodationService.findByLocationAndPersonal(locationType, fixedMember);
+        Pageable pageable = PageRequest.of(page, size);
+        List<AccommodationResponse> responses = accommodationService.findByLocationAndPersonal(locationType, fixedMember, pageable);
 
         return BaseResponse.response(responses);
     }
