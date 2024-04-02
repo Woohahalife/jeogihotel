@@ -19,7 +19,7 @@ public class AccommodationInsertRequest {
     private String accommodationType;
     private String introduction;
     private String address;
-    private LocationType locationName;
+    private String locationName;
     private double discountRate;
     private List<String> accommodationImage;
 

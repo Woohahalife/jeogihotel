@@ -9,5 +9,5 @@ import lombok.*;
 @AllArgsConstructor
 public class LocationRequest {
 
-    private LocationType locationName;
+    private String locationName;
 }

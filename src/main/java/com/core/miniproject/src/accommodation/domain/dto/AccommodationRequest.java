@@ -17,7 +17,7 @@ public class AccommodationRequest {
     private String accommodationName;
     private String accommodationType;
     private String introduction;
-    private LocationType locationType;
+    private String locationType;
     private Double discount;
     private String address;
     private List<String> accommodationImage;

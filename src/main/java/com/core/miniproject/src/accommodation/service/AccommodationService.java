@@ -62,8 +62,10 @@ public class AccommodationService {
         Discount discount = discountRepository.findDiscountByRate(request.getDiscountRate())
                 .orElseGet(() -> discountRepository.save(Discount.builder().discountRate(request.getDiscountRate()).build()));
 
-        Location location = locationRepository.findLocationByType(request.getLocationName())
-                .orElseGet(() -> locationRepository.save(Location.builder().locationName(request.getLocationName()).build()));
+        LocationType type = LocationType.getByText(request.getLocationName());
+
+        Location location = locationRepository.findLocationByType(type)
+                .orElseGet(() -> locationRepository.save(Location.builder().locationName(type).build()));
 
         List<AccommodationImage> images = imageRequest.stream()
                 .map(path -> AccommodationImage.builder()
@@ -160,7 +162,10 @@ public class AccommodationService {
     public AccommodationResponse updateAccommodation(Long id, AccommodationRequest request, MemberInfo memberInfo){
         Accommodation accommodation = accommodationRepository.findByAccommodationId(id).orElseThrow(
                 () -> new BaseException(BaseResponseStatus.ACCOMMODATION_DOES_NOT_EXIST));
-        Location location = locationRepository.findLocationByType(request.getLocationType()).orElseThrow(
+
+        LocationType type = LocationType.getByText(request.getLocationType());
+
+        Location location = locationRepository.findLocationByType(type).orElseThrow(
                 ()-> new BaseException(BaseResponseStatus.LOCATION_NOT_FOUND)
         );
         Discount discount = discountRepository.findDiscountByRate(request.getDiscount()).orElseThrow(
