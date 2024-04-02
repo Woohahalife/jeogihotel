@@ -2,21 +2,21 @@ name: Backend Server Deploy to AWS EC2
 
 on:
   push:
-    branches: [develop]
+    branches: [ develop ]
 
 env:
   PROJECT_NAME: KDT_BE7_Mini-Project
   BUCKET_NAME: accommodation-cicd-bucket
   CODE_DEPLOY_APP_NAME: accommodaionCICD
   DEPLOYMENT_GROUP_NAME: cicd_codeDeploy
-  
+
 jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        
+
       - name: Setup JDK 17
         uses: actions/setup-java@v3
         with:
@@ -26,7 +26,12 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
-      
+
+      - name: Start Redis
+        uses: supercharge/redis-github-action@1.1.0
+        with:
+          redis-version: 6
+
       - name: Build and Test with Gradle
         run: ./gradlew clean build -x test
         shell: bash
