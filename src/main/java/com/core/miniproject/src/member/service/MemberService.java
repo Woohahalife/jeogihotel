@@ -48,7 +48,6 @@ public class MemberService {
                 saveMember.getId(), saveMember.getEmail(), saveMember.getName());
 
         return MemberJoinResponse.toClient(saveMember);
-
     }
 
     private Member insertMemberDataFromRequest(MemberJoinRequest request) {
