@@ -28,6 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenGenerator jwtTokenGenerator;
     private final MemberPrincipalService memberPrincipalService;
+    private final RefreshTokenService refreshTokenService;
 
     @Override
     protected void doFilterInternal(
@@ -40,13 +41,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        try {
-            String accessToken = parseBearerToken(request); // 순수 토큰값 추출
-            UserDetails userDetails = parseUserEmail(accessToken); // Member정보를 UserDetails 객체로 변환
-            configureAuthenticatedUser(userDetails);
+        if(!request.getRequestURI().equals("/api/v1/member/token")) { // 토큰 재발급 요청이 아닌 경우
+            try {
+                String accessToken = parseBearerToken(request); // 순수 토큰값 추출
 
-        } catch (Exception e) {
-            throw new BaseException(BaseResponseStatus.INVALID_ERROR, "필터 통과 X");
+                jwtTokenGenerator.isExpired(accessToken); // Access Token 만료 여부 확인
+
+                UserDetails userDetails = parseUserEmail(accessToken); // Member정보를 UserDetails 객체로 변환
+                configureAuthenticatedUser(userDetails);
+
+            } catch (Exception e) {
+                request.setAttribute("exception", e);
+            }
+
+        } else {
+
+            try {
+                log.info("[JwtTokenFilter] Expired accessToken");
+
+                String accessToken = parseBearerToken(request);
+
+                RefreshToken refreshToken = refreshTokenService.getRefreshTokenByAccessToken(accessToken);
+
+                UserDetails userDetails = parseUserEmail(refreshToken.getRefreshToken());
+
+                System.out.println("userDetails = " + userDetails.getUsername());
+                configureAuthenticatedUser(userDetails);
+
+            } catch (Exception e) {
+                request.setAttribute("exception", e);
+            }
         }
 
         filterChain.doFilter(request, response);
@@ -83,6 +107,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private UserDetails parseUserEmail(String accessToken) {
 
         String userEmail = jwtTokenGenerator.getUserEmail(accessToken);
+
         return memberPrincipalService.loadUserByUsername(userEmail);
     }
 
