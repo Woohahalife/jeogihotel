@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.core.miniproject.src.common.response.BaseResponseStatus.*;
 
@@ -78,7 +79,9 @@ public class RoomService {
         Room room = roomRepository.findById(accommodationId, roomId).orElseThrow(
                 ()->new BaseException(ROOM_NOT_FOUND)
         );
-        room.update(request);
+        RoomImage image = getImageForRequest(request, room);
+        RoomImage savedImage = imageRepository.save(image);
+        room.update(request, savedImage);
         Room savedRoom = roomRepository.save(room);
         return RoomResponse.toClient(savedRoom);
     }
@@ -128,6 +131,16 @@ public class RoomService {
     private void roomPricePolicyValidate(RoomInsertRequest request) {
         if(request.getPrice() < 30000) {
             throw new BaseException(FAILURE_PRICING_POLICY);
+        }
+    }
+
+    private RoomImage getImageForRequest (RoomRequest request, Room room){
+        if(!request.getImagePath().equals(room.getRoomImage().getImagePath())){
+            return RoomImage.builder()
+                    .imagePath(request.getImagePath())
+                    .build();
+        }else{
+            return room.getRoomImage();
         }
     }
 

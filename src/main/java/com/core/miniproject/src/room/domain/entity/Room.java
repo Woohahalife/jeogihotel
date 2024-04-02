@@ -56,12 +56,13 @@ public class Room {
     @OneToOne(mappedBy = "room", cascade = CascadeType.REMOVE)
     private RoomImage roomImage;
 
-    public void update(RoomRequest request){
+    public void update(RoomRequest request, RoomImage image){
         this.roomName = request.getRoomName();
         this.roomInfo = request.getRoomInfo();
         this.roomCount = request.getRoomCount();
         this.fixedMember = request.getFixedMember();
         this.maxedMember = request.getMaxedMember();
+        this.roomImage = image;
         this.price = request.getPrice();
     }
 

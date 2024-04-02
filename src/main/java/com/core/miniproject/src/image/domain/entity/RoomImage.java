@@ -27,4 +27,14 @@ public class RoomImage {
     public void assignRoom(Room room) {
         this.room = room;
     }
+
+
+    public RoomImage(String imagePath, Room room){
+        this.imagePath = imagePath;
+        this.room = room;
+    }
+
+    public void updateImagePath(String imagePath) {
+        this.imagePath=imagePath;
+    }
 }

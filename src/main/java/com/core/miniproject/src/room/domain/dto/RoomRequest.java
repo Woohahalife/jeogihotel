@@ -17,5 +17,6 @@ public class RoomRequest {
     private Integer roomCount;
     private int fixedMember;
     private int maxedMember;
+    private String imagePath;
     private int price;
 }

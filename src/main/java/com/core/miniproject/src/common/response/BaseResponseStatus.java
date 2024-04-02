@@ -41,6 +41,7 @@ public enum BaseResponseStatus {
     RATE_OUT_OF_BOUND_UNDER(false, BAD_REQUEST.value(), "평가는 0점을 넘어야 합니다."),
     FAILURE_PRICING_POLICY(false, BAD_REQUEST.value(), "객실의 최소 가격은 30000원 이상이어야 합니다."),
     DELETE_FAIL(false, BAD_REQUEST.value(),"삭제에 실패했습니다."),
+    IMAGE_NOT_FOUND(false, BAD_REQUEST.value(), "이미지 경로가 존재하지 않습니다."),
 
     TYPE_MISMATCH(false, BAD_REQUEST.value(), "데이터 타입이 맞지 않습니다."),
     JSON_PARSE_ERROR(false, BAD_REQUEST.value(), "유효한 JSON 데이터가 아닙니다. 전달하는 데이터 타입을 확인해주세요."),

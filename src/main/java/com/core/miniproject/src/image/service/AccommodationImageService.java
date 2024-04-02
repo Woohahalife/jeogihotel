@@ -1,5 +1,7 @@
 package com.core.miniproject.src.image.service;
 
+import com.core.miniproject.src.common.security.principal.MemberInfo;
+import com.core.miniproject.src.image.domain.dto.ImageRequest;
 import com.core.miniproject.src.image.domain.dto.ImageResponse;
 import com.core.miniproject.src.image.repository.AccommodationImageRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +16,15 @@ public class AccommodationImageService implements ImageService {
 
     private final AccommodationImageRepository imageRepository;
 
-//    @Override
-//    public ImageInfo uploadImage(AccommodationImageInsertRequest request) {
-//    }
 
     @Override
     public ImageResponse allImages() {
         return null;
     }
+
+    @Override
+    public ImageResponse updateImages(ImageRequest request, MemberInfo memberInfo) {
+        return null;
+    }
+
 }
