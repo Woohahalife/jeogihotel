@@ -38,6 +38,7 @@ public class Reservation {
     private int maxedNumber;
 
     @Column(name = "is_visited")
+    @Enumerated(EnumType.STRING)
     private IsVisited isVisited;
 
     @ManyToOne(fetch = FetchType.LAZY)
