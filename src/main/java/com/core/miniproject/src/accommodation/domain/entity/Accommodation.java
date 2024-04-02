@@ -104,7 +104,7 @@ public class Accommodation {
     }
 
     public void update(AccommodationRequest request, Location location, Discount discount){
-        this.accommodationType = request.getAccommodationType();
+        this.accommodationType = AccommodationType.getByText(request.getAccommodationType());
         this.accommodationName = request.getAccommodationName();
         this.introduction = request.getIntroduction();
         this.address = request.getAddress();

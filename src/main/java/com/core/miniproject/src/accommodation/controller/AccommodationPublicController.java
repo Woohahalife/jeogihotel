@@ -51,7 +51,7 @@ public class AccommodationPublicController {
     public BaseResponse<List<AccommodationResponse>> findByType(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "4") int size,
-            @PathVariable("accommodation_type") AccommodationType accommodationType
+            @PathVariable("accommodation_type") String accommodationType
     ) {
         Pageable pageable = PageRequest.of(page, size);
         List<AccommodationResponse> responses = accommodationService.findAccommodationByType(accommodationType, pageable);

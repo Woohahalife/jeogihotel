@@ -16,7 +16,7 @@ import java.util.List;
 public class AccommodationInsertRequest {
 
     private String accommodationName;
-    private AccommodationType accommodationType;
+    private String accommodationType;
     private String introduction;
     private String address;
     private LocationType locationName;

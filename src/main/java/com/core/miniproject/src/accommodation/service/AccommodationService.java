@@ -75,7 +75,7 @@ public class AccommodationService {
 
         return Accommodation.builder()
                 .accommodationName(request.getAccommodationName())
-                .accommodationType(request.getAccommodationType())
+                .accommodationType(AccommodationType.getByText(request.getAccommodationType()))
                 .introduction(request.getIntroduction())
                 .discount(discount)
                 .location(location)
@@ -106,8 +106,8 @@ public class AccommodationService {
 
     //타입별 숙소 조회(수정)
     @Transactional
-    public List<AccommodationResponse> findAccommodationByType(AccommodationType type, Pageable pageable) {
-
+    public List<AccommodationResponse> findAccommodationByType(String text, Pageable pageable) {
+        AccommodationType type = AccommodationType.getByText(text);
         List<Accommodation> accommodations = accommodationRepository.findByAccommodationType(type, pageable);
         return accommodations.stream()
                 .map(AccommodationResponse::toClient)
