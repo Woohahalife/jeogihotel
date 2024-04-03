@@ -30,6 +30,23 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             LEFT JOIN FETCH a.images
             LEFT JOIN roomId.reservations r
             WHERE a.isDeleted=false
+            AND (r is null OR r.isVisited <> 'VISIT_DATE')
+            AND (r is null OR r.isVisited <> 'VISITED')
+            AND (r is null OR not ((r.checkIn >= :checkIn and r.checkOut <= :checkOut) or (r.checkIn < :checkIn and r.checkOut > :checkOut)))
+            AND (r is null OR (r.checkOut <= :checkIn OR r.checkIn >= :checkOut))
+            AND (r is null OR (r.checkOut <= :checkOut OR r.checkIn >= :checkOut))
+            """)
+    List<Accommodation> getAllAccommodation(@Param("checkIn") LocalDate checkIn,
+                                            @Param("checkOut") LocalDate checkInOut);
+
+    @Query(value = """
+            SELECT DISTINCT a
+            FROM Accommodation a
+            LEFT JOIN FETCH a.roomId roomId
+            LEFT JOIN FETCH a.rates
+            LEFT JOIN FETCH a.images
+            LEFT JOIN roomId.reservations r
+            WHERE a.isDeleted=false
             AND a.accommodationType = :accommodationType
             AND a.location.locationName = :locationType
             AND roomId.fixedMember >= :personal
@@ -39,12 +56,12 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             AND (r is null OR (r.checkOut <= :checkIn OR r.checkIn >= :checkOut))
             AND (r is null OR (r.checkOut <= :checkOut OR r.checkIn >= :checkOut))
             """)
-    List<Accommodation> getAllAccommodation(@Param("checkIn") LocalDate checkIn,
-                                            @Param("checkOut") LocalDate checkInOut,
-                                            @Param("locationType") LocationType locationType,
-                                            @Param("accommodationType") AccommodationType accommodationType,
-                                            @Param("personal") Integer personal,
-                                            Pageable pageable);
+    List<Accommodation> findAllAccommodation(@Param("checkIn") LocalDate checkIn,
+                                             @Param("checkOut") LocalDate checkInOut,
+                                             @Param("locationType") LocationType locationType,
+                                             @Param("accommodationType") AccommodationType accommodationType,
+                                             @Param("personal") Integer personal,
+                                             Pageable pageable);
 
     @Query(value = """
             SELECT COUNT (DISTINCT a)
@@ -157,5 +174,6 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
                                                     @Param("checkIn") LocalDate checkIn,
                                                     @Param("checkOut") LocalDate checkInOut
                                                     );
+
 
 }
