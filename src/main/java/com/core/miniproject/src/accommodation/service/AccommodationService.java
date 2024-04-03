@@ -24,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -97,7 +98,9 @@ public class AccommodationService {
      * 2. toClient로 보내줄 데이터로 가공하여 add 후 return
      * */
     @Transactional // 수정 전체 조회
-    public List<AccommodationResponse> findAllAccommodation(Pageable pageable) {
+    public List<AccommodationResponse> findAllAccommodation(LocalDate checkIn, LocalDate checkInOut, Pageable pageable) {
+
+        List<Accommodation> allAccommodation = accommodationRepository.getAllAccommodation(checkIn, checkInOut, pageable);
 
         List<Accommodation> allAccommodation = accommodationRepository.getAllAccommodation(pageable);
         checkRedundantImages(allAccommodation);
@@ -111,10 +114,13 @@ public class AccommodationService {
 
     //타입별 숙소 조회(수정)
     @Transactional
-    public List<AccommodationResponse> findAccommodationByType(String text, Pageable pageable) {
+    public List<AccommodationResponse> findAccommodationByType(String text, LocalDate checkIn, LocalDate checkInOut, Pageable pageable) {
         AccommodationType type = AccommodationType.getByText(text);
-        List<Accommodation> accommodations = accommodationRepository.findByAccommodationType(type, pageable);
+
+        List<Accommodation> accommodations = accommodationRepository.findByAccommodationType(type, checkIn, checkInOut, pageable);
+
         checkRedundantImages(accommodations);
+
         return accommodations.stream()
                 .map(AccommodationResponse::toClient)
                 .collect(Collectors.toList());
@@ -122,37 +128,45 @@ public class AccommodationService {
 
     //위치별 숙소 조회(수정)
     @Transactional
-    public List<AccommodationResponse> findAccommodationByLocation(String text, Pageable pageable) {
+    public List<AccommodationResponse> findAccommodationByLocation(String text, LocalDate checkIn, LocalDate checkInOut, Pageable pageable) {
 
         LocationType type = LocationType.getByText(text);
 
-        List<Accommodation> accommodations = accommodationRepository.findByLocationType(type, pageable);
+        List<Accommodation> accommodations = accommodationRepository.findByLocationType(type, checkIn, checkInOut, pageable);
+
         checkRedundantImages(accommodations);
+
         return accommodations.stream()
                 .map(AccommodationResponse::toClient)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public List<AccommodationResponse> findByAccommodationAndLocation(String aText, String lText, Pageable pageable) {
+    public List<AccommodationResponse> findByAccommodationAndLocation(String aText, String lText, LocalDate checkIn, LocalDate checkInOut, Pageable pageable) {
 
         AccommodationType aType = AccommodationType.getByText(aText);
         LocationType lType = LocationType.getByText(lText);
 
-        List<Accommodation> accommodations = accommodationRepository.findByAccommodationTypeAndLocationType(aType, lType, pageable);
+        List<Accommodation> accommodations = accommodationRepository.findByAccommodationTypeAndLocationType(aType, lType, checkIn, checkInOut, pageable);
+
         checkRedundantImages(accommodations);
+
         return accommodations.stream()
                 .map(AccommodationResponse::toClient)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public List<AccommodationResponse> findByLocationAndPersonal(String text , int fixedMember, Pageable pageable){
+    public List<AccommodationResponse> findByLocationAndPersonal(String text , int fixedMember, LocalDate checkIn, LocalDate checkInOut, Pageable pageable){
 
         LocationType type = LocationType.getByText(text);
 
+        List<Accommodation> accommodations = accommodationRepository.findByLocationTypeAndFixedNumber(type, fixedMember, checkIn, checkInOut, pageable);
+
         List<Accommodation> accommodations = accommodationRepository.findByLocationTypeAndFixedNumber(type, fixedMember, pageable);
+        
         checkRedundantImages(accommodations);
+
         return accommodations.stream()
                 .map(AccommodationResponse::toClient)
                 .collect(Collectors.toList());
