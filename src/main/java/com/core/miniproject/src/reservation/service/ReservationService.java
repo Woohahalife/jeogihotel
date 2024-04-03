@@ -46,12 +46,6 @@ public class ReservationService {
         Room room = roomRepository.findById(request.getRoomId())
                 .orElseThrow(() -> new BaseException(ROOM_NOT_FOUND));
 
-        // 검색을 했을 때 해당 객실에 예약 내역이 있으면 roomCount -1 이외의 날짜에는 roomCount가 초기상태
-
-        if(room.getRoomCount() == 0) { // 해당 객실의 잔여 개수가 0
-            throw new BaseException(NO_ROOMS_REMAINING);
-        }
-
         return Reservation.builder()
                 .member(member)
                 .roomName(request.getRoomName())
