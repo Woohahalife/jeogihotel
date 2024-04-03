@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -23,7 +24,15 @@ public class AccommodationPublicController {
     private final AccommodationService accommodationService;
 
     @GetMapping("/v1/accommodation")
-    public BaseResponse<AccommodationAllResponse> findAll(
+    public BaseResponse<List<AccommodationResponse>> getAllAccommodation() {
+
+        List<AccommodationResponse> allAccommodation = accommodationService.getAllAccommodation();
+
+        return BaseResponse.response(allAccommodation);
+    }
+
+    @GetMapping("/v1/accommodation")
+    public BaseResponse<AccommodationAllResponse> findAccommodation(
             @RequestParam(name = "checkIn", required = false) LocalDate checkIn,
             @RequestParam(name = "checkOut", required = false) LocalDate checkInOut,
             @RequestParam(name = "location_type", required = false) String locationType,
@@ -34,7 +43,7 @@ public class AccommodationPublicController {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        AccommodationAllResponse allAccommodation = accommodationService.findAllAccommodation(checkIn, checkInOut, locationType, accommodationType, personal, pageable);
+        AccommodationAllResponse allAccommodation = accommodationService.findAccommodation(checkIn, checkInOut, locationType, accommodationType, personal, pageable);
 
         return BaseResponse.response(allAccommodation);
     }

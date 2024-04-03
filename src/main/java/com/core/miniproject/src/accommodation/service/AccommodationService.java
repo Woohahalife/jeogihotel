@@ -87,20 +87,26 @@ public class AccommodationService {
                 .build();
     }
 
-    //Location->Accommodation->Room->RoomPrice
-    //전체 숙소 조회
-    /*
-     * 0. AccommodationResponse로 전달하기 위해 리스트 생성
-     * 1. findAll()로 전체 리스트를 조회
-     * 2. toClient로 보내줄 데이터로 가공하여 add 후 return
-     * */
+    @Transactional
+    public List<AccommodationResponse> getAllAccommodation() {
+
+        LocalDate checkIn = LocalDate.now();
+        LocalDate checkOut = LocalDate.now().plusDays(1);
+
+        List<Accommodation> allAccommodation = accommodationRepository.getAllAccommodation(checkIn, checkOut);
+
+        return allAccommodation.stream()
+                .map(AccommodationResponse::toClient)
+                .collect(Collectors.toList());
+    }
+
     @Transactional // 수정 전체 조회
-    public AccommodationAllResponse findAllAccommodation(LocalDate checkIn, LocalDate checkInOut, String locationType, String accommodationType, Integer personal, Pageable pageable) {
+    public AccommodationAllResponse findAccommodation(LocalDate checkIn, LocalDate checkInOut, String locationType, String accommodationType, Integer personal, Pageable pageable) {
 
         AccommodationType aType = AccommodationType.getByText(accommodationType);
         LocationType lType = LocationType.getByText(locationType);
 
-        List<Accommodation> allAccommodation = accommodationRepository.getAllAccommodation(checkIn, checkInOut, lType, aType, personal, pageable);
+        List<Accommodation> allAccommodation = accommodationRepository.findAllAccommodation(checkIn, checkInOut, lType, aType, personal, pageable);
         Integer countAccommodation = accommodationRepository.getCountAccommodation(checkIn, checkInOut, lType, aType, personal);
 
         checkRedundantImages(allAccommodation);
@@ -212,7 +218,5 @@ public class AccommodationService {
         }
         accommodation.assignImages(newImages);
     }
-
-
 }
 

@@ -30,7 +30,6 @@ public class AccommodationResponse {
     private String address;
     private Integer price;
     private List<ImageResponse> accommodationImage;
-    private List<RoomResponse> room;
 
     public static AccommodationResponse toClient(Accommodation accommodation){
         return AccommodationResponse.builder()
@@ -43,9 +42,6 @@ public class AccommodationResponse {
                 .discount(accommodation.getDiscount().getDiscountRate())
                 .address(accommodation.getAddress())
                 .price(accommodation.getMinPrice())
-                .room(accommodation.getRoomId().stream()
-                        .map(RoomResponse::toClient)
-                        .collect(Collectors.toList()))
                 .accommodationImage(accommodation.getImages().stream()
                         .map(ImageResponse::toClient)
                         .collect(Collectors.toList()))
