@@ -5,6 +5,7 @@ import com.core.miniproject.src.common.response.BaseResponseStatus;
 import com.core.miniproject.src.location.domain.dto.LocationRequest;
 import com.core.miniproject.src.location.domain.dto.LocationResponse;
 import com.core.miniproject.src.location.domain.entity.Location;
+import com.core.miniproject.src.location.domain.entity.LocationType;
 import com.core.miniproject.src.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,14 +21,15 @@ public class LocationService {
 
     @Transactional
     public LocationResponse createLocation(LocationRequest request) {
+        LocationType type = LocationType.getByText(request.getLocationName());
 
-        locationRepository.findLocationByType(request.getLocationName())
+        locationRepository.findLocationByType(type)
                 .ifPresent(rate -> {
                     throw new BaseException(BaseResponseStatus.DUPLICATE_LOCATION);
                 });
 
         Location location = Location.builder()
-                .locationName(request.getLocationName())
+                .locationName(type)
                 .build();
 
         return LocationResponse.toClient(locationRepository.save(location));

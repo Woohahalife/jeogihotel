@@ -11,11 +11,11 @@ import lombok.*;
 @Builder
 public class LocationResponse {
 
-    private LocationType locationName;
+    private String locationName;
 
     public static LocationResponse toClient(Location location){
         return LocationResponse.builder()
-                .locationName(location.getLocationName())
+                .locationName(location.getLocationName().getType())
                 .build();
     }
 }

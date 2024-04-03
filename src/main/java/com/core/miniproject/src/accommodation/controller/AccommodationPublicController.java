@@ -39,7 +39,7 @@ public class AccommodationPublicController {
     public BaseResponse<List<AccommodationResponse>> findByLocation(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "4") int size,
-            @PathVariable("location_type") LocationType locationType
+            @PathVariable("location_type") String locationType
     ) {
         Pageable pageable = PageRequest.of(page, size);
         List<AccommodationResponse> responses = accommodationService.findAccommodationByLocation(locationType, pageable);
@@ -51,7 +51,7 @@ public class AccommodationPublicController {
     public BaseResponse<List<AccommodationResponse>> findByType(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "4") int size,
-            @PathVariable("accommodation_type") AccommodationType accommodationType
+            @PathVariable("accommodation_type") String accommodationType
     ) {
         Pageable pageable = PageRequest.of(page, size);
         List<AccommodationResponse> responses = accommodationService.findAccommodationByType(accommodationType, pageable);
@@ -63,8 +63,8 @@ public class AccommodationPublicController {
     public BaseResponse<List<AccommodationResponse>> findByType(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "4") int size,
-            @PathVariable("accommodation_type") AccommodationType accommodationType,
-            @PathVariable("location_type") LocationType locationType
+            @PathVariable("accommodation_type") String accommodationType,
+            @PathVariable("location_type") String locationType
     ) {
         Pageable pageable = PageRequest.of(page, size);
         List<AccommodationResponse> responses = accommodationService.findByAccommodationAndLocation(accommodationType, locationType, pageable);
@@ -76,7 +76,7 @@ public class AccommodationPublicController {
     public BaseResponse<List<AccommodationResponse>> findByLocationAndPersonal(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "4") int size,
-            @PathVariable("location_type") LocationType locationType,
+            @PathVariable("location_type") String locationType,
             @PathVariable("personal") int fixedMember
     ) {
         Pageable pageable = PageRequest.of(page, size);

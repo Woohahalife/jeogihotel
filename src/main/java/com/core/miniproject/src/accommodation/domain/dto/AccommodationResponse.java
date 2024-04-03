@@ -22,9 +22,9 @@ public class AccommodationResponse {
 
     private Long id; //id 추가
     private String accommodationName;
-    private AccommodationType accommodationType;
+    private String accommodationType;
     private String introduction;
-    private LocationType locationType; //위치 추가
+    private String locationType; //위치 추가
     private Double rate;
     private Double discount;
     private String address;
@@ -36,9 +36,9 @@ public class AccommodationResponse {
         return AccommodationResponse.builder()
                 .id(accommodation.getId())
                 .accommodationName(accommodation.getAccommodationName())
-                .accommodationType(accommodation.getAccommodationType())
+                .accommodationType(accommodation.getAccommodationType().getType())
                 .introduction(accommodation.getIntroduction())
-                .locationType(accommodation.getLocation().getLocationName())
+                .locationType(accommodation.getLocation().getLocationName().getType())
                 .rate(accommodation.getAverageRate()) // 별점 평균 조회
                 .discount(accommodation.getDiscount().getDiscountRate())
                 .address(accommodation.getAddress())

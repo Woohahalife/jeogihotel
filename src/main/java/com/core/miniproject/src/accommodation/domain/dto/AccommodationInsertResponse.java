@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class AccommodationInsertResponse {
 
     private String accommodationName;
-    private AccommodationType accommodationType;
+    private String accommodationType;
     private String introduction;
     private double rate;
     private double discount;
@@ -30,7 +30,7 @@ public class AccommodationInsertResponse {
     public static AccommodationInsertResponse toClient(Accommodation accommodation) {
         return AccommodationInsertResponse.builder()
                 .accommodationName(accommodation.getAccommodationName())
-                .accommodationType(accommodation.getAccommodationType())
+                .accommodationType(accommodation.getAccommodationType().getType())
                 .introduction(accommodation.getIntroduction())
                 .rate(accommodation.getAverageRate())
                 .discount(accommodation.getDiscount().getDiscountRate())
