@@ -14,7 +14,7 @@ import java.time.format.DateTimeParseException;
 @Component
 public class DateParamDefaultValueAspect {
 
-    @Around(value = "execution(* com.core.miniproject.src.accommodation.controller.AccommodationPublicController.*.*(..))", argNames = "joinPoint")
+    @Around(value = "execution(* com.core.miniproject.src.accommodation.controller.AccommodationPublicController.find*(..))", argNames = "joinPoint")
     public Object setDefaultParameterValues(ProceedingJoinPoint joinPoint) throws Throwable {
 
         Object[] args = joinPoint.getArgs();
@@ -26,7 +26,7 @@ public class DateParamDefaultValueAspect {
             LocalDate checkIn = args[0] != null ? (LocalDate) args[0] : LocalDate.now();
             LocalDate checkOut = args[1] != null ? (LocalDate) args[1] : LocalDate.now().plusDays(1);
             String locationType = args[2] != null ? (String) args[2] : "서울";
-            String accommodationType = args[3] != null ? (String) args[3] : "HOTEL";
+            String accommodationType = args[3] != null ? (String) args[3] : "호텔";
             int fixedMember = args[4] != null ? (int) args[4] : 2;
 
         return joinPoint.proceed(new Object[]{checkIn, checkOut, locationType, accommodationType, fixedMember, args[5], args[6]});
