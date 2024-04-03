@@ -25,4 +25,11 @@ public class Member extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public void grantRoleToAdmin(Role role) {
+        if(this.role == Role.USER && role == Role.ADMIN) {
+            System.out.println("권한이 변경되었습니다.");
+            this.role = role;
+        }
+    }
 }

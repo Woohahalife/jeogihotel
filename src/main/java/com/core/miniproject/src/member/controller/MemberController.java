@@ -4,9 +4,7 @@ import com.core.miniproject.src.common.response.BaseResponse;
 import com.core.miniproject.src.common.security.JwtAuthentication;
 import com.core.miniproject.src.common.security.jwt.AccessToken;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
-import com.core.miniproject.src.member.domain.dto.MemberInfoResponse;
-import com.core.miniproject.src.member.domain.dto.MemberLoginResponse;
-import com.core.miniproject.src.member.domain.dto.NewTokenResponse;
+import com.core.miniproject.src.member.domain.dto.*;
 import com.core.miniproject.src.member.service.MemberService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +40,13 @@ public class MemberController {
         MemberInfoResponse memberInfoResponse = memberService.getMemberInfo(memberId);
 
         return response(memberInfoResponse);
+    }
+
+    @PostMapping("/v1/member/authorization")
+    public BaseResponse<MemberAuthResponse> AuthorizationAdmin(@JwtAuthentication MemberInfo memberInfo) {
+
+        MemberAuthResponse response = memberService.AuthorizationAdmin(memberInfo.getId());
+
+        return response(response);
     }
 }

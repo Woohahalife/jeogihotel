@@ -109,4 +109,15 @@ public class MemberService {
 
         return MemberInfoResponse.toClient(member);
     }
+
+    @Transactional
+    public MemberAuthResponse AuthorizationAdmin(Long id) {
+
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new BaseException(MEMBER_NOT_FOUND));
+
+        member.grantRoleToAdmin(Role.ADMIN);
+
+        return MemberAuthResponse.toClient(member);
+    }
 }
