@@ -56,7 +56,6 @@ public class Room {
     public void update(RoomRequest request, RoomImage image){
         this.roomName = request.getRoomName();
         this.roomInfo = request.getRoomInfo();
-        this.roomCount = request.getRoomCount();
         this.fixedMember = request.getFixedMember();
         this.maxedMember = request.getMaxedMember();
         this.roomImage = image;
