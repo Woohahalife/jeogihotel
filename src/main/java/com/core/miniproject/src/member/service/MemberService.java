@@ -12,8 +12,10 @@ import com.core.miniproject.src.member.repository.MemberRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.core.miniproject.src.common.response.BaseResponseStatus.*;
 
@@ -28,6 +30,7 @@ public class MemberService {
     private final RefreshTokenService refreshTokenService;
     private final JwtTokenGenerator jwtTokenGenerator;
 
+    @Transactional
     public MemberJoinResponse join(MemberJoinRequest request) {
         /*
         회원 정보(email, password, name, email, phoneNumber)를 등록한다.
@@ -57,6 +60,7 @@ public class MemberService {
                 .build();
     }
 
+    @Transactional
     public MemberLoginResponse login(MemberLoginRequest request) {
         /*
         로그인 기능

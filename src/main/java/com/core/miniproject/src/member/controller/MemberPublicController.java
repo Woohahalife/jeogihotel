@@ -42,4 +42,5 @@ public class MemberPublicController {
 
         return response(login);
     }
+
 }
