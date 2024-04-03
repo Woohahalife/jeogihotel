@@ -14,7 +14,6 @@ public class RoomRequest {
 
     private String roomName;
     private String roomInfo;
-    private Integer roomCount;
     private int fixedMember;
     private int maxedMember;
     private String imagePath;
