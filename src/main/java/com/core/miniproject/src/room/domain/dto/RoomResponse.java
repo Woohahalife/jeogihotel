@@ -16,7 +16,6 @@ public class RoomResponse {
     private String roomName;
     private String roomInfo;
     private int fixedMember;
-    private Integer roomCount;
     private int maxedMember;
     private String roomImage;
     private int price;
@@ -26,7 +25,6 @@ public class RoomResponse {
                 .id(room.getId())
                 .roomName(room.getRoomName())
                 .roomInfo(room.getRoomInfo())
-                .roomCount(room.getRoomCount())
                 .fixedMember(room.getFixedMember())
                 .maxedMember(room.getMaxedMember())
                 .price(room.getPrice())

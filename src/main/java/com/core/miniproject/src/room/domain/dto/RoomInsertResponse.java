@@ -13,7 +13,6 @@ public class RoomInsertResponse {
     private Long roomId;
     private String roomName;
     private String roomInfo;
-    private Integer roomCount;
     private Integer fixedNumber;
     private Integer maxedNumber;
     private String roomImage;
@@ -24,7 +23,6 @@ public class RoomInsertResponse {
                 .roomId(room.getId())
                 .roomName(room.getRoomName())
                 .roomInfo(room.getRoomInfo())
-                .roomCount(room.getRoomCount())
                 .fixedNumber(room.getFixedMember())
                 .maxedNumber(room.getMaxedMember())
                 .roomImage(room.getRoomImage().getImagePath())

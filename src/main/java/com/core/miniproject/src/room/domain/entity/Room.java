@@ -33,9 +33,6 @@ public class Room {
     @Column(name="room_info")
     private String roomInfo;
 
-    @Column(name = "room_count")
-    private int roomCount;
-
     @Column(name="fixed_member")
     private int fixedMember;
 
