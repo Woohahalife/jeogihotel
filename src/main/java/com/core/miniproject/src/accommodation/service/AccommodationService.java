@@ -1,9 +1,6 @@
 package com.core.miniproject.src.accommodation.service;
 
-import com.core.miniproject.src.accommodation.domain.dto.AccommodationInsertRequest;
-import com.core.miniproject.src.accommodation.domain.dto.AccommodationInsertResponse;
-import com.core.miniproject.src.accommodation.domain.dto.AccommodationRequest;
-import com.core.miniproject.src.accommodation.domain.dto.AccommodationResponse;
+import com.core.miniproject.src.accommodation.domain.dto.*;
 import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
 import com.core.miniproject.src.accommodation.domain.entity.Discount;
@@ -98,77 +95,22 @@ public class AccommodationService {
      * 2. toClient로 보내줄 데이터로 가공하여 add 후 return
      * */
     @Transactional // 수정 전체 조회
-    public List<AccommodationResponse> findAllAccommodation(LocalDate checkIn, LocalDate checkInOut, Pageable pageable) {
+    public AccommodationAllResponse findAllAccommodation(LocalDate checkIn, LocalDate checkInOut, String locationType, String accommodationType, Integer personal, Pageable pageable) {
 
-        List<Accommodation> allAccommodation = accommodationRepository.getAllAccommodation(checkIn, checkInOut, pageable);
+        AccommodationType aType = AccommodationType.getByText(accommodationType);
+        LocationType lType = LocationType.getByText(locationType);
+
+        List<Accommodation> allAccommodation = accommodationRepository.getAllAccommodation(checkIn, checkInOut, lType, aType, personal, pageable);
+        Integer countAccommodation = accommodationRepository.getCountAccommodation(checkIn, checkInOut, lType, aType, personal);
 
         checkRedundantImages(allAccommodation);
-//        int countAccommodation = accommodationRepository.getCountAccommodation();
-//        System.out.println("countAccommodation = " + countAccommodation);
 
-        return allAccommodation.stream()
-                .map(AccommodationResponse::toClient)
+        List<AccommodationAllDto> accommodationAllDtos = allAccommodation.stream()
+                .map(AccommodationAllDto::toClient)
                 .collect(Collectors.toList());
+
+        return AccommodationAllResponse.toClient(accommodationAllDtos, countAccommodation);
     }
-
-    //타입별 숙소 조회(수정)
-    @Transactional
-    public List<AccommodationResponse> findAccommodationByType(String text, LocalDate checkIn, LocalDate checkInOut, Pageable pageable) {
-        AccommodationType type = AccommodationType.getByText(text);
-
-        List<Accommodation> accommodations = accommodationRepository.findByAccommodationType(type, checkIn, checkInOut, pageable);
-
-        checkRedundantImages(accommodations);
-
-        return accommodations.stream()
-                .map(AccommodationResponse::toClient)
-                .collect(Collectors.toList());
-    }
-
-    //위치별 숙소 조회(수정)
-    @Transactional
-    public List<AccommodationResponse> findAccommodationByLocation(String text, LocalDate checkIn, LocalDate checkInOut, Pageable pageable) {
-
-        LocationType type = LocationType.getByText(text);
-
-        List<Accommodation> accommodations = accommodationRepository.findByLocationType(type, checkIn, checkInOut, pageable);
-
-        checkRedundantImages(accommodations);
-
-        return accommodations.stream()
-                .map(AccommodationResponse::toClient)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public List<AccommodationResponse> findByAccommodationAndLocation(String aText, String lText, LocalDate checkIn, LocalDate checkInOut, Pageable pageable) {
-
-        AccommodationType aType = AccommodationType.getByText(aText);
-        LocationType lType = LocationType.getByText(lText);
-
-        List<Accommodation> accommodations = accommodationRepository.findByAccommodationTypeAndLocationType(aType, lType, checkIn, checkInOut, pageable);
-
-        checkRedundantImages(accommodations);
-
-        return accommodations.stream()
-                .map(AccommodationResponse::toClient)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public List<AccommodationResponse> findByLocationAndPersonal(String text , int fixedMember, LocalDate checkIn, LocalDate checkInOut, Pageable pageable){
-
-        LocationType type = LocationType.getByText(text);
-
-        List<Accommodation> accommodations = accommodationRepository.findByLocationTypeAndFixedNumber(type, fixedMember, checkIn, checkInOut, pageable);
-
-        checkRedundantImages(accommodations);
-
-        return accommodations.stream()
-                .map(AccommodationResponse::toClient)
-                .collect(Collectors.toList());
-    }
-
 
     @Transactional
     public BaseResponseStatus deleteAccommodation(Long id, MemberInfo memberInfo){
@@ -202,9 +144,9 @@ public class AccommodationService {
         return AccommodationResponse.toClient(accommodation1);
     }
 
-    public AccommodationResponse getAccommodationDetail(Long accommodationId) {
+    public AccommodationResponse getAccommodationDetail(Long accommodationId, LocalDate checkIn, LocalDate checkOut) {
 
-        Accommodation accommodation = accommodationRepository.findByAccommodationId(accommodationId)
+        Accommodation accommodation = accommodationRepository.accommodationDetailInfo(accommodationId, checkIn, checkOut)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.ACCOMMODATION_DOES_NOT_EXIST));
         checkRedundantImages(accommodation);
         return AccommodationResponse.toClient(accommodation);
