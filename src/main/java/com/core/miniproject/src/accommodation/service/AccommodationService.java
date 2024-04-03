@@ -102,7 +102,6 @@ public class AccommodationService {
 
         List<Accommodation> allAccommodation = accommodationRepository.getAllAccommodation(checkIn, checkInOut, pageable);
 
-        List<Accommodation> allAccommodation = accommodationRepository.getAllAccommodation(pageable);
         checkRedundantImages(allAccommodation);
 //        int countAccommodation = accommodationRepository.getCountAccommodation();
 //        System.out.println("countAccommodation = " + countAccommodation);
@@ -163,8 +162,6 @@ public class AccommodationService {
 
         List<Accommodation> accommodations = accommodationRepository.findByLocationTypeAndFixedNumber(type, fixedMember, checkIn, checkInOut, pageable);
 
-        List<Accommodation> accommodations = accommodationRepository.findByLocationTypeAndFixedNumber(type, fixedMember, pageable);
-        
         checkRedundantImages(accommodations);
 
         return accommodations.stream()
