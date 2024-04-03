@@ -9,18 +9,16 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberInfoResponse {
+public class MemberAuthResponse {
 
     private String email;
     private String name;
-    private String phoneNumber;
     private Role role;
 
-    public static MemberInfoResponse toClient(Member member) {
-        return MemberInfoResponse.builder()
+    public static MemberAuthResponse toClient(Member member) {
+        return MemberAuthResponse.builder()
                 .email(member.getEmail())
                 .name(member.getName())
-                .phoneNumber(member.getPhoneNumber())
                 .role(member.getRole())
                 .build();
     }
