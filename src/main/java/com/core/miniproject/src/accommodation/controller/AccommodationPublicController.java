@@ -23,7 +23,7 @@ public class AccommodationPublicController {
 
     private final AccommodationService accommodationService;
 
-    @GetMapping("/v1/accommodation")
+    @GetMapping("/v1/accommodation/all")
     public BaseResponse<List<AccommodationResponse>> getAllAccommodation() {
 
         List<AccommodationResponse> allAccommodation = accommodationService.getAllAccommodation();
