@@ -98,7 +98,6 @@ public class RoomService {
         return Room.builder()
                 .roomName(request.getRoomName())
                 .roomInfo(request.getRoomInfo())
-                .roomCount(request.getRoomCount())
                 .fixedMember(request.getFixedNumber())
                 .maxedMember(request.getMaxedNumber())
                 .roomImage(roomImage)
