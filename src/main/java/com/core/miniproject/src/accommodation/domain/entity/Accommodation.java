@@ -112,4 +112,8 @@ public class Accommodation {
         this.location = location;
         this.discount = discount;
     }
+
+    public void assignImages(List<AccommodationImage> images){
+        this.images = images;
+    }
 }

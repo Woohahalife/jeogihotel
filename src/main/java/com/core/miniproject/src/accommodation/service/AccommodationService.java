@@ -25,7 +25,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -98,8 +100,8 @@ public class AccommodationService {
     public List<AccommodationResponse> findAllAccommodation(Pageable pageable) {
 
         List<Accommodation> allAccommodation = accommodationRepository.getAllAccommodation(pageable);
+        checkRedundantImages(allAccommodation);
 //        int countAccommodation = accommodationRepository.getCountAccommodation();
-//
 //        System.out.println("countAccommodation = " + countAccommodation);
 
         return allAccommodation.stream()
@@ -112,6 +114,7 @@ public class AccommodationService {
     public List<AccommodationResponse> findAccommodationByType(String text, Pageable pageable) {
         AccommodationType type = AccommodationType.getByText(text);
         List<Accommodation> accommodations = accommodationRepository.findByAccommodationType(type, pageable);
+        checkRedundantImages(accommodations);
         return accommodations.stream()
                 .map(AccommodationResponse::toClient)
                 .collect(Collectors.toList());
@@ -124,7 +127,7 @@ public class AccommodationService {
         LocationType type = LocationType.getByText(text);
 
         List<Accommodation> accommodations = accommodationRepository.findByLocationType(type, pageable);
-
+        checkRedundantImages(accommodations);
         return accommodations.stream()
                 .map(AccommodationResponse::toClient)
                 .collect(Collectors.toList());
@@ -137,6 +140,7 @@ public class AccommodationService {
         LocationType lType = LocationType.getByText(lText);
 
         List<Accommodation> accommodations = accommodationRepository.findByAccommodationTypeAndLocationType(aType, lType, pageable);
+        checkRedundantImages(accommodations);
         return accommodations.stream()
                 .map(AccommodationResponse::toClient)
                 .collect(Collectors.toList());
@@ -148,6 +152,7 @@ public class AccommodationService {
         LocationType type = LocationType.getByText(text);
 
         List<Accommodation> accommodations = accommodationRepository.findByLocationTypeAndFixedNumber(type, fixedMember, pageable);
+        checkRedundantImages(accommodations);
         return accommodations.stream()
                 .map(AccommodationResponse::toClient)
                 .collect(Collectors.toList());
@@ -190,7 +195,7 @@ public class AccommodationService {
 
         Accommodation accommodation = accommodationRepository.findByAccommodationId(accommodationId)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.ACCOMMODATION_DOES_NOT_EXIST));
-
+        checkRedundantImages(accommodation);
         return AccommodationResponse.toClient(accommodation);
     }
 
@@ -226,5 +231,35 @@ public class AccommodationService {
         }
         return null;
     }
+
+    private void checkRedundantImages(List<Accommodation> accommodations){
+        for (Accommodation accommodation : accommodations) {
+            Set<Long> imageIds = new HashSet<>();
+            List<AccommodationImage> newImages = new ArrayList<>();
+            for (AccommodationImage image : accommodation.getImages()) {
+                Long imageId = image.getId();
+                if (!imageIds.contains(imageId)) {
+                    imageIds.add(imageId);
+                    newImages.add(image);
+                }
+            }
+            accommodation.assignImages(newImages);
+        }
+    }
+
+    private void checkRedundantImages(Accommodation accommodation){
+        Set<Long> imageIds = new HashSet<>();
+        List<AccommodationImage> newImages = new ArrayList<>();
+        for (AccommodationImage image : accommodation.getImages()) {
+            Long imageId = image.getId();
+            if (!imageIds.contains(imageId)) {
+                imageIds.add(imageId);
+                newImages.add(image);
+            }
+        }
+        accommodation.assignImages(newImages);
+    }
+
+
 }
 
