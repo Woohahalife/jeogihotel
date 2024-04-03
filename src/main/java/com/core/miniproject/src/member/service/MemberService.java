@@ -6,10 +6,7 @@ import com.core.miniproject.src.common.security.jwt.AccessToken;
 import com.core.miniproject.src.common.security.jwt.JwtTokenGenerator;
 import com.core.miniproject.src.common.security.jwt.RefreshToken;
 import com.core.miniproject.src.common.security.jwt.RefreshTokenService;
-import com.core.miniproject.src.member.domain.dto.MemberJoinRequest;
-import com.core.miniproject.src.member.domain.dto.MemberJoinResponse;
-import com.core.miniproject.src.member.domain.dto.MemberLoginRequest;
-import com.core.miniproject.src.member.domain.dto.MemberLoginResponse;
+import com.core.miniproject.src.member.domain.dto.*;
 import com.core.miniproject.src.member.domain.entity.Member;
 import com.core.miniproject.src.member.repository.MemberRepository;
 import lombok.Data;
@@ -89,7 +86,6 @@ public class MemberService {
 
         String accessToken = authorization.split(" ")[1];
 
-//        RefreshToken refreshToken = refreshTokenService.getRefreshTokenByMemberId(String.valueOf(member.getId()));
         RefreshToken refreshToken = refreshTokenService.getRefreshTokenByAccessToken(accessToken);
 
         Member member = memberRepository.findById(Long.valueOf(refreshToken.getId())).orElseThrow();
@@ -100,5 +96,13 @@ public class MemberService {
                 String.valueOf(refreshToken.getId()), refreshToken.getRefreshToken(), token.getSecretKey()), refreshToken.getAccessToken());
 
         return token;
+    }
+
+    public MemberInfoResponse getMemberInfo(Long memberId) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BaseException(MEMBER_NOT_FOUND));
+
+        return MemberInfoResponse.toClient(member);
     }
 }
