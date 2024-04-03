@@ -22,7 +22,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
     List<Accommodation> findAll();
 
     @Query(value = """
-            SELECT a
+            SELECT DISTINCT a
             FROM Accommodation a
             LEFT JOIN FETCH a.roomId
             LEFT JOIN FETCH a.rates
