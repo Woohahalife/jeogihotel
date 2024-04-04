@@ -101,13 +101,14 @@ public class AccommodationService {
     }
 
     @Transactional // 수정 전체 조회
-    public AccommodationAllResponse findAccommodation(LocalDate checkIn, LocalDate checkInOut, String locationType, String accommodationType, Integer personal, Pageable pageable) {
+    public AccommodationAllResponse findAccommodation(
+            LocalDate checkIn, LocalDate checkInOut, String locationType, String accommodationType, Integer personal, Integer price, Pageable pageable) {
 
         AccommodationType aType = AccommodationType.getByText(accommodationType);
         LocationType lType = LocationType.getByText(locationType);
 
-        List<Accommodation> allAccommodation = accommodationRepository.findAllAccommodation(checkIn, checkInOut, lType, aType, personal, pageable);
-        Integer countAccommodation = accommodationRepository.getCountAccommodation(checkIn, checkInOut, lType, aType, personal);
+        List<Accommodation> allAccommodation = accommodationRepository.findAllAccommodation(checkIn, checkInOut, lType, aType, personal, price, pageable);
+        Integer countAccommodation = accommodationRepository.getCountAccommodation(checkIn, checkInOut, lType, aType, price, personal);
 
         checkRedundantImages(allAccommodation);
 
