@@ -49,4 +49,16 @@ public class MemberController {
 
         return response(response);
     }
+
+    @PostMapping("/v1/member/update/{memberId}")
+    public BaseResponse<MemberUpdateResponse> updateMemberInfo(
+            @RequestHeader(value = "Authorization") String authorization,
+            @PathVariable(value = "memberId") Long memberId,
+            @RequestBody MemberUpdateRequest request,
+            @JwtAuthentication MemberInfo memberInfo) {
+
+        MemberUpdateResponse response = memberService.updateMemberInfo(authorization, memberId, request, memberInfo);
+
+        return response(response);
+    }
 }
