@@ -54,6 +54,7 @@ public class ReservationService {
         return Reservation.builder()
                 .member(member)
                 .roomName(request.getRoomName())
+                .address(request.getAddress())
                 .checkIn(request.getCheckIn())
                 .checkOut(request.getCheckOut())
                 .price(room.getPrice())

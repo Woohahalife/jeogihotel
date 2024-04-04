@@ -23,6 +23,9 @@ public class Reservation {
     @Column(name = "room_name")
     private String roomName;
 
+    @Column(name = "address")
+    private String address;
+
     @Column(name = "check_in")
     private LocalDate checkIn;
 

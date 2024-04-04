@@ -17,6 +17,7 @@ public class ReservationListResponse {
     private Long memberId;
     private String accommodationName;
     private String roomName;
+    private String address;
     private LocalDate checkIn;
     private LocalDate checkOut;
     private int price;
@@ -31,6 +32,7 @@ public class ReservationListResponse {
                 .memberId(reservation.getMember().getId())
                 .accommodationName(reservation.getRoom().getAccommodationId().getAccommodationName())
                 .roomName(reservation.getRoomName())
+                .address(reservation.getAddress())
                 .checkIn(reservation.getCheckIn())
                 .checkOut(reservation.getCheckOut())
                 .price(reservation.getPrice())
