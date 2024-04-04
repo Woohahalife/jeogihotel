@@ -1,15 +1,10 @@
 package com.core.miniproject.src.accommodation.domain.dto;
 
 import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
-import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
 import com.core.miniproject.src.image.domain.dto.ImageResponse;
-import com.core.miniproject.src.location.domain.entity.LocationType;
 import com.core.miniproject.src.room.domain.dto.RoomResponse;
-import com.core.miniproject.src.room.domain.entity.Room;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +25,7 @@ public class AccommodationResponse {
     private String address;
     private Integer price;
     private List<ImageResponse> accommodationImage;
+    private List<RoomResponse> room;
 
     public static AccommodationResponse toClient(Accommodation accommodation){
         return AccommodationResponse.builder()
@@ -44,6 +40,9 @@ public class AccommodationResponse {
                 .price(accommodation.getMinPrice())
                 .accommodationImage(accommodation.getImages().stream()
                         .map(ImageResponse::toClient)
+                        .collect(Collectors.toList()))
+                .room(accommodation.getRoomId().stream()
+                        .map(RoomResponse::toClient)
                         .collect(Collectors.toList()))
                 .build();
     }

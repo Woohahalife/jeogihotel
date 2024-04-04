@@ -46,6 +46,7 @@ public enum BaseResponseStatus {
 
     TYPE_MISMATCH(false, BAD_REQUEST.value(), "데이터 타입이 맞지 않습니다."),
     JSON_PARSE_ERROR(false, BAD_REQUEST.value(), "유효한 JSON 데이터가 아닙니다. 전달하는 데이터 타입을 확인해주세요."),
+    RESERVAION_IS_DUPLICATE(false, BAD_REQUEST.value(), "해당 객실의 예약 내역이 이미 존재합니다."),
 
     EXPIRED_ACCESSTOKEN(false, UNAUTHORIZED.value(), "토큰이 만료되었습니다."),
 
