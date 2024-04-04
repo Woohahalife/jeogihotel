@@ -28,6 +28,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             LEFT JOIN FETCH a.roomId roomId
             LEFT JOIN FETCH a.rates
             LEFT JOIN FETCH a.images
+            LEFT JOIN FETCH a.discount
             LEFT JOIN roomId.reservations r
             WHERE a.isDeleted=false
             AND (r is null OR r.isVisited <> 'VISIT_DATE')
@@ -45,6 +46,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             LEFT JOIN FETCH a.roomId roomId
             LEFT JOIN FETCH a.rates
             LEFT JOIN FETCH a.images
+            LEFT JOIN FETCH a.discount
             LEFT JOIN roomId.reservations r
             WHERE a.isDeleted=false
             AND a.accommodationType = :accommodationType
@@ -72,6 +74,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             LEFT JOIN a.roomId roomId
             LEFT JOIN a.rates
             LEFT JOIN a.images
+            LEFT JOIN a.discount
             LEFT JOIN roomId.reservations r
             WHERE a.isDeleted=false
             AND a.accommodationType = :accommodationType
@@ -97,6 +100,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             LEFT JOIN FETCH a.roomId
             LEFT JOIN FETCH a.rates
             LEFT JOIN FETCH a.images
+            LEFT JOIN FETCH a.discount
             where a.id = ?1 and a.isDeleted=false
             """)
     Optional<Accommodation> findByAccommodationId(Long id);
@@ -167,6 +171,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             LEFT JOIN FETCH a.roomId roomId
             LEFT JOIN FETCH a.rates
             LEFT JOIN FETCH a.images
+            LEFT JOIN FETCH a.discount
             LEFT JOIN roomId.reservations r
             WHERE a.id =:id AND a.isDeleted=false
             AND (r is null OR r.isVisited <> 'VISIT_DATE')
