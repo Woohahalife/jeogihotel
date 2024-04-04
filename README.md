@@ -65,7 +65,7 @@ POST | api/v1/discount | 할인율 생성
 POST | api/v1/location | 지역 생성
 
 ### **📄Api Docs  **
-## 💡객실
+### 💡객실
 HTTP Method | URI | Descriptions
  -- | -- | -- 
 POST | api//v1/accommodation/{accommodationId}/room | 객실 생성
@@ -74,14 +74,14 @@ POST | api/v1/accommodation/{accommodation_id}/room/{room_id}/update | 객실 �
 GET | public-api/v1/accommodation/{accommodationId} | 숙소에 따른 객실 조회
 
 ### **📄Api Docs  **
-## 💡예약
+### 💡예약
 HTTP Method | URI | Descriptions
  -- | -- | -- 
 POST | api//v1/reservation/insert | 예약 생성
 GET | api/v1/reservation | 예약 조회
 
 ### **📄Api Docs  **
-## 💡별점
+### 💡별점
 HTTP Method | URI | Descriptions
  -- | -- | -- 
 POST | api//v1/{accommodationId}/rate/create | 별점 생성
