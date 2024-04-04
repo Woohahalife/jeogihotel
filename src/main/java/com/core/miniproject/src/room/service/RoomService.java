@@ -109,8 +109,7 @@ public class RoomService {
     private void requiredInfoValidate(RoomInsertRequest request) {
         if(request.getRoomImage().isEmpty() ||
            request.getRoomName().isEmpty() ||
-           request.getRoomInfo().isEmpty() ||
-           request.getRoomCount() <= 0) {
+           request.getRoomInfo().isEmpty()) {
             throw new BaseException(SET_REQUIRED_INFORMATION);
         }
     }
