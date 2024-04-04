@@ -38,12 +38,14 @@ public class AccommodationPublicController {
             @RequestParam(name = "location_type", required = false) String locationType,
             @RequestParam(name = "accommodation_type", required = false) String accommodationType,
             @RequestParam(name = "personal", required = false) Integer personal,
+            @RequestParam(name = "price", required = false) Integer price,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "4") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        AccommodationAllResponse allAccommodation = accommodationService.findAccommodation(checkIn, checkInOut, locationType, accommodationType, personal, pageable);
+        AccommodationAllResponse allAccommodation =
+                accommodationService.findAccommodation(checkIn, checkInOut, locationType, accommodationType, personal, price, pageable);
 
         return BaseResponse.response(allAccommodation);
     }

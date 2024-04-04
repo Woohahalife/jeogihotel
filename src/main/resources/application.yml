@@ -66,16 +66,6 @@ spring:
       port: 6379
 
 ---
-logging:
-  file:
-    name: /var/log/myapp.log
-  logback:
-    rollingpolicy:
-      file-name-pattern: myapp.%d{yyyy-MM-dd}-%i.log
-      max-file-size: 10KB
-  pattern:
-    dateformat: Asia/Seoul
-
 spring:
   config:
     activate:
@@ -95,4 +85,10 @@ server:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
-
+logging:
+  file:
+    path: /home/ec2-user/
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG

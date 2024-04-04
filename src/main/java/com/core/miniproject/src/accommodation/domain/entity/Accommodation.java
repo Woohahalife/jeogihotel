@@ -52,10 +52,6 @@ public class Accommodation {
     @OneToMany(mappedBy = "accommodation", cascade = CascadeType.REMOVE)
     private Set<Rate> rates = new HashSet<>();
 
-//    @Formula("select min(rp.price) from room_price rp join room r on rp.room_id = r.room_id where r.accommodation_id = accommodation_id")
-    @Column(name = "price")
-    private Integer price; // 추후 삭제 예정
-
     @ManyToOne
     @JoinColumn(name = "discount_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Discount discount;

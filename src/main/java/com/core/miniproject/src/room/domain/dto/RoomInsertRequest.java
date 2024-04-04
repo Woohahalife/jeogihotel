@@ -13,7 +13,6 @@ public class RoomInsertRequest {
 
     private String roomName;
     private String roomInfo;
-    private Integer roomCount;
     private Integer fixedNumber;
     private Integer maxedNumber;
     private String roomImage;
