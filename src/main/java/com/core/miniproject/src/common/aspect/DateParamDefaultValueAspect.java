@@ -28,9 +28,8 @@ public class DateParamDefaultValueAspect {
             String locationType = args[2] != null ? (String) args[2] : "서울";
             String accommodationType = args[3] != null ? (String) args[3] : "호텔";
             int fixedMember = args[4] != null ? (int) args[4] : 2;
-            int price = args[5] != null ? (int) args[5] : 30000;
 
-        return joinPoint.proceed(new Object[]{checkIn, checkOut, locationType, accommodationType, fixedMember, price, args[6], args[7]});
+        return joinPoint.proceed(new Object[]{checkIn, checkOut, locationType, accommodationType, fixedMember, args[5], args[6]});
 
         } catch (DateTimeParseException | NumberFormatException e) {
             throw new BaseException(BaseResponseStatus.TYPE_MISMATCH);

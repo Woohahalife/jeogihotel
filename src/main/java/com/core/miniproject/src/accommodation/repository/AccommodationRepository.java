@@ -57,7 +57,6 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             AND (r is null OR not ((r.checkIn >= :checkIn and r.checkOut <= :checkOut) or (r.checkIn < :checkIn and r.checkOut > :checkOut)))
             AND (r is null OR (r.checkOut <= :checkIn OR r.checkIn >= :checkOut))
             AND (r is null OR (r.checkOut <= :checkOut OR r.checkIn >= :checkOut))
-            AND roomId.price >= :targetPrice
             ORDER BY roomId.price ASC
             """)
     List<Accommodation> findAllAccommodation(@Param("checkIn") LocalDate checkIn,
@@ -65,7 +64,6 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
                                              @Param("locationType") LocationType locationType,
                                              @Param("accommodationType") AccommodationType accommodationType,
                                              @Param("personal") Integer personal,
-                                             @Param("targetPrice") Integer price,
                                              Pageable pageable);
 
     @Query(value = """
@@ -85,13 +83,11 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             AND (r is null OR not ((r.checkIn >= :checkIn and r.checkOut <= :checkOut) or (r.checkIn < :checkIn and r.checkOut > :checkOut)))
             AND (r is null OR (r.checkOut <= :checkIn OR r.checkIn >= :checkOut))
             AND (r is null OR (r.checkOut <= :checkOut OR r.checkIn >= :checkOut))
-            AND roomId.price >= :targetPrice
             """)
     int getCountAccommodation(@Param("checkIn") LocalDate checkIn,
                               @Param("checkOut") LocalDate checkInOut,
                               @Param("locationType") LocationType locationType,
                               @Param("accommodationType") AccommodationType accommodationType,
-                              @Param("targetPrice") Integer price,
                               @Param("personal") Integer personal);
 
     @Query("""

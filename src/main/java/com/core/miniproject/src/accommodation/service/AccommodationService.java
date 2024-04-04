@@ -95,6 +95,8 @@ public class AccommodationService {
 
         List<Accommodation> allAccommodation = accommodationRepository.getAllAccommodation(checkIn, checkOut);
 
+        checkRedundantImages(allAccommodation);
+
         return allAccommodation.stream()
                 .map(AccommodationResponse::toClient)
                 .collect(Collectors.toList());
@@ -102,13 +104,13 @@ public class AccommodationService {
 
     @Transactional // 수정 전체 조회
     public AccommodationAllResponse findAccommodation(
-            LocalDate checkIn, LocalDate checkInOut, String locationType, String accommodationType, Integer personal, Integer price, Pageable pageable) {
+            LocalDate checkIn, LocalDate checkInOut, String locationType, String accommodationType, Integer personal, Pageable pageable) {
 
         AccommodationType aType = AccommodationType.getByText(accommodationType);
         LocationType lType = LocationType.getByText(locationType);
 
-        List<Accommodation> allAccommodation = accommodationRepository.findAllAccommodation(checkIn, checkInOut, lType, aType, personal, price, pageable);
-        Integer countAccommodation = accommodationRepository.getCountAccommodation(checkIn, checkInOut, lType, aType, price, personal);
+        List<Accommodation> allAccommodation = accommodationRepository.findAllAccommodation(checkIn, checkInOut, lType, aType, personal, pageable);
+        Integer countAccommodation = accommodationRepository.getCountAccommodation(checkIn, checkInOut, lType, aType, personal);
 
         checkRedundantImages(allAccommodation);
 
@@ -144,6 +146,7 @@ public class AccommodationService {
         Discount discount = discountRepository.findDiscountByRate(request.getDiscount()).orElseThrow(
                 ()-> new BaseException(BaseResponseStatus.DISCOUNT_NOT_FOUND)
         );
+
         List<AccommodationImage> images = updateImage(id, request, accommodation);
         List<AccommodationImage> newImages = imageRepository.saveAll(images);
         accommodation.update(request,location,discount, newImages);
@@ -155,7 +158,9 @@ public class AccommodationService {
 
         Accommodation accommodation = accommodationRepository.accommodationDetailInfo(accommodationId, checkIn, checkOut)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.ACCOMMODATION_DOES_NOT_EXIST));
+
         checkRedundantImages(accommodation);
+
         return AccommodationResponse.toClient(accommodation);
     }
 
