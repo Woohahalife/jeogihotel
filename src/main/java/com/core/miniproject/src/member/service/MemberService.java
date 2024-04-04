@@ -82,7 +82,7 @@ public class MemberService {
     }
 
     private void validatePassword(String requestPassword, Member member) {
-        if(!passwordEncoder.matches(requestPassword, member.getPassword())) {
+        if (!passwordEncoder.matches(requestPassword, member.getPassword())) {
             throw new BaseException(INVALID_PASSWORD);
         }
     }
@@ -123,17 +123,26 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberUpdateResponse updateMemberInfo(String authorization, Long memberId, MemberUpdateRequest request, MemberInfo memberInfo) {
+    public MemberUpdateResponse updateMemberInfo(Long memberId, MemberUpdateRequest request, MemberInfo memberInfo) {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BaseException(MEMBER_NOT_FOUND)); // 회원 정보 검증
 
-        String encodePassword = passwordEncoder.encode(request.getPassword());
+        String requestedPassword = request.getPassword();
 
-        System.out.println("encodePassword = " + encodePassword);
+        requestedPassword = selectEncodePasswordValidate(requestedPassword, member);
 
-        member.updateMember(request, encodePassword); // 회원 정보 수정 ( 수정할 내용이 없다면 받은 내용 그대로 입력 )
+        member.updateMember(request, requestedPassword); // 회원 정보 수정 ( 수정할 내용이 없다면 받은 내용 그대로 입력 )
 
         return MemberUpdateResponse.toClient(member);
+    }
+
+    private String selectEncodePasswordValidate(String requestedPassword, Member member) {
+        if (requestedPassword == null || requestedPassword.isEmpty()) {
+            requestedPassword = member.getPassword(); // 이전 비밀번호 사용
+        } else {
+            requestedPassword = passwordEncoder.encode(requestedPassword); // 새 비밀번호 인코딩
+        }
+        return requestedPassword;
     }
 }
