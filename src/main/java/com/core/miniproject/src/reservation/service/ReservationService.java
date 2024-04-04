@@ -32,19 +32,24 @@ public class ReservationService {
     @Transactional
     public ReservationInsertResponse registerReservation(ReservationInsertRequest request, MemberInfo memberInfo) {
 
-        Member member = memberRepository.findByMemberEmail(memberInfo.getEmail())
-                .orElseThrow(() -> new BaseException(EMAIL_NOT_FOUND));
-
-        Reservation reservation = getReservationFromRequest(request, member);
+        Reservation reservation = getReservationFromRequest(request, memberInfo);
 
         return ReservationInsertResponse.toClient(reservationRepository.save(reservation));
     }
 
-    private Reservation getReservationFromRequest(ReservationInsertRequest request, Member member) {
-        insertReservationValidate(request);
+    private Reservation getReservationFromRequest(ReservationInsertRequest request, MemberInfo memberInfo) {
+        insertReservationValidate(request); // checkIn & checkOut 논리 검증
+        Member member = emailValidate(memberInfo); // 회원 일치 여부 검증
 
         Room room = roomRepository.findById(request.getRoomId())
                 .orElseThrow(() -> new BaseException(ROOM_NOT_FOUND));
+
+        Reservation reservation = reservationRepository.findReservationByCheckInAndCheckOutAndId(
+                request.getCheckIn(), request.getCheckOut(), room.getId());
+
+        if(reservation != null) {
+            throw new BaseException(RESERVAION_IS_DUPLICATE);
+        }
 
         return Reservation.builder()
                 .member(member)
@@ -92,7 +97,7 @@ public class ReservationService {
         Member member = memberRepository.findByMemberEmail(memberInfo.getEmail())
                 .orElseThrow(() -> new BaseException(EMAIL_NOT_FOUND));
 
-        if(!memberInfo.getEmail().equals(member.getEmail())) {
+        if (!memberInfo.getEmail().equals(member.getEmail())) {
             throw new BaseException(EMAIL_IS_NOT_VALIDATE);
         }
 
