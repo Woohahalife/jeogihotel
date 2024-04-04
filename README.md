@@ -94,4 +94,10 @@ POST | public-api/v1/member/join | 회원가입
 POST | public-api/v1/member/login | 로그인
 GET | public-api/v1/member/logout | 로그 아웃
 
+### ‼️ 이슈
+- 예약 로직
+- 이미지 관리 방식
+- 배포 관련 이슈
+- 보안 토큰 처리 이슈
+
 
