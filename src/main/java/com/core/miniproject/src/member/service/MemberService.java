@@ -6,13 +6,13 @@ import com.core.miniproject.src.common.security.jwt.AccessToken;
 import com.core.miniproject.src.common.security.jwt.JwtTokenGenerator;
 import com.core.miniproject.src.common.security.jwt.RefreshToken;
 import com.core.miniproject.src.common.security.jwt.RefreshTokenService;
+import com.core.miniproject.src.common.security.principal.MemberInfo;
 import com.core.miniproject.src.member.domain.dto.*;
 import com.core.miniproject.src.member.domain.entity.Member;
 import com.core.miniproject.src.member.repository.MemberRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,7 +70,8 @@ public class MemberService {
         Member member = memberRepository.findByMemberEmail(request.getEmail())
                 .orElseThrow(() -> new BaseException(MEMBER_NOT_FOUND));
 
-        validatePassword(request, member);
+        String requestPassword = request.getPassword();
+        validatePassword(requestPassword, member);
 
         AccessToken token = jwtTokenGenerator.generateAccessToken(member.getEmail(), member.getRole());
         String refreshToken = jwtTokenGenerator.createRefreshToken(member.getEmail());
@@ -80,8 +81,8 @@ public class MemberService {
         return MemberLoginResponse.toClient(token, member.getId());
     }
 
-    private void validatePassword(MemberLoginRequest request, Member member) {
-        if(!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
+    private void validatePassword(String requestPassword, Member member) {
+        if(!passwordEncoder.matches(requestPassword, member.getPassword())) {
             throw new BaseException(INVALID_PASSWORD);
         }
     }
@@ -119,5 +120,20 @@ public class MemberService {
         member.grantRoleToAdmin(Role.ADMIN);
 
         return MemberAuthResponse.toClient(member);
+    }
+
+    @Transactional
+    public MemberUpdateResponse updateMemberInfo(String authorization, Long memberId, MemberUpdateRequest request, MemberInfo memberInfo) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BaseException(MEMBER_NOT_FOUND)); // 회원 정보 검증
+
+        String encodePassword = passwordEncoder.encode(request.getPassword());
+
+        System.out.println("encodePassword = " + encodePassword);
+
+        member.updateMember(request, encodePassword); // 회원 정보 수정 ( 수정할 내용이 없다면 받은 내용 그대로 입력 )
+
+        return MemberUpdateResponse.toClient(member);
     }
 }

@@ -2,6 +2,7 @@ package com.core.miniproject.src.member.domain.entity;
 
 import com.core.miniproject.src.common.constant.Role;
 import com.core.miniproject.src.common.entity.BaseEntity;
+import com.core.miniproject.src.member.domain.dto.MemberUpdateRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,5 +32,12 @@ public class Member extends BaseEntity {
             System.out.println("권한이 변경되었습니다.");
             this.role = role;
         }
+    }
+
+    public void updateMember(MemberUpdateRequest request, String encodingPassword) {
+        this.name = request.getName();
+        this.password = encodingPassword;
+        this.phoneNumber = request.getPhoneNumber();
+
     }
 }
