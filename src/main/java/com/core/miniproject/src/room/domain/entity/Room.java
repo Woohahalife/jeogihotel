@@ -8,7 +8,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -42,11 +43,11 @@ public class Room {
     @Column(name = "price")
     private Integer price;
 
+    @Builder.Default
     @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE)
     @Column(name = "reservation_id")
-    private List<Reservation> reservations;
+    private Set<Reservation> reservations = new HashSet<>();
 
-    @Builder.Default
     @Column(name = "is_deleted")
     private boolean isDeleted=false;
     

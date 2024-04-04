@@ -36,7 +36,7 @@ public class Accommodation {
     @Builder.Default
     @OneToMany(mappedBy = "accommodationId", cascade = CascadeType.REMOVE)
     @Column(name = "room_id")
-    private Set<Room> roomId = new HashSet<>();;
+    private Set<Room> roomId = new HashSet<>();
 
     @Column(name="introduction")
     private String introduction;

@@ -11,12 +11,12 @@ import com.core.miniproject.src.common.response.BaseResponseStatus;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
 import com.core.miniproject.src.image.domain.entity.AccommodationImage;
 import com.core.miniproject.src.image.repository.AccommodationImageRepository;
-import com.core.miniproject.src.image.service.AccommodationImageService;
 import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.location.domain.entity.LocationType;
 import com.core.miniproject.src.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +37,6 @@ public class AccommodationService {
     private final DiscountRepository discountRepository;
     private final LocationRepository locationRepository;
     private final AccommodationImageRepository imageRepository;
-    private final AccommodationImageService imageService;
 
     @Transactional
     public AccommodationInsertResponse createAccommodation(
