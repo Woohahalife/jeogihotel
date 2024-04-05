@@ -19,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-@SQLDelete(sql="update accommodation set is_deleted=true where accommodation_id=?")
+@SQLDelete(sql="update Accommodation set is_deleted=true where accommodation_id=?")
 public class Accommodation {
 
     @Id

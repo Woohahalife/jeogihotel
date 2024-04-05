@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-@SQLDelete(sql = "update room set is_deleted=true where room_id=?")
+@SQLDelete(sql = "update Room set is_deleted=true where room_id=?")
 public class Room {
 
     @Id
