@@ -1,0 +1,88 @@
+
+spring:
+  profiles:
+    default: dev
+    active: dev
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show_sql: true
+    properties:
+      hibernate:
+        use_sql_comments: false
+        format_sql: true
+        default_batch_fetch_size: 1000
+    open-in-view: false
+
+## swagger api 설정
+springdoc:
+  api-docs:
+    version: openapi_3_0
+    path: /public-api/api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+    path: /public-api/swagger-ui
+    disable-swagger-default-url: true
+    display-request-duration: true
+  paths-to-match:
+    - /**
+
+jwt:
+  access-token:
+    secret-key: bab2ee005bf1daad5c736636d8b40184520f49df5d1b3303d923137af0b1dc95
+    access-expired: 3600000
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=Oracle
+    hikari:
+      jdbc-url: jdbc:h2:mem:testdb
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://15.164.19.60:3306/minidb?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    username: user
+    password: 1234
+
+server:
+  port: 8081
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+logging:
+  file:
+    path: /home/ubuntu/
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
