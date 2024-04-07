@@ -51,7 +51,7 @@
 성공 시 최종적으로 전달되는 응답 양식이다.<br/>
 성공 여부는 false가 반환된다.
 
-### **📄Api Docs **
+### 📄Api Docs
 ### 💡숙소
 
 HTTP Method | URI | Descriptions
