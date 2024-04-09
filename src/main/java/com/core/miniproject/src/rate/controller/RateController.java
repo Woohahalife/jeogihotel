@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-@Tag(name = "할인율 생성 & 수정 & 삭제 api", description = "할인율 관련 api - 보안 설정 필요")
+@Tag(name = "별점 생성 & 수정 & 삭제 api", description = "할인율 관련 api - 보안 설정 필요")
 public class RateController {
 
     private final RateService rateService;
