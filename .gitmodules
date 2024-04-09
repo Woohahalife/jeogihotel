@@ -1,0 +1,3 @@
+[submodule "src/main/resources/mini-secret"]
+	path = src/main/resources/mini-secret
+	url = https://github.com/Woohahalife/mini-secret.git
