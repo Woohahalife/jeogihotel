@@ -44,22 +44,22 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
 
     @Query(value = """
             SELECT DISTINCT a
-                        FROM Accommodation a
-                        LEFT JOIN FETCH a.roomId roomId
-                        LEFT JOIN FETCH a.rates
-                        LEFT JOIN FETCH a.images
-                        LEFT JOIN FETCH a.discount
-                        LEFT JOIN roomId.reservations r
-                        WHERE a.isDeleted=false
-                        AND a.accommodationType = :accommodationType
-                        AND a.location.locationName = :locationType
-                        AND roomId.fixedMember >= :personal
-                        AND (r is null OR r.isVisited <> 'VISIT_DATE')
-                        AND (r is null OR r.isVisited <> 'VISITED')
-                        AND (r is null OR not ((r.checkIn >= :checkIn and r.checkOut <= :checkOut) or (r.checkIn < :checkIn and r.checkOut > :checkOut)))
-                        AND (r is null OR (r.checkOut <= :checkIn OR r.checkIn >= :checkOut))
-                        AND (r is null OR (r.checkOut <= :checkOut OR r.checkIn >= :checkOut))
-                        ORDER BY roomId.price ASC
+            FROM Accommodation a
+            LEFT JOIN FETCH a.roomId roomId
+            LEFT JOIN FETCH a.rates
+            LEFT JOIN FETCH a.images
+            LEFT JOIN FETCH a.discount
+            LEFT JOIN roomId.reservations r
+            WHERE a.isDeleted=false
+            AND a.accommodationType = :accommodationType
+            AND a.location.locationName = :locationType
+            AND roomId.fixedMember >= :personal
+            AND (r is null OR r.isVisited <> 'VISIT_DATE')
+            AND (r is null OR r.isVisited <> 'VISITED')
+            AND (r is null OR not ((r.checkIn >= :checkIn and r.checkOut <= :checkOut) or (r.checkIn < :checkIn and r.checkOut > :checkOut)))
+            AND (r is null OR (r.checkOut <= :checkIn OR r.checkIn >= :checkOut))
+            AND (r is null OR (r.checkOut <= :checkOut OR r.checkIn >= :checkOut))
+            ORDER BY roomId.price ASC
             """)
     List<Accommodation> findAllAccommodation(@Param("checkIn") LocalDate checkIn,
                                              @Param("checkOut") LocalDate checkInOut,
