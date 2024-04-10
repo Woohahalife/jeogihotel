@@ -1,4 +1,4 @@
-FROM openjdk17:alpine
+FROM openjdk:17-alpine
 
 COPY ./build/libs/KDT_BE7_Mini-Project-0.0.1-SNAPSHOT.jar accommodation-backend.jar
 
