@@ -66,7 +66,6 @@ class ReservationServiceTest {
     Room room = Room.builder()
             .id(1L)
             .roomImage(RoomImage.builder().id(1L).build())
-            .roomCount(1)
             .roomInfo("정보")
             .price(30000)
             .fixedMember(2)
@@ -84,7 +83,7 @@ class ReservationServiceTest {
     @Test
     void reservaion_저장_성공() {
         // given
-        ReservationInsertRequest request = new ReservationInsertRequest(1L, "객실1", LocalDate.now(), LocalDate.now().plusDays(1), 2, 4);
+        ReservationInsertRequest request = new ReservationInsertRequest(1L, "객실1", "address", LocalDate.now(), LocalDate.now().plusDays(1), 2, 4);
 
         BDDMockito.given(memberRepository.findByMemberEmail(any())).willReturn(Optional.of(member)); // memberInfo의 getEmail을 사용하기 때문에 주입되는 파라미터를 정의함
         BDDMockito.given(roomRepository.findById(any())).willReturn(Optional.of(room));
@@ -119,7 +118,7 @@ class ReservationServiceTest {
 
     @Test
     void insertReservationValidate_유효하지_않은_날짜_예외_발생() {
-        ReservationInsertRequest invalidRequest = new ReservationInsertRequest(1L, "객실1", LocalDate.now(), LocalDate.now(), 2, 4);
+        ReservationInsertRequest invalidRequest = new ReservationInsertRequest(1L, "객실1", "address", LocalDate.now(), LocalDate.now(), 2, 4);
 
         BDDMockito.given(memberRepository.findByMemberEmail(memberInfo.getEmail())).willReturn(Optional.of(member));
 
@@ -131,8 +130,8 @@ class ReservationServiceTest {
     @Test
     void 모든_reservation_조회_성공() {
         // given
-        ReservationInsertRequest request1 = new ReservationInsertRequest(1L, "객실1", LocalDate.now(), LocalDate.now(), 2, 4);
-        ReservationInsertRequest request2 = new ReservationInsertRequest(2L, "객실2", LocalDate.now().plusDays(1), LocalDate.now().plusDays(2), 2, 4);
+        ReservationInsertRequest request1 = new ReservationInsertRequest(1L, "객실1", "address", LocalDate.now(), LocalDate.now(), 2, 4);
+        ReservationInsertRequest request2 = new ReservationInsertRequest(1L, "객실1", "address", LocalDate.now().plusDays(1), LocalDate.now().plusDays(2), 2, 4);
 
         BDDMockito.given(memberRepository.findByMemberEmail(memberInfo.getEmail())).willReturn(Optional.of(member));
 
