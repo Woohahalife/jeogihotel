@@ -60,5 +60,6 @@ jobs:
           script: |
             docker stop accommodation-backend || true
             docker rm accommodation-backend || true 
+            docker rmi accommodation-backend || true 
             docker pull woohahalife/accommodation-backend
             docker run -d -p 8081:8081 --name accommodation-backend woohahalife/accommodation-backend
