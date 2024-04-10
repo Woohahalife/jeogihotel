@@ -38,7 +38,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push to docker hub
-        run: docker push woohahalife/accommodation-backend .
+        run: docker push woohahalife/accommodation-backend
 
       - name: Connect to AWS & Execute Application
         uses: appleboy/ssh-action@v0.1.6
