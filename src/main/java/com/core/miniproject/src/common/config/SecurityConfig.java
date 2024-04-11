@@ -54,13 +54,12 @@ public class SecurityConfig {
 
         return http.build();
     }
-
     // H2Console에 대한 필터를 차단(spring.h2.console.enabled = true 일 때만 작동)
     @Bean
-    @ConditionalOnProperty(name = "spring.h2.console.enabled", havingValue = "true")
     public WebSecurityCustomizer configureH2ConsoleEnable() {
         return web -> web
                 .ignoring()
-                .requestMatchers(PathRequest.toH2Console());
+                .requestMatchers(PathRequest.toH2Console())
+                .requestMatchers("/swagger", "/favicon");
     }
 }

@@ -115,11 +115,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                    HttpServletResponse response,
                                    FilterChain filterChain) throws IOException, ServletException {
 
-        if (request.getRequestURI().startsWith(PUBLIC_API_PREFIX) ||
-            request.getRequestURI().contains("h2-console") ||
-            request.getRequestURI().contains("swagger") ||
-            request.getRequestURI().contains("favicon")
-        ) {
+        if (request.getRequestURI().startsWith(PUBLIC_API_PREFIX)) {
             filterChain.doFilter(request, response);
             return true;
         }
