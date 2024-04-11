@@ -76,7 +76,7 @@ public class MemberService {
         AccessToken token = jwtTokenGenerator.generateAccessToken(member.getEmail(), member.getRole());
         String refreshToken = jwtTokenGenerator.createRefreshToken(member.getEmail());
 
-//        refreshTokenService.saveRefreshToken(new RefreshToken(String.valueOf(member.getId()), refreshToken, token.getSecretKey()));
+        refreshTokenService.saveRefreshToken(new RefreshToken(String.valueOf(member.getId()), refreshToken, token.getSecretKey()));
 
         return MemberLoginResponse.toClient(token, member.getId());
     }
