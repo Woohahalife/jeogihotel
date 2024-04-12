@@ -27,4 +27,10 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     and b.is_deleted=false
     """)
     List<Board> findAllByMemberId(Long memberId);
+
+    List<Board> findByTitleContains(String title);
+
+    List<Board> findByContentContains(String content);
+
+
 }
