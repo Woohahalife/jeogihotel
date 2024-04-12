@@ -21,9 +21,9 @@ public class Board {
     @Column(name="board_id")
     private Long id;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "member_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private List<Member> member;
+    private Member member;
 
     @Column(name = "content")
     private String content;

@@ -19,4 +19,12 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 """)
     @Override
     List<Board> findAll();
+
+    @Query("""
+    select b
+    from Board b
+    where b.member.id=?1
+    and b.is_deleted=false
+    """)
+    List<Board> findAllByMemberId(Long memberId);
 }
