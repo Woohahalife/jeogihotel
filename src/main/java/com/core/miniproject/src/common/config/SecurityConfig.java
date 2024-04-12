@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -54,12 +55,21 @@ public class SecurityConfig {
 
         return http.build();
     }
-    // H2Console에 대한 필터를 차단(spring.h2.console.enabled = true 일 때만 작동)
+
     @Bean
+    @Profile(value = "local")
     public WebSecurityCustomizer configureH2ConsoleEnable() {
         return web -> web
                 .ignoring()
                 .requestMatchers(PathRequest.toH2Console())
+                .requestMatchers("/swagger", "/favicon");
+    }
+
+    @Bean
+    @Profile(value = "dev")
+    public WebSecurityCustomizer configureSwaggerEnable() {
+        return web -> web
+                .ignoring()
                 .requestMatchers("/swagger", "/favicon");
     }
 }
