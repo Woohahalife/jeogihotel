@@ -25,6 +25,8 @@ public class Board {
     @JoinColumn(name = "member_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Member member;
 
+    @Column(name="title")
+    private String title;
     @Column(name = "content")
     private String content;
     @Column(name = "is_deleted")
