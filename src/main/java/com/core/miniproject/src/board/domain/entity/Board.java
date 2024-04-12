@@ -6,7 +6,6 @@ import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Getter
