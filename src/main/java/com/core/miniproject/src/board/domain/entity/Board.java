@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,9 +21,9 @@ public class Board {
     @Column(name="board_id")
     private Long id;
 
-    @OneToOne
+    @OneToMany
     @JoinColumn(name = "member_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private Member member;
+    private List<Member> member;
 
     @Column(name = "content")
     private String content;
