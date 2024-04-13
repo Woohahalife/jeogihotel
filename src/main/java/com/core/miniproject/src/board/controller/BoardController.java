@@ -4,6 +4,7 @@ import com.core.miniproject.src.board.domain.dto.BoardInsertRequest;
 import com.core.miniproject.src.board.domain.dto.BoardInsertResponse;
 import com.core.miniproject.src.board.service.BoardService;
 import com.core.miniproject.src.common.response.BaseResponse;
+import com.core.miniproject.src.common.response.BaseResponseStatus;
 import com.core.miniproject.src.common.security.JwtAuthentication;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,5 +36,14 @@ public class BoardController {
     ){
         BoardInsertResponse response = boardService.updateBoard(boardId,request, memberInfo);
         return BaseResponse.response(response);
+    }
+
+    @DeleteMapping("/v1/board/delete/{board_id}")
+    public BaseResponse<BaseResponseStatus> deleteBoard(
+            @PathVariable("board_id") Long boardId,
+            @JwtAuthentication MemberInfo memberInfo
+    ){
+        BaseResponseStatus responseStatus = boardService.deleteBoard(boardId, memberInfo);
+        return BaseResponse.response(responseStatus);
     }
 }

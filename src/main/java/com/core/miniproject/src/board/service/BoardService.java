@@ -7,6 +7,7 @@ import com.core.miniproject.src.board.domain.entity.Board;
 import com.core.miniproject.src.board.repository.BoardRepository;
 import com.core.miniproject.src.common.entity.BaseEntity;
 import com.core.miniproject.src.common.exception.BaseException;
+import com.core.miniproject.src.common.response.BaseResponseStatus;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
 import com.core.miniproject.src.member.domain.entity.Member;
 import com.core.miniproject.src.member.repository.MemberRepository;
@@ -65,6 +66,19 @@ public class BoardService extends BaseEntity {
         board.update(request);
         Board newBoard = boardRepository.save(board);
         return BoardInsertResponse.toClient(newBoard);
+    }
+
+    @Transactional
+    public BaseResponseStatus deleteBoard(Long boardId, MemberInfo memberInfo){
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(()-> new BaseException(BOARD_NOT_FOUND));
+
+        try {
+            boardRepository.deleteById(board.getId());
+            return BaseResponseStatus.DELETE_SUCCESS;
+        } catch (Exception e) {
+            throw new BaseException(BaseResponseStatus.DELETE_FAIL);
+        }
     }
 
     private Member emailValidate(MemberInfo memberInfo) {
