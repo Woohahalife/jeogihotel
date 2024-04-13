@@ -23,7 +23,6 @@ class BoardRepositoryTest {
                         .id(1L)
                         .build())
                 .updateDate(LocalDate.now())
-                .deleteDate(null)
                 .build();
 
         Board newBoard = boardRepository.save(board);
@@ -38,7 +37,6 @@ class BoardRepositoryTest {
                         .id(1L)
                         .build()))
                 .updateDate(LocalDate.now())
-                .deleteDate(null)
                 .build();
 
         Board board2 = Board.builder()
@@ -48,7 +46,6 @@ class BoardRepositoryTest {
                         .build()))
                 .is_deleted(true)
                 .updateDate(LocalDate.of(2024, 4, 10))
-                .deleteDate(LocalDate.now())
                 .build();
 
         boardRepository.save(board1);
@@ -68,7 +65,6 @@ class BoardRepositoryTest {
                 .content("테스트1")
                 .member(member)
                 .updateDate(LocalDate.now())
-                .deleteDate(null)
                 .build();
 
         Board board2 = Board.builder()
@@ -76,7 +72,6 @@ class BoardRepositoryTest {
                 .member(member)
                 .is_deleted(false)
                 .updateDate(LocalDate.of(2024, 4, 10))
-                .deleteDate(LocalDate.now())
                 .build();
         boardRepository.save(board1);
         boardRepository.save(board2);
@@ -96,7 +91,6 @@ class BoardRepositoryTest {
                 .content("테스트1")
                 .member(member)
                 .updateDate(LocalDate.now())
-                .deleteDate(null)
                 .build();
 
         Board board2 = Board.builder()
@@ -105,7 +99,6 @@ class BoardRepositoryTest {
                 .member(member)
                 .is_deleted(false)
                 .updateDate(LocalDate.of(2024, 4, 10))
-                .deleteDate(LocalDate.now())
                 .build();
         boardRepository.save(board1);
         boardRepository.save(board2);
@@ -130,7 +123,6 @@ class BoardRepositoryTest {
                 .content("테스트1")
                 .member(member)
                 .updateDate(LocalDate.now())
-                .deleteDate(null)
                 .build();
 
         Board board2 = Board.builder()
@@ -139,7 +131,6 @@ class BoardRepositoryTest {
                 .member(member)
                 .is_deleted(false)
                 .updateDate(LocalDate.of(2024, 4, 10))
-                .deleteDate(LocalDate.now())
                 .build();
         boardRepository.save(board1);
         boardRepository.save(board2);
@@ -150,6 +141,5 @@ class BoardRepositoryTest {
         }
 
         Assertions.assertThat(boards.size()).isEqualTo(2);
-
     }
 }

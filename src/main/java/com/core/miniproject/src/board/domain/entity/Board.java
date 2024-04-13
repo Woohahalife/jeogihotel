@@ -33,6 +33,4 @@ public class Board {
     private boolean is_deleted=false;
     @Column(name = "update_date")
     private LocalDate updateDate;
-    @Column(name = "delete_date")
-    private LocalDate deleteDate;
 }
