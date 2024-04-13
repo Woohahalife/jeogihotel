@@ -23,13 +23,17 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query("""
     select b
     from Board b
-    where b.member.id=?1
+    where b.title like %?1%
     and b.is_deleted=false
-    """)
-    List<Board> findAllByMemberId(Long memberId);
-
+""")
     List<Board> findByTitleContains(String title);
 
+    @Query("""
+    select b
+    from Board b
+    where b.content like %?1%
+    and b.is_deleted=false
+""")
     List<Board> findByContentContains(String content);
 
 

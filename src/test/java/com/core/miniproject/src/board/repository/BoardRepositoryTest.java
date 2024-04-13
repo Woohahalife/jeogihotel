@@ -54,31 +54,6 @@ class BoardRepositoryTest {
 
         Assertions.assertThat(boards.size()).isEqualTo(1);
     }
-    
-    @Test
-    void 공지사항조회by멤버_성공(){
-        Member member = Member.builder()
-                .id(1L)
-                .build();
-
-        Board board1 = Board.builder()
-                .content("테스트1")
-                .member(member)
-                .updateDate(LocalDate.now())
-                .build();
-
-        Board board2 = Board.builder()
-                .content("테스트2")
-                .member(member)
-                .is_deleted(false)
-                .updateDate(LocalDate.of(2024, 4, 10))
-                .build();
-        boardRepository.save(board1);
-        boardRepository.save(board2);
-        List<Board> boards = boardRepository.findAllByMemberId(member.getId());
-
-        Assertions.assertThat(boards.size()).isEqualTo(2);
-    }
 
     @Test
     void 제목으로조회_성공(){

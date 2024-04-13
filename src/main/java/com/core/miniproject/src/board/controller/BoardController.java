@@ -18,7 +18,7 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @PostMapping("/v1/register/board")
+    @PostMapping("/v1/board/register")
     public BaseResponse<BoardInsertResponse> registerBoard(
             @RequestBody BoardInsertRequest request,
             @JwtAuthentication MemberInfo memberInfo
