@@ -12,13 +12,13 @@ import com.core.miniproject.src.member.domain.entity.Member;
 import com.core.miniproject.src.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.core.miniproject.src.common.response.BaseResponseStatus.EMAIL_IS_NOT_VALIDATE;
-import static com.core.miniproject.src.common.response.BaseResponseStatus.EMAIL_NOT_FOUND;
+import static com.core.miniproject.src.common.response.BaseResponseStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +27,7 @@ public class BoardService extends BaseEntity {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional
     public BoardInsertResponse saveBoard(BoardInsertRequest request, MemberInfo memberInfo){
 
         Member member = emailValidate(memberInfo);
@@ -40,21 +41,31 @@ public class BoardService extends BaseEntity {
         return BoardInsertResponse.toClient(boardRepository.save(board));
     }
 
+    @Transactional
     public List<BoardResponse> findAllBoard(){
         List<Board> boards = boardRepository.findAll();
         return boardToResponse(boards);
     }
 
+    @Transactional
     public List<BoardResponse> searchByTitle(String title){
         List<Board> boards = boardRepository.findByTitleContains(title);
         return boardToResponse(boards);
     }
-
+    @Transactional
     public List<BoardResponse> searchByContent(String content){
         List<Board> boards = boardRepository.findByContentContains(content);
         return boardToResponse(boards);
     }
 
+    @Transactional
+    public BoardInsertResponse updateBoard(Long boardId, BoardInsertRequest request, MemberInfo memberInfo){
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(()-> new BaseException(BOARD_NOT_FOUND));
+        board.update(request);
+        Board newBoard = boardRepository.save(board);
+        return BoardInsertResponse.toClient(newBoard);
+    }
 
     private Member emailValidate(MemberInfo memberInfo) {
         Member member = memberRepository.findByMemberEmail(memberInfo.getEmail())

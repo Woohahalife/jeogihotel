@@ -26,4 +26,14 @@ public class BoardController {
         BoardInsertResponse response = boardService.saveBoard(request, memberInfo);
         return BaseResponse.response(response);
     }
+
+    @PostMapping("/v1/board/update/{board_id}")
+    public BaseResponse<BoardInsertResponse> updateBoard(
+            @PathVariable("board_id") Long boardId,
+            @JwtAuthentication MemberInfo memberInfo,
+            @RequestBody BoardInsertRequest request
+    ){
+        BoardInsertResponse response = boardService.updateBoard(boardId,request, memberInfo);
+        return BaseResponse.response(response);
+    }
 }

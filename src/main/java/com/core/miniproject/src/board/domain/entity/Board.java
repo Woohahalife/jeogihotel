@@ -1,5 +1,6 @@
 package com.core.miniproject.src.board.domain.entity;
 
+import com.core.miniproject.src.board.domain.dto.BoardInsertRequest;
 import com.core.miniproject.src.member.domain.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,4 +34,10 @@ public class Board {
     private boolean is_deleted=false;
     @Column(name = "update_date")
     private LocalDate updateDate;
+
+    public void update(BoardInsertRequest request){
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.updateDate = LocalDate.now();
+    }
 }
