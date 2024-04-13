@@ -6,20 +6,19 @@ import com.core.miniproject.src.board.service.BoardService;
 import com.core.miniproject.src.common.response.BaseResponse;
 import com.core.miniproject.src.common.security.JwtAuthentication;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Tag(name = "공지사항 생성 & 수정 & 삭제 api", description = "공지사항 관련 api - 보안 접근 필요")
 public class BoardController {
 
     private final BoardService boardService;
 
-    @GetMapping("/v1/register/board")
+    @PostMapping("/v1/register/board")
     public BaseResponse<BoardInsertResponse> registerBoard(
             @RequestBody BoardInsertRequest request,
             @JwtAuthentication MemberInfo memberInfo

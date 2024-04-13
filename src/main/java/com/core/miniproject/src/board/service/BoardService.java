@@ -31,7 +31,7 @@ public class BoardService extends BaseEntity {
                 .title(request.getTitle())
                 .content(request.getContent())
                 .member(member)
-                .updateDate(LocalDate.from(getCreatedAt()))
+                .updateDate(LocalDate.now())
                 .build();
 
         return BoardInsertResponse.toClient(boardRepository.save(board));
