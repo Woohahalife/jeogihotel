@@ -42,6 +42,7 @@ public enum BaseResponseStatus {
     FAILURE_PRICING_POLICY(false, BAD_REQUEST.value(), "객실의 최소 가격은 30000원 이상이어야 합니다."),
     DELETE_FAIL(false, BAD_REQUEST.value(),"삭제에 실패했습니다."),
     IMAGE_NOT_FOUND(false, BAD_REQUEST.value(), "이미지 경로가 존재하지 않습니다."),
+    BOARD_NOT_FOUND(false, BAD_REQUEST.value(), "게시글이 존재하지 않습니다."),
     DUPLICATED_IMAGE(false, BAD_REQUEST.value(), "중복된 이미지 경로입니다."),
 
     TYPE_MISMATCH(false, BAD_REQUEST.value(), "데이터 타입이 맞지 않습니다."),
