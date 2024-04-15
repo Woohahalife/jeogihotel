@@ -1,5 +1,12 @@
-FROM openjdk:17-alpine
+FROM openjdk:17-jdk-alpine as builder
+ARG JAR_FILE=./build/libs/*.jar
+COPY ${JAR_FILE} accommodation-backend.jar
 
-COPY ./build/libs/KDT_BE7_Mini-Project-0.0.1-SNAPSHOT.jar accommodation-backend.jar
+RUN java -Djarmode=layertools -jar accommodation-backend.jar extract
 
-CMD ["java", "-jar", "accommodation-backend.jar"]
+FROM openjdk:17-jdk-alpine
+COPY --from=builder ./dependencies/ ./
+COPY --from=builder ./spring-boot-loader/ ./
+COPY --from=builder ./snapshot-dependencies/ ./
+COPY --from=builder ./application/ ./
+ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "org.springframework.boot.loader.JarLauncher"]
