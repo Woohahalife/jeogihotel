@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.core.miniproject.src.common.response.BaseResponse.response;
 
@@ -28,14 +29,15 @@ public class RoomController {
     @PostMapping("/v1/accommodation/{accommodationId}/room")
     public BaseResponse<RoomInsertResponse> createRoom(
             @PathVariable("accommodationId") Long accommodationId,
-            @RequestBody RoomInsertRequest request,
+            @RequestPart(value = "request") RoomInsertRequest request,
+            @RequestPart(value = "image", required = false) MultipartFile multipartFile,
             @JwtAuthentication MemberInfo memberInfo)
     {
         log.info("Post Mapping - Create a new room with accommodationId : {}," +
                  " Request Details : {}",
                 accommodationId, request);
 
-        RoomInsertResponse roomResponse = roomService.createRoom(accommodationId, request, memberInfo);
+        RoomInsertResponse roomResponse = roomService.createRoom(accommodationId, request, multipartFile, memberInfo);
 
         return response(roomResponse);
     }

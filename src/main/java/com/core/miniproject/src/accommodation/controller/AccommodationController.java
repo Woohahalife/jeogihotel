@@ -13,6 +13,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -23,14 +26,14 @@ public class AccommodationController {
 
     private final AccommodationService accommodationService;
 
-    @PostMapping("/v1/accommodation/admin")
+    @PostMapping(value = "/v1/accommodation/admin")
     public BaseResponse<AccommodationInsertResponse> createAccommodation(
-            @RequestBody AccommodationInsertRequest request,
+            @RequestPart(value = "request") AccommodationInsertRequest request,
+            @RequestPart(value = "image", required = false) List<MultipartFile> multipartFiles,
             @JwtAuthentication MemberInfo memberInfo) {
 
-
         AccommodationInsertResponse accommodationInsertResponse =
-                accommodationService.createAccommodation(request, request.getAccommodationImage(), memberInfo);
+                accommodationService.createAccommodation(request, multipartFiles, memberInfo);
 
         return BaseResponse.response(accommodationInsertResponse);
     }

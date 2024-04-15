@@ -2,20 +2,15 @@ package com.core.miniproject.src.accommodation.controller;
 
 import com.core.miniproject.src.accommodation.domain.dto.AccommodationAllResponse;
 import com.core.miniproject.src.accommodation.domain.dto.AccommodationResponse;
-import com.core.miniproject.src.accommodation.domain.dto.ImageUrl;
 import com.core.miniproject.src.accommodation.service.AccommodationService;
 import com.core.miniproject.src.common.response.BaseResponse;
-import com.core.miniproject.src.common.util.S3Uploader;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,7 +22,6 @@ import java.util.List;
 public class AccommodationPublicController {
 
     private final AccommodationService accommodationService;
-    private final S3Uploader s3Uploader;
 
     @GetMapping("/v1/accommodation/all")
     public BaseResponse<List<AccommodationResponse>> getAllAccommodation() {
@@ -66,28 +60,4 @@ public class AccommodationPublicController {
 
         return BaseResponse.response(response);
     }
-
-    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public BaseResponse<ImageUrl> createFile(
-            @RequestPart(value = "image") MultipartFile multipartFile
-    ) {
-
-        System.out.println("multipartFile = " + multipartFile);
-
-        String fileName = "";
-        if(multipartFile != null) {
-
-            try {
-                fileName = s3Uploader.upload(multipartFile, "images");
-            } catch (IOException e) {
-
-                throw new IllegalArgumentException("업로드 오류");
-            }
-        }
-
-        ImageUrl imageUrl = new ImageUrl(fileName);
-
-        return BaseResponse.response(imageUrl);
-    }
-
 }

@@ -9,6 +9,7 @@ import com.core.miniproject.src.accommodation.repository.DiscountRepository;
 import com.core.miniproject.src.common.exception.BaseException;
 import com.core.miniproject.src.common.response.BaseResponseStatus;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
+import com.core.miniproject.src.common.util.AccommodationUploader;
 import com.core.miniproject.src.image.domain.entity.AccommodationImage;
 import com.core.miniproject.src.image.repository.AccommodationImageRepository;
 import com.core.miniproject.src.location.domain.entity.Location;
@@ -16,11 +17,12 @@ import com.core.miniproject.src.location.domain.entity.LocationType;
 import com.core.miniproject.src.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,6 +35,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AccommodationService {
 
+    private final AccommodationUploader imageUploader;
     private final AccommodationRepository accommodationRepository;
     private final DiscountRepository discountRepository;
     private final LocationRepository locationRepository;
@@ -41,10 +44,10 @@ public class AccommodationService {
     @Transactional
     public AccommodationInsertResponse createAccommodation(
             AccommodationInsertRequest request,
-            List<String> imageRequest, MemberInfo memberInfo)
+            List<MultipartFile> multipartFile, MemberInfo memberInfo)
     {
         Accommodation accommodation =
-                getAccommodationPerDisCountAndLocation(request, imageRequest);
+                getAccommodationPerDisCountAndLocation(request, multipartFile);
 
         accommodation.getImages().forEach(image -> image.assignAccommodation(accommodation));
 
@@ -56,7 +59,7 @@ public class AccommodationService {
 
     private Accommodation getAccommodationPerDisCountAndLocation(
             AccommodationInsertRequest request,
-            List<String> imageRequest
+            List<MultipartFile> multipartFile
     ) {
 
         Discount discount = discountRepository.findDiscountByRate(request.getDiscountRate())
@@ -67,11 +70,21 @@ public class AccommodationService {
         Location location = locationRepository.findLocationByType(type)
                 .orElseGet(() -> locationRepository.save(Location.builder().locationName(type).build()));
 
-        List<AccommodationImage> images = imageRequest.stream()
-                .map(path -> AccommodationImage.builder()
-                        .imagePath(path)
-                        .build())
-                .collect(Collectors.toList());
+        List<AccommodationImage> images = new ArrayList<>();
+
+        if(multipartFile != null) {
+            try {
+                List<String> imagePaths = imageUploader.upload(multipartFile, "accommodationImages");
+                imagePaths.forEach(path -> {
+                    AccommodationImage image = AccommodationImage.builder()
+                            .imagePath(path)
+                            .build();
+                    images.add(image);
+                });
+            } catch (IOException e) {
+                throw new IllegalArgumentException("업로드 오류", e);
+            }
+        }
 
         List<AccommodationImage> accommodationImages = imageRepository.saveAll(images);
 

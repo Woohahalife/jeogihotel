@@ -15,7 +15,6 @@ public class RoomInsertRequest {
     private String roomInfo;
     private Integer fixedNumber;
     private Integer maxedNumber;
-    private String roomImage;
     private Integer price;
 
 }
