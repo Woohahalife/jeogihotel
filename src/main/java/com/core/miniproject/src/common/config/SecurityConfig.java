@@ -70,6 +70,6 @@ public class SecurityConfig {
     public WebSecurityCustomizer configureSwaggerEnable() {
         return web -> web
                 .ignoring()
-                .requestMatchers("/swagger", "/favicon");
+                .requestMatchers("/swagger");
     }
 }
