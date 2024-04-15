@@ -11,12 +11,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardInsertResponse {
+    private Long id;
     private String title;
     private String content;
     private LocalDate updateDate;
 
     public static BoardInsertResponse toClient(Board board){
         return BoardInsertResponse.builder()
+                .id(board.getId())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .updateDate(board.getUpdateDate())
