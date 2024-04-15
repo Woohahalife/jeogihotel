@@ -5,6 +5,7 @@ import com.core.miniproject.src.accommodation.repository.AccommodationRepository
 import com.core.miniproject.src.common.exception.BaseException;
 import com.core.miniproject.src.common.response.BaseResponseStatus;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
+import com.core.miniproject.src.common.util.RoomUploader;
 import com.core.miniproject.src.image.domain.entity.RoomImage;
 import com.core.miniproject.src.image.repository.RoomImageRepository;
 import com.core.miniproject.src.room.domain.dto.RoomInsertRequest;
@@ -17,10 +18,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static com.core.miniproject.src.common.response.BaseResponseStatus.*;
 
@@ -29,6 +31,7 @@ import static com.core.miniproject.src.common.response.BaseResponseStatus.*;
 @Slf4j
 public class RoomService {
 
+    private final RoomUploader imageUploader;
     private final AccommodationRepository accommodationRepository;
     private final RoomRepository roomRepository;
     private final RoomImageRepository imageRepository;
@@ -36,12 +39,12 @@ public class RoomService {
     @Transactional
     public RoomInsertResponse createRoom(
             Long accommodationId,
-            RoomInsertRequest request, MemberInfo memberInfo)
+            RoomInsertRequest request, MultipartFile multipartFile, MemberInfo memberInfo)
     {
         Accommodation accommodation = accommodationRepository.findById(accommodationId)
                 .orElseThrow(() -> new BaseException(ACCOMMODATION_DOES_NOT_EXIST));
 
-        Room room = getRoomForRequest(request, accommodation);
+        Room room = getRoomForRequest(request, multipartFile, accommodation);
 
         room.getRoomImage().assignRoom(room);
 
@@ -84,13 +87,25 @@ public class RoomService {
         return RoomResponse.toClient(roomRepository.save(room));
     }
 
-    private Room getRoomForRequest(RoomInsertRequest request, Accommodation accommodation) {
+    private Room getRoomForRequest(RoomInsertRequest request, MultipartFile multipartFile, Accommodation accommodation) {
         numberOfPeopleValidate(request);
         requiredInfoValidate(request);
         roomPricePolicyValidate(request); // 가격 설정 정책을 지키지 못했다는 것을 따로 표시하기 위해 검증문 분리 설정
 
+
+        String fileName = "";
+        if(multipartFile != null) {
+
+            try {
+                fileName = imageUploader.upload(multipartFile, "images");
+            } catch (IOException e) {
+
+                throw new IllegalArgumentException("업로드 오류");
+            }
+        }
+
         RoomImage image = RoomImage.builder()
-                .imagePath(request.getRoomImage())
+                .imagePath(fileName)
                 .build();
 
         RoomImage roomImage = imageRepository.save(image);
@@ -107,8 +122,7 @@ public class RoomService {
     }
 
     private void requiredInfoValidate(RoomInsertRequest request) {
-        if(request.getRoomImage().isEmpty() ||
-           request.getRoomName().isEmpty() ||
+        if(request.getRoomName().isEmpty() ||
            request.getRoomInfo().isEmpty()) {
             throw new BaseException(SET_REQUIRED_INFORMATION);
         }

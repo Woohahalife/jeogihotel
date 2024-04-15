@@ -17,7 +17,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class S3Uploader {
+public class RoomUploader {
 
     private final AmazonS3Client amazonS3Client;
 

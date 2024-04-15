@@ -29,7 +29,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.json.JacksonTester;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.core.miniproject.src.common.response.BaseResponseStatus.ACCOMMODATION_DOES_NOT_EXIST;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,7 +63,7 @@ public class RoomServiceTest {
             .introduction("숙소설명")
             .location(Location.builder().id(1L).build())
             .discount(Discount.builder().id(1L).build())
-            .rates(Collections.singletonList(Rate.builder().id(1L).build()))
+            .rates((Set<Rate>) List.of(Rate.builder().id(1L).build()))
             .build();
 
     @BeforeEach
@@ -92,7 +94,7 @@ public class RoomServiceTest {
                 .willReturn(expectedRoom);
 
         // when
-        RoomInsertResponse response = roomService.createRoom(accommodation.getId(), request, memberInfo);
+        RoomInsertResponse response = roomService.createRoom(accommodation.getId(), request, multipartFile, memberInfo);
 
         // then
         BDDMockito.verify(accommodationRepository).findById(accommodation.getId());
@@ -108,7 +110,7 @@ public class RoomServiceTest {
         BDDMockito.given(accommodationRepository.findById(any()))
                 .willReturn(Optional.empty());
 
-        assertThatThrownBy(() -> roomService.createRoom(accommodation.getId(), request, memberInfo))
+        assertThatThrownBy(() -> roomService.createRoom(accommodation.getId(), request, multipartFile, memberInfo))
                 .isInstanceOf(BaseException.class)
                 .hasMessage(ACCOMMODATION_DOES_NOT_EXIST.getMessage());
     }
