@@ -1,10 +1,13 @@
 package com.core.miniproject.src.reservation.service;
 
+import com.core.miniproject.src.basket.domain.entity.Basket;
+import com.core.miniproject.src.basket.repository.BasketRepository;
 import com.core.miniproject.src.common.constant.IsVisited;
 import com.core.miniproject.src.common.exception.BaseException;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
 import com.core.miniproject.src.member.domain.entity.Member;
 import com.core.miniproject.src.member.repository.MemberRepository;
+import com.core.miniproject.src.reservation.model.dto.ReservationBasketRequest;
 import com.core.miniproject.src.reservation.model.dto.ReservationInsertRequest;
 import com.core.miniproject.src.reservation.model.dto.ReservationInsertResponse;
 import com.core.miniproject.src.reservation.model.dto.ReservationListResponse;
@@ -16,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +32,7 @@ public class ReservationService {
     private final MemberRepository memberRepository;
     private final RoomRepository roomRepository;
     private final ReservationRepository reservationRepository;
+    private final BasketRepository basketRepository;
 
     @Transactional
     public ReservationInsertResponse registerReservation(ReservationInsertRequest request, MemberInfo memberInfo) {
@@ -44,11 +49,11 @@ public class ReservationService {
         Room room = roomRepository.findById(request.getRoomId())
                 .orElseThrow(() -> new BaseException(ROOM_NOT_FOUND));
 
-        Reservation reservation = reservationRepository.findReservationByCheckInAndCheckOutAndId(
+        List<Reservation> reservation = reservationRepository.findReservationByCheckInAndCheckOutAndId(
                 request.getCheckIn(), request.getCheckOut(), room.getId());
 
-        if(reservation != null) {
-            throw new BaseException(RESERVAION_IS_DUPLICATE);
+        if (!reservation.isEmpty()) {
+            throw new BaseException(RESERVATION_IS_DUPLICATE);
         }
 
         return Reservation.builder()
@@ -103,5 +108,53 @@ public class ReservationService {
         }
 
         return member;
+    }
+
+    @Transactional
+    public List<ReservationListResponse> reservationFromBasket(ReservationBasketRequest request, MemberInfo memberInfo) {
+
+        List<Long> baskIds = request.getBaskIds();
+        // 해당 회원의 장바구니에 담긴 데이터를 예약쪽으로 전달
+        List<Basket> selectedBasketList = basketRepository.findAllByMemberIdAndIdIn(memberInfo.getId(), baskIds);
+
+        List<Reservation> resultReservation = new ArrayList<>();
+        // 장바구니에 담긴 객실이 현재 시점에 예약이 되어있는지 다시한번 체크
+        for (Basket basket : selectedBasketList) {
+            Long roomId = basket.getRoom().getId();
+
+            List<Reservation> reservation = reservationRepository.findReservationByCheckInAndCheckOutAndId(
+                    basket.getCheckIn(), basket.getCheckOut(), roomId
+            );
+
+            if (reservation.isEmpty()) { // 예약 중복이 없는 경우에만 필터링
+
+                Reservation filteredReservation = Reservation.builder()
+                        .member(basket.getMember())
+                        .roomName(basket.getRoomName())
+                        .address(basket.getAddress())
+                        .checkIn(basket.getCheckIn())
+                        .checkOut(basket.getCheckOut())
+                        .price(basket.getPrice())
+                        .fixedNumber(basket.getFixedNumber())
+                        .maxedNumber(basket.getMaxedNumber())
+                        .isVisited(IsVisited.NOT_VISIT)
+                        .room(basket.getRoom())
+                        .build();
+
+                resultReservation.add(filteredReservation);
+
+                basketRepository.deleteById(basket.getId()); // 예약 리스트 안에 들어간 장바구니 데이터 삭제
+            }else {
+
+                basketRepository.deleteById(basket.getId()); // 예약 시점 중복된 장바구니 데이터 삭제
+            }
+        }
+
+        List<Reservation> reservationList = reservationRepository.saveAll(resultReservation);
+
+        return reservationList
+                .stream()
+                .map(ReservationListResponse::toClient)
+                .collect(Collectors.toList());
     }
 }

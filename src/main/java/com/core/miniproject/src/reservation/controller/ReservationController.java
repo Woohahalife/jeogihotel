@@ -3,6 +3,7 @@ package com.core.miniproject.src.reservation.controller;
 import com.core.miniproject.src.common.response.BaseResponse;
 import com.core.miniproject.src.common.security.JwtAuthentication;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
+import com.core.miniproject.src.reservation.model.dto.ReservationBasketRequest;
 import com.core.miniproject.src.reservation.model.dto.ReservationInsertRequest;
 import com.core.miniproject.src.reservation.model.dto.ReservationInsertResponse;
 import com.core.miniproject.src.reservation.model.dto.ReservationListResponse;
@@ -38,8 +39,8 @@ public class ReservationController {
         return response(reservationService.registerReservation(request, memberInfo));
     }
 
-    @GetMapping("v1/reservation")
-    public BaseResponse<List<ReservationListResponse>> findAllReservaion(
+    @GetMapping("/v1/reservation")
+    public BaseResponse<List<ReservationListResponse>> findAllReservation(
             @JwtAuthentication MemberInfo memberInfo
     ) {
         log.info("Get Mapping - Select all reservation - member_id : {}, member_email : {}",
@@ -48,6 +49,16 @@ public class ReservationController {
         List<ReservationListResponse> reservationListResponse = reservationService.findAllReservation(memberInfo);
 
         return response(reservationListResponse);
+    }
+
+    @PostMapping("/v1/reservation/basket")
+    public BaseResponse<List<ReservationListResponse>> reservationFromBasket(
+            @RequestBody ReservationBasketRequest request,
+            @JwtAuthentication MemberInfo memberInfo
+    ) {
+        List<ReservationListResponse> responses = reservationService.reservationFromBasket(request, memberInfo);
+
+        return response(responses);
     }
 }
 
