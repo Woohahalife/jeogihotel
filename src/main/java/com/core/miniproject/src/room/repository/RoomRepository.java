@@ -28,7 +28,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     and r.accommodationId.isDeleted=false
     and r.isDeleted=false
     """)
-    Optional<Room> findById(Long accommodationId, Long roomId);
+    Optional<Room> findByAccommodationAndRoomId(Long accommodationId, Long roomId);
 
     @Query("""
     select r from Room r

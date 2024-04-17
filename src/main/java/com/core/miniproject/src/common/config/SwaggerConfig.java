@@ -31,7 +31,8 @@ public class SwaggerConfig {
                 root + ".rate.controller",
                 root + ".reservation.controller",
                 root + ".room.controller",
-                root + ".board.controller"
+                root + ".board.controller",
+                root + ".basket.controller",
         };
 
         @Bean

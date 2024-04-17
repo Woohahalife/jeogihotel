@@ -49,7 +49,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
                 OR (r.checkIn < :checkOut AND r.checkOut > :checkIn)
             )
             """)
-    Reservation findReservationByCheckInAndCheckOutAndId(
+    List<Reservation> findReservationByCheckInAndCheckOutAndId(
             @Param("checkIn") LocalDate checkIn,
             @Param("checkOut") LocalDate checkOut,
             @Param("id") Long roomId);

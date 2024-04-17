@@ -122,7 +122,7 @@ class RoomRepositoryTest {
         Accommodation newAccommodation1= AccommodationRepository.save(accommodation);
         Room room1 = roomRepository.save(room);
         roomRepository.deleteById(room1.getId());
-        Room room2 = roomRepository.findById(newAccommodation1.getId(),room1.getId()).orElse(null);
+        Room room2 = roomRepository.findByAccommodationAndRoomId(newAccommodation1.getId(),room1.getId()).orElse(null);
 
         Assertions.assertThat(room2).isNull();
 
