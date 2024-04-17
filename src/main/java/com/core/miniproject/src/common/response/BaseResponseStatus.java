@@ -31,6 +31,7 @@ public enum BaseResponseStatus {
     DUPLICATE_DISCOUNTRATE(false, BAD_REQUEST.value(), "할인율이 중복입니다"),
     DISCOUNT_NOT_FOUND(false, BAD_REQUEST.value(), "할인율 정보를 찾을 수 없습니다."),
     ROOM_NOT_FOUND(false, BAD_REQUEST.value(), "객실 정보를 찾을 수 없습니다."),
+    RESERVATION_NOT_FOUND(false, BAD_REQUEST.value(), "예약 정보를 찾을 수 없습니다."),
     NO_ROOMS_REMAINING(false, BAD_REQUEST.value(), "잔여 객실이 없습니다."),
     LOCATION_NOT_FOUND(false, BAD_REQUEST.value(), "지역 정보를 찾을 수 없습니다."),
     ERROR_SETTING_NUMBER_OF_GUEST(false, BAD_REQUEST.value(), "객실 인원 수 설정이 올바르지 않습니다."),
@@ -44,10 +45,12 @@ public enum BaseResponseStatus {
     IMAGE_NOT_FOUND(false, BAD_REQUEST.value(), "이미지 경로가 존재하지 않습니다."),
     BOARD_NOT_FOUND(false, BAD_REQUEST.value(), "게시글이 존재하지 않습니다."),
     DUPLICATED_IMAGE(false, BAD_REQUEST.value(), "중복된 이미지 경로입니다."),
+    BASKET_NOT_FOUND(false, BAD_REQUEST.value(), "장바구니에 객실이 존재하지 않습니다."),
+    BASKET_IS_DUPLICATE(false, BAD_REQUEST.value(), "장바구니에는 중복된 객실을 담을 수 없습니다."),
 
     TYPE_MISMATCH(false, BAD_REQUEST.value(), "데이터 타입이 맞지 않습니다."),
     JSON_PARSE_ERROR(false, BAD_REQUEST.value(), "유효한 JSON 데이터가 아닙니다. 전달하는 데이터 타입을 확인해주세요."),
-    RESERVAION_IS_DUPLICATE(false, BAD_REQUEST.value(), "해당 객실의 예약 내역이 이미 존재합니다."),
+    RESERVATION_IS_DUPLICATE(false, BAD_REQUEST.value(), "해당 객실의 예약 내역이 이미 존재합니다."),
 
     EXPIRED_ACCESSTOKEN(false, UNAUTHORIZED.value(), "토큰이 만료되었습니다."),
 
