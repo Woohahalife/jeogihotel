@@ -19,6 +19,7 @@ public class BasketReadResponse {
     private int fixedNumber;
     private int maxedNumber;
     private int price;
+    private double disCount;
     private LocalDate checkIn;
     private LocalDate checkOut;
     private String basketImage;
@@ -33,6 +34,7 @@ public class BasketReadResponse {
                 .fixedNumber(basket.getFixedNumber())
                 .maxedNumber(basket.getMaxedNumber())
                 .price(basket.getPrice())
+                .disCount(basket.getDiscount())
                 .checkIn(basket.getCheckIn())
                 .checkOut(basket.getCheckOut())
                 .basketImage(basket.getBasketImage())

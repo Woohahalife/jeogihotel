@@ -24,6 +24,7 @@ public class BasketCreateResponse {
     private int fixedNumber;
     private int maxedNumber;
     private int price;
+    private double disCount;
     private LocalDate checkIn;
     private LocalDate checkOut;
 
@@ -37,6 +38,7 @@ public class BasketCreateResponse {
                 .fixedNumber(savedBasket.getFixedNumber())
                 .maxedNumber(savedBasket.getMaxedNumber())
                 .price(savedBasket.getPrice())
+                .disCount(savedBasket.getDiscount())
                 .checkIn(savedBasket.getCheckIn())
                 .checkOut(savedBasket.getCheckOut())
                 .build();

@@ -36,6 +36,9 @@ public class Basket extends BaseEntity {
     @Column(name = "price")
     private int price;
 
+    @Column(name = "discount")
+    private double discount;
+
     @Column(name = "check_in")
     private LocalDate checkIn;
 
@@ -59,6 +62,7 @@ public class Basket extends BaseEntity {
                 .fixedNumber(room.getFixedMember())
                 .maxedNumber(room.getMaxedMember())
                 .price(room.getPrice())
+                .discount(room.getAccommodationId().getDiscount().getDiscountRate())
                 .checkIn(request.getCheckIn())
                 .checkOut(request.getCheckOut())
                 .basketImage(room.getRoomName())
