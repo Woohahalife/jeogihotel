@@ -14,12 +14,13 @@ public class BasketReadResponse {
 
     private Long id;
     private Long roomId;
+    private String accommodationName;
     private String roomName;
     private String address;
     private int fixedNumber;
     private int maxedNumber;
     private int price;
-    private double disCount;
+    private double discount;
     private LocalDate checkIn;
     private LocalDate checkOut;
     private String basketImage;
@@ -29,12 +30,13 @@ public class BasketReadResponse {
         return BasketReadResponse.builder()
                 .id(basket.getId())
                 .roomId(basket.getRoom().getId())
+                .accommodationName(basket.getRoom().getAccommodationId().getAccommodationName())
                 .roomName(basket.getRoomName())
                 .address(basket.getAddress())
                 .fixedNumber(basket.getFixedNumber())
                 .maxedNumber(basket.getMaxedNumber())
                 .price(basket.getPrice())
-                .disCount(basket.getDiscount())
+                .discount(basket.getDiscount())
                 .checkIn(basket.getCheckIn())
                 .checkOut(basket.getCheckOut())
                 .basketImage(basket.getBasketImage())

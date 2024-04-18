@@ -1,9 +1,6 @@
 package com.core.miniproject.src.accommodation.controller;
 
-import com.core.miniproject.src.accommodation.domain.dto.AccommodationInsertRequest;
-import com.core.miniproject.src.accommodation.domain.dto.AccommodationInsertResponse;
-import com.core.miniproject.src.accommodation.domain.dto.AccommodationRequest;
-import com.core.miniproject.src.accommodation.domain.dto.AccommodationResponse;
+import com.core.miniproject.src.accommodation.domain.dto.*;
 import com.core.miniproject.src.accommodation.service.AccommodationService;
 import com.core.miniproject.src.common.response.BaseResponse;
 import com.core.miniproject.src.common.response.BaseResponseStatus;
@@ -12,6 +9,8 @@ import com.core.miniproject.src.common.security.principal.MemberInfo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,7 +29,8 @@ public class AccommodationController {
     public BaseResponse<AccommodationInsertResponse> createAccommodation(
             @RequestPart(value = "request") AccommodationInsertRequest request,
             @RequestPart(value = "image", required = false) List<MultipartFile> multipartFiles,
-            @JwtAuthentication MemberInfo memberInfo) {
+            @JwtAuthentication MemberInfo memberInfo)
+    {
 
         AccommodationInsertResponse accommodationInsertResponse =
                 accommodationService.createAccommodation(request, multipartFiles, memberInfo);
@@ -55,5 +55,19 @@ public class AccommodationController {
     ){
         AccommodationResponse accommodationResponse = accommodationService.updateAccommodation(accommodationId, request, memberInfo);
         return BaseResponse.response(accommodationResponse);
+    }
+
+    @GetMapping("/v1/accommodation/member")
+    public BaseResponse<List<RegisteredAccommodationResponse>> getAccommodationMember(
+            @JwtAuthentication MemberInfo memberInfo,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "4") int size
+    ) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        List<RegisteredAccommodationResponse> responses = accommodationService.getAccommodationMember(memberInfo, pageable);
+
+        return BaseResponse.response(responses);
     }
 }

@@ -40,8 +40,6 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
     List<Accommodation> getAllAccommodation(@Param("checkIn") LocalDate checkIn,
                                             @Param("checkOut") LocalDate checkInOut);
 
-
-
     @Query(value = """
             SELECT DISTINCT a
             FROM Accommodation a
@@ -66,7 +64,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
                                              @Param("locationType") LocationType locationType,
                                              @Param("accommodationType") AccommodationType accommodationType,
                                              @Param("personal") Integer personal,
-                                             @Param("personal") Pageable pageable);
+                                             Pageable pageable);
 
     @Query(value = """
             SELECT COUNT (DISTINCT a)
@@ -182,4 +180,15 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
     Optional<Accommodation> accommodationDetailInfo(@Param("id") Long id,
                                                     @Param("checkIn") LocalDate checkIn,
                                                     @Param("checkOut") LocalDate checkInOut);
+
+    @Query("""
+            SELECT DISTINCT a
+            FROM Accommodation a
+            LEFT JOIN FETCH a.roomId roomId
+            LEFT JOIN FETCH a.rates
+            LEFT JOIN FETCH a.images
+            LEFT JOIN FETCH a.discount
+            WHERE a.memberId =:memberId AND a.isDeleted=false
+            """)
+    List<Accommodation> accommodationRegisteredMember(@Param("memberId") Long memberId, Pageable pageable);
 }

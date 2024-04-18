@@ -3,6 +3,7 @@ package com.core.miniproject.src.accommodation.domain.entity;
 import com.core.miniproject.src.accommodation.domain.dto.AccommodationRequest;
 import com.core.miniproject.src.image.domain.entity.AccommodationImage;
 import com.core.miniproject.src.location.domain.entity.Location;
+import com.core.miniproject.src.member.domain.entity.Member;
 import com.core.miniproject.src.rate.domain.entity.Rate;
 import com.core.miniproject.src.room.domain.entity.Room;
 import jakarta.persistence.*;
@@ -26,6 +27,9 @@ public class Accommodation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "accommodation_id")
     private Long id;
+
+    @Column(name = "member_id")
+    private Long memberId;
 
     //location_id 참조 관계 설정
     @ManyToOne

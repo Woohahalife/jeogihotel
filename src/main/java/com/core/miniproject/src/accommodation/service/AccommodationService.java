@@ -15,6 +15,7 @@ import com.core.miniproject.src.image.repository.AccommodationImageRepository;
 import com.core.miniproject.src.location.domain.entity.Location;
 import com.core.miniproject.src.location.domain.entity.LocationType;
 import com.core.miniproject.src.location.repository.LocationRepository;
+import com.core.miniproject.src.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +37,7 @@ import java.util.stream.Collectors;
 public class AccommodationService {
 
     private final AccommodationUploader imageUploader;
+    private final MemberRepository memberRepository;
     private final AccommodationRepository accommodationRepository;
     private final DiscountRepository discountRepository;
     private final LocationRepository locationRepository;
@@ -47,7 +49,7 @@ public class AccommodationService {
             List<MultipartFile> multipartFile, MemberInfo memberInfo)
     {
         Accommodation accommodation =
-                getAccommodationPerDisCountAndLocation(request, multipartFile);
+                getAccommodationPerDisCountAndLocation(request, multipartFile, memberInfo);
 
         accommodation.getImages().forEach(image -> image.assignAccommodation(accommodation));
 
@@ -59,8 +61,8 @@ public class AccommodationService {
 
     private Accommodation getAccommodationPerDisCountAndLocation(
             AccommodationInsertRequest request,
-            List<MultipartFile> multipartFile
-    ) {
+            List<MultipartFile> multipartFile,
+            MemberInfo memberInfo) {
 
         Discount discount = discountRepository.findDiscountByRate(request.getDiscountRate())
                 .orElseGet(() -> discountRepository.save(Discount.builder().discountRate(request.getDiscountRate()).build()));
@@ -89,6 +91,7 @@ public class AccommodationService {
         List<AccommodationImage> accommodationImages = imageRepository.saveAll(images);
 
         return Accommodation.builder()
+                .memberId(memberInfo.getId())
                 .accommodationName(request.getAccommodationName())
                 .accommodationType(AccommodationType.getByText(request.getAccommodationType()))
                 .introduction(request.getIntroduction())
@@ -135,6 +138,7 @@ public class AccommodationService {
 
     @Transactional
     public BaseResponseStatus deleteAccommodation(Long id, MemberInfo memberInfo){
+
         Accommodation accommodation = accommodationRepository.findByAccommodationId(id).orElseThrow(
                 () -> new BaseException(BaseResponseStatus.ACCOMMODATION_DOES_NOT_EXIST));
         try {
@@ -174,6 +178,15 @@ public class AccommodationService {
         checkRedundantImages(accommodation);
 
         return AccommodationResponse.toClient(accommodation);
+    }
+
+    public List<RegisteredAccommodationResponse> getAccommodationMember(MemberInfo memberInfo, Pageable pageable) {
+
+        List<Accommodation> accommodationList = accommodationRepository.accommodationRegisteredMember(memberInfo.getId(), pageable);
+
+        return accommodationList.stream()
+                .map(RegisteredAccommodationResponse::toClient)
+                .collect(Collectors.toList());
     }
 
     private List<AccommodationImage> updateImage(Long id, AccommodationRequest request, Accommodation accommodation){
@@ -236,5 +249,6 @@ public class AccommodationService {
         }
         accommodation.assignImages(newImages);
     }
+
 }
 

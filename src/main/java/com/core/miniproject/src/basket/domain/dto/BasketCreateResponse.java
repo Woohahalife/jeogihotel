@@ -1,10 +1,6 @@
 package com.core.miniproject.src.basket.domain.dto;
 
 import com.core.miniproject.src.basket.domain.entity.Basket;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -24,7 +20,7 @@ public class BasketCreateResponse {
     private int fixedNumber;
     private int maxedNumber;
     private int price;
-    private double disCount;
+    private double discount;
     private LocalDate checkIn;
     private LocalDate checkOut;
 
@@ -38,7 +34,7 @@ public class BasketCreateResponse {
                 .fixedNumber(savedBasket.getFixedNumber())
                 .maxedNumber(savedBasket.getMaxedNumber())
                 .price(savedBasket.getPrice())
-                .disCount(savedBasket.getDiscount())
+                .discount(savedBasket.getDiscount())
                 .checkIn(savedBasket.getCheckIn())
                 .checkOut(savedBasket.getCheckOut())
                 .build();
