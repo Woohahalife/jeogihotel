@@ -42,6 +42,8 @@ public class Basket extends BaseEntity {
     @Column(name = "check_out")
     private LocalDate checkOut;
 
+    private String basketImage;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
@@ -59,6 +61,7 @@ public class Basket extends BaseEntity {
                 .price(room.getPrice())
                 .checkIn(request.getCheckIn())
                 .checkOut(request.getCheckOut())
+                .basketImage(room.getRoomName())
                 .member(member)
                 .room(room)
                 .build();

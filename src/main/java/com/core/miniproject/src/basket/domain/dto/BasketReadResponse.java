@@ -21,6 +21,7 @@ public class BasketReadResponse {
     private int price;
     private LocalDate checkIn;
     private LocalDate checkOut;
+    private String basketImage;
 
 
     public static BasketReadResponse toClient(Basket basket) {
@@ -34,6 +35,7 @@ public class BasketReadResponse {
                 .price(basket.getPrice())
                 .checkIn(basket.getCheckIn())
                 .checkOut(basket.getCheckOut())
+                .basketImage(basket.getBasketImage())
                 .build();
     }
 }
