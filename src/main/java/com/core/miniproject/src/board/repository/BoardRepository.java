@@ -1,6 +1,8 @@
 package com.core.miniproject.src.board.repository;
 
 import com.core.miniproject.src.board.domain.entity.Board;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,8 +20,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     from Board b
     where b.is_deleted=false
 """)
-    @Override
-    List<Board> findAll();
+    List<Board> findAllBoard(Pageable pageable);
 
     @Query("""
     select b
@@ -36,7 +37,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     where b.title like %?1%
     and b.is_deleted=false
 """)
-    List<Board> findByTitleContains(String title);
+    List<Board> findByTitleContains(String title, Pageable pageable);
 
     @Query("""
     select b
@@ -44,7 +45,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     where b.content like %?1%
     and b.is_deleted=false
 """)
-    List<Board> findByContentContains(String content);
+    List<Board> findByContentContains(String content, Pageable pageable);
 
 
 }
