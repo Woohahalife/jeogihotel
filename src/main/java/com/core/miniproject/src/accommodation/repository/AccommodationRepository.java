@@ -3,6 +3,7 @@ package com.core.miniproject.src.accommodation.repository;
 import com.core.miniproject.src.accommodation.domain.entity.Accommodation;
 import com.core.miniproject.src.accommodation.domain.entity.AccommodationType;
 import com.core.miniproject.src.location.domain.entity.LocationType;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -101,66 +102,6 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             """)
     Optional<Accommodation> findByAccommodationId(Long id);
 
-//    @Query("""
-//            select DISTINCT a
-//            from Accommodation a
-//            LEFT JOIN FETCH a.roomId roomId
-//            LEFT JOIN FETCH a.rates
-//            LEFT JOIN FETCH a.images
-//            LEFT JOIN roomId.reservations r
-//            where a.accommodationType =:accommodationType and a.isDeleted=false
-//            AND (r is null OR r.isVisited <> 'VISIT_DATE')
-//            AND (r is null OR r.isVisited <> 'VISITED')
-//            AND (r is null OR (r.checkIn > :checkOut OR r.checkOut < :checkIn))
-//            """)
-//    List<Accommodation> findByAccommodationType(@Param("accommodationType") AccommodationType accommodationType, @Param("checkIn") LocalDate checkIn, @Param("checkOut") LocalDate checkInOut, Pageable pageable);
-//
-//    @Query("""
-//            select DISTINCT a
-//            from Accommodation a
-//            LEFT JOIN FETCH a.roomId roomId
-//            LEFT JOIN FETCH a.rates
-//            LEFT JOIN FETCH a.images
-//            LEFT JOIN roomId.reservations r
-//            where a.location.locationName =:locationType and a.isDeleted=false
-//            AND (r is null OR r.isVisited <> 'VISIT_DATE')
-//            AND (r is null OR r.isVisited <> 'VISITED')
-//            AND (r is null OR (r.checkIn > :checkOut OR r.checkOut < :checkIn))
-//            """)
-//    List<Accommodation> findByLocationType(@Param("locationType") LocationType locationType, @Param("checkIn") LocalDate checkIn, @Param("checkOut") LocalDate checkInOut, Pageable pageable);
-//
-//    @Query("""
-//            select a
-//            from Accommodation a
-//            LEFT JOIN FETCH a.roomId roomId
-//            LEFT JOIN FETCH a.rates
-//            LEFT JOIN FETCH a.images
-//            LEFT JOIN roomId.reservations r
-//            where a.accommodationType =:aType
-//            and a.location.locationName =:lType and a.isDeleted=false
-//            AND (r is null OR r.isVisited <> 'VISIT_DATE')
-//            AND (r is null OR r.isVisited <> 'VISITED')
-//            AND (r is null OR (r.checkIn > :checkOut OR r.checkOut < :checkIn))
-//            """)
-//    List<Accommodation> findByAccommodationTypeAndLocationType(@Param("aType")AccommodationType aType, @Param("lType")LocationType lType, @Param("checkIn") LocalDate checkIn, @Param("checkOut") LocalDate checkInOut, Pageable pageable);
-
-//    @Query("""
-//            select a
-//            from Accommodation a
-//            join Room r on a.id=r.accommodationId.id
-//            LEFT JOIN FETCH a.rates
-//            LEFT JOIN FETCH a.roomId roomId
-//            LEFT JOIN FETCH a.images
-//            LEFT JOIN roomId.reservations ra
-//            where a.location.locationName=:type
-//            and (r is null or r.fixedMember=:fixedMember) and (a.isDeleted=false)
-//            AND (ra is null OR ra.isVisited <> 'VISIT_DATE')
-//            AND (ra is null OR ra.isVisited <> 'VISITED')
-//            AND (ra is null OR (ra.checkIn > :checkOut OR ra.checkOut < :checkIn))
-//            AND (SELECT COUNT(r2) FROM roomId.reservations r2 WHERE (r2.isVisited = 'VISIT_DATE' OR r2.isVisited = 'VISITED') AND (r2.checkIn > :checkOut OR r2.checkOut < :checkIn)) = 0
-//            """)
-//    List<Accommodation> findByLocationTypeAndFixedNumber(@Param("type") LocationType type, @Param("fixedMember") int fixedMember,  @Param("checkIn") LocalDate checkIn, @Param("checkOut") LocalDate checkInOut, Pageable pageable);
-
     @Query("""
             SELECT DISTINCT a
             FROM Accommodation a
@@ -181,7 +122,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
                                                     @Param("checkIn") LocalDate checkIn,
                                                     @Param("checkOut") LocalDate checkInOut);
 
-    @Query("""
+    @Query(value = """
             SELECT DISTINCT a
             FROM Accommodation a
             LEFT JOIN FETCH a.roomId roomId
@@ -189,6 +130,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             LEFT JOIN FETCH a.images
             LEFT JOIN FETCH a.discount
             WHERE a.memberId =:memberId AND a.isDeleted=false
-            """)
-    List<Accommodation> accommodationRegisteredMember(@Param("memberId") Long memberId, Pageable pageable);
+            """
+    )
+    Page<Accommodation> accommodationRegisteredMember(@Param("memberId") Long memberId, Pageable pageable);
 }

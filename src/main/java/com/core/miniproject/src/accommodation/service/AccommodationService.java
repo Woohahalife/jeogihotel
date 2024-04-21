@@ -18,6 +18,7 @@ import com.core.miniproject.src.location.repository.LocationRepository;
 import com.core.miniproject.src.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -180,13 +181,17 @@ public class AccommodationService {
         return AccommodationResponse.toClient(accommodation);
     }
 
-    public List<RegisteredAccommodationResponse> getAccommodationMember(MemberInfo memberInfo, Pageable pageable) {
+    public RegisteredAccommodationResponse getAccommodationMember(MemberInfo memberInfo, Pageable pageable) {
 
-        List<Accommodation> accommodationList = accommodationRepository.accommodationRegisteredMember(memberInfo.getId(), pageable);
+        Page<Accommodation> accommodationList = accommodationRepository.accommodationRegisteredMember(memberInfo.getId(), pageable);
 
-        return accommodationList.stream()
-                .map(RegisteredAccommodationResponse::toClient)
+        long totalElements = accommodationList.getTotalElements();
+
+        List<RegisteredAccommodationDto> dtoList = accommodationList.stream()
+                .map(RegisteredAccommodationDto::toResponse)
                 .collect(Collectors.toList());
+
+        return RegisteredAccommodationResponse.toClient(dtoList, totalElements);
     }
 
     private List<AccommodationImage> updateImage(Long id, AccommodationRequest request, Accommodation accommodation){

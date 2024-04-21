@@ -58,7 +58,7 @@ public class AccommodationController {
     }
 
     @GetMapping("/v1/accommodation/member")
-    public BaseResponse<List<RegisteredAccommodationResponse>> getAccommodationMember(
+    public BaseResponse<RegisteredAccommodationResponse> getAccommodationMember(
             @JwtAuthentication MemberInfo memberInfo,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "4") int size
@@ -66,7 +66,7 @@ public class AccommodationController {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        List<RegisteredAccommodationResponse> responses = accommodationService.getAccommodationMember(memberInfo, pageable);
+        RegisteredAccommodationResponse responses = accommodationService.getAccommodationMember(memberInfo, pageable);
 
         return BaseResponse.response(responses);
     }

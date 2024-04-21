@@ -15,37 +15,13 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class RegisteredAccommodationResponse {
 
-    private Long id; //id 추가
-    private Long memberId;
-    private String accommodationName;
-    private String accommodationType;
-    private String introduction;
-    private String locationType; //위치 추가
-    private Double rate;
-    private Double discount;
-    private String address;
-    private Integer price;
-    private List<ImageResponse> accommodationImage;
-    private List<RoomResponse> room;
+    private Long totalCount;
+    private List<RegisteredAccommodationDto> result;
 
-    public static RegisteredAccommodationResponse toClient(Accommodation accommodation){
+    public static RegisteredAccommodationResponse toClient(List<RegisteredAccommodationDto> dto, Long count) {
         return RegisteredAccommodationResponse.builder()
-                .id(accommodation.getId())
-                .memberId(accommodation.getMemberId())
-                .accommodationName(accommodation.getAccommodationName())
-                .accommodationType(accommodation.getAccommodationType().getType())
-                .introduction(accommodation.getIntroduction())
-                .locationType(accommodation.getLocation().getLocationName().getType())
-                .rate(accommodation.getAverageRate()) // 별점 평균 조회
-                .discount(accommodation.getDiscount().getDiscountRate())
-                .address(accommodation.getAddress())
-                .price(accommodation.getMinPrice())
-                .accommodationImage(accommodation.getImages().stream()
-                        .map(ImageResponse::toClient)
-                        .collect(Collectors.toList()))
-                .room(accommodation.getRoomId().stream()
-                        .map(RoomResponse::toClient)
-                        .collect(Collectors.toList()))
+                .totalCount(count)
+                .result(dto)
                 .build();
     }
 }
