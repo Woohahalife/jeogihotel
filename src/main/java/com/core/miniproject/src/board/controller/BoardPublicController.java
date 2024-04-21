@@ -1,15 +1,17 @@
 package com.core.miniproject.src.board.controller;
 
-import com.core.miniproject.src.board.domain.dto.BoardInsertResponse;
+
 import com.core.miniproject.src.board.domain.dto.BoardResponse;
-import com.core.miniproject.src.board.domain.entity.Board;
 import com.core.miniproject.src.board.service.BoardService;
 import com.core.miniproject.src.common.response.BaseResponse;
-import com.core.miniproject.src.common.security.JwtAuthentication;
-import com.core.miniproject.src.common.security.principal.MemberInfo;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,24 +25,30 @@ public class BoardPublicController {
     private final BoardService boardService;
 
     @GetMapping("/v1/board")
-    public BaseResponse<List<BoardResponse>> findAllBoard(){
-        List<BoardResponse> responses = boardService.findAllBoard();
+    public BaseResponse<List<BoardResponse>> findAllBoard(
+//            @RequestParam(name="page", defaultValue = "0") int page,
+//            @RequestParam(name="size", defaultValue = "10") int size
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) @Parameter(hidden = true) Pageable pageable
+    ){
+        List<BoardResponse> responses = boardService.findAllBoard(pageable);
         return BaseResponse.response(responses);
     }
 
     @GetMapping("/v1/board/search/title/{title}")
     public BaseResponse<List<BoardResponse>> searchByTitle(
-            @PathVariable("title") String title
+            @PathVariable("title") String title,
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) @Parameter(hidden = true) Pageable pageable
     ){
-        List<BoardResponse> responses = boardService.searchByTitle(title);
+        List<BoardResponse> responses = boardService.searchByTitle(title, pageable);
         return BaseResponse.response(responses);
     }
 
     @GetMapping("/v1/board/search/content/{content}")
     public BaseResponse<List<BoardResponse>> searchByContent(
-            @PathVariable("content") String content
+            @PathVariable("content") String content,
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) @Parameter(hidden = true) Pageable pageable
     ){
-        List<BoardResponse> responses = boardService.searchByContent(content);
+        List<BoardResponse> responses = boardService.searchByContent(content, pageable);
         return BaseResponse.response(responses);
     }
 

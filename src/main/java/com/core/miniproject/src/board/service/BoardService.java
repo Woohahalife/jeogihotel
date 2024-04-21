@@ -12,6 +12,8 @@ import com.core.miniproject.src.common.security.principal.MemberInfo;
 import com.core.miniproject.src.member.domain.entity.Member;
 import com.core.miniproject.src.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,19 +45,21 @@ public class BoardService extends BaseEntity {
     }
 
     @Transactional
-    public List<BoardResponse> findAllBoard(){
-        List<Board> boards = boardRepository.findAll();
+    public List<BoardResponse> findAllBoard(Pageable pageable){
+
+        List<Board> boards = boardRepository.findAllBoard(pageable);
+
         return boardToResponse(boards);
     }
 
     @Transactional
-    public List<BoardResponse> searchByTitle(String title){
-        List<Board> boards = boardRepository.findByTitleContains(title);
+    public List<BoardResponse> searchByTitle(String title, Pageable pageable){
+        List<Board> boards = boardRepository.findByTitleContains(title, pageable);
         return boardToResponse(boards);
     }
     @Transactional
-    public List<BoardResponse> searchByContent(String content){
-        List<Board> boards = boardRepository.findByContentContains(content);
+    public List<BoardResponse> searchByContent(String content, Pageable pageable){
+        List<Board> boards = boardRepository.findByContentContains(content, pageable);
         return boardToResponse(boards);
     }
 
