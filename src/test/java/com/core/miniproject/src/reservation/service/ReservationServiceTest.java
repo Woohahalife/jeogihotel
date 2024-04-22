@@ -157,14 +157,14 @@ class ReservationServiceTest {
                 .room(room)
                 .build();
 
-        BDDMockito.given(reservationRepository.findAllReservation(member.getId())).willReturn(Arrays.asList(expectedReservation1, expectedReservation2));
+        BDDMockito.given(reservationRepository.findAllReservation(member.getId(), pageable)).willReturn(Arrays.asList(expectedReservation1, expectedReservation2));
 
         // when
-        List<ReservationListResponse> allReservation = reservationService.findAllReservation(memberInfo);
+        List<ReservationListResponse> allReservation = reservationService.findAllReservation(memberInfo, pageable);
 
         // given
         BDDMockito.verify(memberRepository).findByMemberEmail(memberInfo.getEmail());
-        BDDMockito.verify(reservationRepository).findAllReservation(member.getId());
+        BDDMockito.verify(reservationRepository).findAllReservation(member.getId(), pageable);
         assertThat(allReservation).isNotNull();
         assertThat(allReservation).hasSize(2);
     }
@@ -173,14 +173,14 @@ class ReservationServiceTest {
     void 빈_데이터인_경우에도_정상_전달() {
         // given
         BDDMockito.given(memberRepository.findByMemberEmail(memberInfo.getEmail())).willReturn(Optional.of(member));
-        BDDMockito.given(reservationRepository.findAllReservation(member.getId())).willReturn(Collections.emptyList());
+        BDDMockito.given(reservationRepository.findAllReservation(member.getId(), pageable)).willReturn(Collections.emptyList());
 
         // when
-        List<ReservationListResponse> allReservation = reservationService.findAllReservation(memberInfo);
+        List<ReservationListResponse> allReservation = reservationService.findAllReservation(memberInfo, pageable);
 
         // given
         BDDMockito.verify(memberRepository).findByMemberEmail(memberInfo.getEmail());
-        BDDMockito.verify(reservationRepository).findAllReservation(member.getId());
+        BDDMockito.verify(reservationRepository).findAllReservation(member.getId(), pageable);
         assertThat(allReservation).isEmpty();
         assertThat(allReservation).hasSize(0);
     }
@@ -192,7 +192,7 @@ class ReservationServiceTest {
         BDDMockito.when(memberRepository.findByMemberEmail("string")).thenReturn(Optional.empty());
 
         assertThatExceptionOfType(BaseException.class)
-                .isThrownBy(() -> reservationService.findAllReservation(memberInfo))
+                .isThrownBy(() -> reservationService.findAllReservation(memberInfo, pageable))
                 .withMessageContaining(EMAIL_NOT_FOUND.getMessage());
     }
 
@@ -211,7 +211,7 @@ class ReservationServiceTest {
         BDDMockito.when(memberRepository.findByMemberEmail("string")).thenReturn(Optional.of(member));
 
         assertThatExceptionOfType(BaseException.class)
-                .isThrownBy(() -> reservationService.findAllReservation(memberInfo))
+                .isThrownBy(() -> reservationService.findAllReservation(memberInfo, pageable))
                 .withMessageContaining(EMAIL_IS_NOT_VALIDATE.getMessage());
     }
 }

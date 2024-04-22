@@ -2,6 +2,8 @@ package com.core.miniproject.src.reservation.repository;
 
 import com.core.miniproject.src.common.constant.IsVisited;
 import com.core.miniproject.src.reservation.model.entity.Reservation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
@@ -21,7 +22,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             left join r.member m
             where m.id = :memberId
             """)
-    List<Reservation> findAllReservation(@Param("memberId") Long id);
+    Page<Reservation> findAllReservation(@Param("memberId") Long id, Pageable pageable);
 
     @Modifying(clearAutomatically = true)
     @Query("""

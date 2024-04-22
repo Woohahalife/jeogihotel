@@ -73,6 +73,8 @@ public class AccommodationService {
         Location location = locationRepository.findLocationByType(type)
                 .orElseGet(() -> locationRepository.save(Location.builder().locationName(type).build()));
 
+        System.out.println("확인할 location = " + location.getLocationName());
+
         List<AccommodationImage> images = new ArrayList<>();
 
         if(multipartFile != null) {
@@ -90,6 +92,8 @@ public class AccommodationService {
         }
 
         List<AccommodationImage> accommodationImages = imageRepository.saveAll(images);
+
+        System.out.println("저장될 location = " + location.getLocationName());
 
         return Accommodation.builder()
                 .memberId(memberInfo.getId())

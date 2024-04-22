@@ -7,15 +7,14 @@ import com.core.miniproject.src.common.exception.BaseException;
 import com.core.miniproject.src.common.security.principal.MemberInfo;
 import com.core.miniproject.src.member.domain.entity.Member;
 import com.core.miniproject.src.member.repository.MemberRepository;
-import com.core.miniproject.src.reservation.model.dto.ReservationBasketRequest;
-import com.core.miniproject.src.reservation.model.dto.ReservationInsertRequest;
-import com.core.miniproject.src.reservation.model.dto.ReservationInsertResponse;
-import com.core.miniproject.src.reservation.model.dto.ReservationListResponse;
+import com.core.miniproject.src.reservation.model.dto.*;
 import com.core.miniproject.src.reservation.model.entity.Reservation;
 import com.core.miniproject.src.reservation.repository.ReservationRepository;
 import com.core.miniproject.src.room.domain.entity.Room;
 import com.core.miniproject.src.room.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -71,19 +70,22 @@ public class ReservationService {
     }
 
     @Transactional
-    public List<ReservationListResponse> findAllReservation(MemberInfo memberInfo) {
+    public ReservationResultResponse findAllReservation(MemberInfo memberInfo, Pageable pageable) {
 
         Member member = emailValidate(memberInfo);
 
         isVisitValidate();
 
-        List<Reservation> allReservation =
-                reservationRepository.findAllReservation(member.getId());
+        Page<Reservation> reservationList =
+                reservationRepository.findAllReservation(member.getId(), pageable);
 
+        long totalElements = reservationList.getTotalElements();
 
-        return allReservation.stream()
-                .map(ReservationListResponse::toClient)
+        List<ReservationResultDto> resultList = reservationList.stream()
+                .map(ReservationResultDto::toResponse)
                 .collect(Collectors.toList());
+
+        return ReservationResultResponse.toClient(resultList, totalElements);
     }
 
     private void isVisitValidate() {// 체크인 시간과 현재 날짜를 비교해 방문여부 전환

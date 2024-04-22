@@ -28,7 +28,7 @@ public class BoardPublicController {
     public BaseResponse<List<BoardResponse>> findAllBoard(
 //            @RequestParam(name="page", defaultValue = "0") int page,
 //            @RequestParam(name="size", defaultValue = "10") int size
-            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) @Parameter(hidden = true) Pageable pageable
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
     ){
         List<BoardResponse> responses = boardService.findAllBoard(pageable);
         return BaseResponse.response(responses);

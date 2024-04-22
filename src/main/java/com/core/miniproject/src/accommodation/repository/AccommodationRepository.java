@@ -29,7 +29,8 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             LEFT JOIN Room r ON a.accommodation_id = r.accommodation_id
             LEFT JOIN Rate rate ON a.accommodation_id = rate.accommodation_id
             LEFT JOIN AccommodationImage ai ON a.accommodation_id = ai.accommodation_id
-            LEFT JOIN Discount d ON a.discount_id = d.discount_id
+            left join location l on a.location_id = l.location_id
+            LEFT JOIN Discount d ON a.discount_id = d.discount_id 
             LEFT JOIN Reservation res ON r.room_id = res.room_id
             WHERE a.is_deleted = false
             AND (res.room_id IS NULL OR res.is_visited <> 'VISIT_DATE')
