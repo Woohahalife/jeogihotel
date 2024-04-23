@@ -73,7 +73,7 @@ jobs:
           port: 22
           script: |
             sudo cp /home/ubuntu/.docker/docker-compose.yml /home/ubuntu
-            sudo cp /home/ubuntu/script/deploy.sh /home/ubuntu
+            sudo cp /home/ubuntu/scripts/deploy.sh /home/ubuntu
             docker pull woohahalife/accommodation-backend
             chmod 777 ./deploy.sh
             ./deploy.sh
