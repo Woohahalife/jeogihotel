@@ -75,6 +75,6 @@ jobs:
             sudo cp /home/ubuntu/.docker/docker-compose.yml /home/ubuntu
             sudo cp /home/ubuntu/scripts/deploy.sh /home/ubuntu
             docker pull woohahalife/accommodation-backend
-            chmod 777 ./deploy.sh
+            sudo chmod 777 ./deploy.sh
             ./deploy.sh
             docker image prune -f
