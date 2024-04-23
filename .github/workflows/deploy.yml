@@ -73,6 +73,7 @@ jobs:
           port: 22
           script: |
             docker pull woohahalife/accommodation-backend
+            cd scripts
             chmod 777 ./deploy.sh
             ./deploy.sh
             docker image prune -f
