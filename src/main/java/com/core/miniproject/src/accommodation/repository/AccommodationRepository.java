@@ -92,6 +92,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
                               @Param("accommodationType") AccommodationType accommodationType,
                               @Param("personal") Integer personal);
 
+
     @Query("""
             select DISTINCT a
             from Accommodation a
