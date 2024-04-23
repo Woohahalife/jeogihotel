@@ -72,6 +72,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
+            cd /home/ubuntu/scripts
             docker pull woohahalife/accommodation-backend
             chmod 777 ./deploy.sh
             ./deploy.sh
