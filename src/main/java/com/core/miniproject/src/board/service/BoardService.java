@@ -1,5 +1,6 @@
 package com.core.miniproject.src.board.service;
 
+import com.core.miniproject.src.board.domain.dto.BoardAllResponse;
 import com.core.miniproject.src.board.domain.dto.BoardInsertRequest;
 import com.core.miniproject.src.board.domain.dto.BoardInsertResponse;
 import com.core.miniproject.src.board.domain.dto.BoardResponse;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.core.miniproject.src.common.response.BaseResponseStatus.*;
@@ -45,22 +45,34 @@ public class BoardService extends BaseEntity {
     }
 
     @Transactional
-    public List<BoardResponse> findAllBoard(Pageable pageable){
+    public BoardAllResponse findAllBoard(Pageable pageable){
 
-        List<Board> boards = boardRepository.findAllBoard(pageable);
+        Page<Board> boards = boardRepository.findAllBoard(pageable);
+        List<BoardResponse> boardResponses = boards.stream()
+                .map(BoardResponse::toClient)
+                .toList();
 
-        return boardToResponse(boards);
+        return BoardAllResponse.toClient(boardResponses, (int) boards.getTotalElements());
     }
 
     @Transactional
-    public List<BoardResponse> searchByTitle(String title, Pageable pageable){
-        List<Board> boards = boardRepository.findByTitleContains(title, pageable);
-        return boardToResponse(boards);
+    public BoardAllResponse searchByTitle(String title, Pageable pageable){
+        Page<Board> boards = boardRepository.findByTitleContains(title, pageable);
+
+        List<BoardResponse> boardResponses = boards.stream()
+                .map(BoardResponse::toClient)
+                .toList();
+
+        return BoardAllResponse.toClient(boardResponses, (int) boards.getTotalElements());
     }
     @Transactional
-    public List<BoardResponse> searchByContent(String content, Pageable pageable){
-        List<Board> boards = boardRepository.findByContentContains(content, pageable);
-        return boardToResponse(boards);
+    public BoardAllResponse searchByContent(String content, Pageable pageable){
+        Page<Board> boards = boardRepository.findByContentContains(content, pageable);
+        List<BoardResponse> boardResponses = boards.stream()
+                .map(BoardResponse::toClient)
+                .toList();
+
+        return BoardAllResponse.toClient(boardResponses, (int) boards.getTotalElements());
     }
 
     @Transactional
@@ -94,13 +106,5 @@ public class BoardService extends BaseEntity {
         }
 
         return member;
-    }
-
-    private List<BoardResponse> boardToResponse(List<Board> boards){
-        List<BoardResponse> responses = new ArrayList<>();
-        for (Board board : boards ) {
-            responses.add(BoardResponse.toClient(board));
-        }
-        return responses;
     }
 }
