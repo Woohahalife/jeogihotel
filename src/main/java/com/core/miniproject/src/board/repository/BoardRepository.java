@@ -15,12 +15,8 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Override
     Board save(Board board);
 
-    @Query("""
-    select b
-    from Board b
-    where b.is_deleted=false
-""")
-    List<Board> findAllBoard(Pageable pageable);
+    @Query(value = " select b from Board b where b.is_deleted=false")
+    Page<Board> findAllBoard(Pageable pageable);
 
     @Query("""
     select b
@@ -37,7 +33,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     where b.title like %?1%
     and b.is_deleted=false
 """)
-    List<Board> findByTitleContains(String title, Pageable pageable);
+    Page<Board> findByTitleContains(String title, Pageable pageable);
 
     @Query("""
     select b
@@ -45,7 +41,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     where b.content like %?1%
     and b.is_deleted=false
 """)
-    List<Board> findByContentContains(String content, Pageable pageable);
+    Page<Board> findByContentContains(String content, Pageable pageable);
 
 
 }
