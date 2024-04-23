@@ -1,7 +1,7 @@
 IS_GREEN=$(docker ps | grep accommodation-green) # 현재 실행중인 App이 blue인지 확인
 DEFAULT_CONF=" /etc/nginx/nginx.conf"
 
-if [ -z $IS_GREEN  ];then # blue라면 (환경변수로 설정한 문자열 길이가 0인 경우 -z)
+if [ -z $IS_GREEN  ];then # blue라면 or 첫 배포라면 (환경변수로 설정한 문자열 길이가 0인 경우 -z)
 
   echo "### BLUE => GREEN ###"
 
@@ -28,7 +28,7 @@ if [ -z $IS_GREEN  ];then # blue라면 (환경변수로 설정한 문자열 길�
 
   echo "5. blue container down"
   docker-compose stop accommodation-blue
-else
+else #
   echo "### GREEN => BLUE ###"
 
   echo "1. get blue image"
