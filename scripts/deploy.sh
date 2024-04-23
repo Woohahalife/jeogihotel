@@ -1,22 +1,57 @@
-##!/usr/bin/env bash
-#
-#REPOSITORY=/home/ubuntu/KDT_BE7_Mini-Project
-#cd $REPOSITORY
-#
-#APP_NAME=KDT_BE7_Mini-Project
-#JAR_NAME=$(ls $REPOSITORY/build/libs/ | grep 'SNAPSHOT.jar' | tail -n 1)
-#JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
-#
-#CURRENT_PID=$(pgrep -f $APP_NAME)
-#
-#if [ -z $CURRENT_PID ]
-#then
-#  echo "> 종료할것 없음."
-#else
-#  echo "> kill -9 $CURRENT_PID"
-#  kill -15 $CURRENT_PID
-#  sleep 5
-#fi
-#
-#echo "> $JAR_PATH 배포"
-#nohup java -jar $JAR_PATH > /home/ubuntu/spring.log 2>&1 < /dev/null &
+IS_GREEN=$(docker ps | grep accommodation-green) # 현재 실행중인 App이 blue인지 확인
+DEFAULT_CONF=" /etc/nginx/nginx.conf"
+
+if [ -z $IS_GREEN  ];then # blue라면 (환경변수로 설정한 문자열 길이가 0인 경우 -z)
+
+  echo "### BLUE => GREEN ###"
+
+  echo "1. get green image"
+  docker-compose pull accommodation-green # green으로 이미지를 내려받아옴
+
+  echo "2. green container up"
+  docker-compose up -d accommodation-green # green 컨테이너 실행
+
+  while [ 1 = 1 ]; do
+  echo "3. green health check..."
+  sleep 3
+
+  REQUEST=$(curl http://127.0.0.1:8082) # green으로 request
+    if [ -n "$REQUEST" ]; then # 서비스 가능하면 health check 중지 (문자열 길이가 0보다 큰지 판단 -n)
+            echo "health check success"
+            break ;
+            fi
+  done;
+
+  echo "4. reload nginx"
+  sudo cp /etc/nginx/nginx.green.conf /etc/nginx/nginx.conf
+  sudo nginx -s reload
+
+  echo "5. blue container down"
+  docker-compose stop accommodation-blue
+else
+  echo "### GREEN => BLUE ###"
+
+  echo "1. get blue image"
+  docker-compose pull accommodation-blue
+
+  echo "2. blue container up"
+  docker-compose up -d accommodation-blue
+
+  while [ 1 = 1 ]; do
+    echo "3. blue health check..."
+    sleep 3
+    REQUEST=$(curl http://127.0.0.1:8083) # blue로 request
+
+    if [ -n "$REQUEST" ]; then # 서비스 가능하면 health check 중지 (문자열 길이가 0보다 큰지 판단 -n)
+      echo "health check success"
+      break ;
+    fi
+  done;
+
+  echo "4. reload nginx" 
+  sudo cp /etc/nginx/nginx.blue.conf /etc/nginx/nginx.conf
+  sudo nginx -s reload
+
+  echo "5. green container down"
+  docker-compose stop accommodation-green
+fi

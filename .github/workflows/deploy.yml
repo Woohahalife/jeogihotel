@@ -38,28 +38,40 @@ jobs:
         run: ./gradlew clean build --parallel -x test
         shell: bash
 
-      - name: Build docker image
-        run: docker build -t woohahalife/accommodation-backend .
+      - name: Docker Build & Push to Hub
+        run: |
+          docker login -u woohahalife -p ${{ secrets.DOCKERHUB_TOKEN }}
+          docker build -t woohahalife/accommodation-backend -f ./.docker/Dockerfile .
+          docker push woohahalife/accommodation-backend
 
-      - name: Login docker hub
-        uses: docker/login-action@v2
+      - name: Send docker-compose.yml to EC2
+        uses: appleboy/scp-action@master
         with:
-          username: woohahalife
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          host: ${{ secrets.AWS_HOST }}
+          username: ubuntu
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          source: "./.docker/docker-compose.yml"
+          target: "/home/ubuntu"
 
-      - name: Push to docker hub
-        run: docker push woohahalife/accommodation-backend
+      - name: Send deploy.sh to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ubuntu
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          source: "./docker/deploy.sh"
 
-      - name: Connect to AWS & Execute Application
-        uses: appleboy/ssh-action@v0.1.6
+      - name: Deploy to Develop
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.AWS_HOST }}
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
-            docker stop accommodation-backend || true
-            docker rm accommodation-backend || true 
-            docker image rm woohahalife/accommodation-backend || true
             docker pull woohahalife/accommodation-backend
-            docker run -d -p 8081:8081 --name accommodation-backend --network backend-network woohahalife/accommodation-backend
+            chmod 777 ./deploy.sh
+            ./deploy.sh
+            docker image prune -f

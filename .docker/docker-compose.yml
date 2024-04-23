@@ -1,0 +1,22 @@
+version: '3'
+services:
+  accommodation-green:
+    container_name: accommodation-green
+    image: woohahalife/accommodation-backend
+    ports:
+      - "8082:8081"
+    networks:
+      - backend-network
+
+  accommodation-blue:
+    container_name: accommodation-blue
+    image: woohahalife/accommodation-backend
+    ports:
+      - "8083:8081"
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    external: true
+
