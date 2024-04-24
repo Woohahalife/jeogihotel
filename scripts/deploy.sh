@@ -1,7 +1,14 @@
 IS_GREEN=$(docker ps | grep accommodation-green) # 현재 실행중인 App이 blue인지 확인
+EXIT_GREEN=$(docker ps -a | grep accommodation-green)
+EXIT_BLUE=$(docker ps -a | grep accommodation-blue)
 DEFAULT_CONF=" /etc/nginx/nginx.conf"
 
-if [ -z $IS_GREEN  ];then # blue라면 or 첫 배포라면 (환경변수로 설정한 문자열 길이가 0인 경우 -z)
+if [ -z $IS_GREEN ];then # blue라면 or 첫 배포라면 (환경변수로 설정한 문자열 길이가 0인 경우 -z)
+
+  if [ -n $EXIT_GREEN ];then
+    echo "down green container"
+    docker-compose docker-compose rm -f accommodation-green
+  fi
 
   echo "##### BLUE => GREEN #####"
 
@@ -31,8 +38,12 @@ if [ -z $IS_GREEN  ];then # blue라면 or 첫 배포라면 (환경변수로 설�
 
   echo "5. blue container down"
   docker-compose stop accommodation-blue
-  docker-compose rm -f accommodation-blue
-else #
+
+else # green 운영중
+  if [ -n $EXIT_BLUE ];then
+      echo "down blue container"
+      docker-compose docker-compose rm -f accommodation-blue
+  fi
   echo "### GREEN => BLUE ###"
 
   echo "1. get blue image"
@@ -62,5 +73,4 @@ else #
 
   echo "5. green container down"
   docker-compose stop accommodation-green
-  docker-compose rm -f accommodation-green
 fi
