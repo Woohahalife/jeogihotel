@@ -3,7 +3,7 @@ DEFAULT_CONF=" /etc/nginx/nginx.conf"
 
 if [ -z $IS_GREEN  ];then # blue라면 or 첫 배포라면 (환경변수로 설정한 문자열 길이가 0인 경우 -z)
 
-  echo "### BLUE => GREEN ###"
+  echo "##### BLUE => GREEN #####"
 
   echo "1. get green image"
   docker-compose pull accommodation-green # green으로 이미지를 내려받아옴
@@ -11,13 +11,16 @@ if [ -z $IS_GREEN  ];then # blue라면 or 첫 배포라면 (환경변수로 설�
   echo "2. green container up"
   docker-compose up -d accommodation-green # green 컨테이너 실행
 
+  counter=0
   while [ 1 = 1 ]; do
   echo "3. green health check..."
+  ((counter++))
   sleep 3
 
   REQUEST=$(curl http://127.0.0.1:8082) # green으로 request
     if [ -n "$REQUEST" ]; then # 서비스 가능하면 health check 중지 (문자열 길이가 0보다 큰지 판단 -n)
             echo "health check success"
+            echo "Number of attempts: $counter"
             break ;
             fi
   done;
@@ -28,6 +31,7 @@ if [ -z $IS_GREEN  ];then # blue라면 or 첫 배포라면 (환경변수로 설�
 
   echo "5. blue container down"
   docker-compose stop accommodation-blue
+  docker-compose rm -f accommodation-blue
 else #
   echo "### GREEN => BLUE ###"
 
@@ -37,13 +41,17 @@ else #
   echo "2. blue container up"
   docker-compose up -d accommodation-blue
 
+
+  counter=0
   while [ 1 = 1 ]; do
     echo "3. blue health check..."
+    ((counter++))
     sleep 3
     REQUEST=$(curl http://127.0.0.1:8083) # blue로 request
 
     if [ -n "$REQUEST" ]; then # 서비스 가능하면 health check 중지 (문자열 길이가 0보다 큰지 판단 -n)
       echo "health check success"
+      echo "Number of attempts: $counter"
       break ;
     fi
   done;
@@ -54,4 +62,5 @@ else #
 
   echo "5. green container down"
   docker-compose stop accommodation-green
+  docker-compose rm -f accommodation-green
 fi
