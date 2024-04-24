@@ -60,4 +60,9 @@ public class AccommodationPublicController {
 
         return BaseResponse.response(response);
     }
+
+    @GetMapping("v1/accommodation/compose")
+    public String getCompose() {
+        return "compose잘됨!!";
+    }
 }
