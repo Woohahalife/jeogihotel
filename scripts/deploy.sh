@@ -43,7 +43,7 @@ if [ "$CURRENT_SERVER" = "8083" -o -z "$IS_DEV1" ];then # dev2운영증 or 첫 �
   fi
 
 else # dev2 운영중인 경우
-  if [ -n $IS_DEV2 ];then
+  if [ -n "$IS_DEV2" ];then
       echo "down old container (dev2)"
       docker-compose stop accommodation-dev2
       docker-compose rm -f accommodation-dev2 # 신버전 반영 위해 기존 컨테이너 삭제
