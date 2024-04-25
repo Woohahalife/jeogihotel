@@ -43,6 +43,7 @@ if [ "$CURRENT_SERVER" = "8083" -o -z "$IS_DEV1" ];then # dev2운영증 or 첫 �
   fi
 
 else # dev2 운영중인 경우
+
   if [ -n "$IS_DEV2" ];then
       echo "down old container (dev2)"
       docker-compose stop accommodation-dev2
@@ -78,7 +79,7 @@ else # dev2 운영중인 경우
   echo "5. deploy check new version" # 서버 port 체크
   if [ "$CURRENT_SERVER" = "8083" ];then
       echo "The server has been successfully deployed [ CURRENT_SERVER_PORT ] : $CURRENT_SERVER"
-    fi
+  fi
 
 fi
 
