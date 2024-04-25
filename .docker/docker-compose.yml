@@ -1,15 +1,15 @@
 version: '3'
 services:
-  dev1:
-    container_name: dev1
+  accommodation-dev1:
+    container_name: accommodation-dev1
     image: woohahalife/accommodation-backend
     ports:
       - "8082:8081"
     networks:
       - backend-network
 
-  dev2:
-    container_name: dev2
+  accommodation-dev2:
+    container_name: accommodation-dev2
     image: woohahalife/accommodation-backend
     ports:
       - "8083:8081"
