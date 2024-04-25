@@ -6,7 +6,7 @@ DEFAULT_CONF=" /etc/nginx/nginx.conf"
 if [ "$CURRENT_SERVER" = "8083" -o -z "$IS_DEV1" ];then # dev2라면 or 첫 배포라면 (환경변수로 설정한 문자열 길이가 0인 경우 -z)
 
   if [ -n "$IS_DEV1" ];then
-    echo "down old container (dev2)"
+    echo "down old container (dev1)"
     docker-compose stop accommodation-dev1
     docker-compose rm -f accommodation-dev1 # 신버전 반영 위해 기존 컨테이너 삭제
   fi
