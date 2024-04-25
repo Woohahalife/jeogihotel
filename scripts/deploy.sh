@@ -1,22 +1,23 @@
-IS_GREEN=$(docker ps | grep accommodation-green) # 현재 실행중인 App이 blue인지 확인
-EXIT_GREEN=$(docker ps -a | grep accommodation-green)
-EXIT_BLUE=$(docker ps -a | grep accommodation-blue)
+IS_DEV1=$(docker ps | grep accommodation-dev1)
+IS_DEV2=$(docker ps | grep accommodation-dev2)
+CURRENT_SERVER=$(grep -oP '(?<=proxy_pass http://127.0.0.1:)\d+' /etc/nginx/nginx.conf | head -n1)
 DEFAULT_CONF=" /etc/nginx/nginx.conf"
 
-if [ -z $IS_GREEN ];then # blue라면 or 첫 배포라면 (환경변수로 설정한 문자열 길이가 0인 경우 -z)
+if [ "$CURRENT_SERVER" = "8083" -o -z $IS_DEV1 ];then # dev2라면 or 첫 배포라면 (환경변수로 설정한 문자열 길이가 0인 경우 -z)
 
-  if [ -n $EXIT_GREEN ];then
-    echo "down green container"
-    docker-compose docker-compose rm -f accommodation-green
+  if [ -n $IS_DEV1 ];then
+    echo "down old container"
+    docker-compose stop accommodation-dev1
+    docker-compose docker-compose rm -f accommodation-dev1 # 신버전 반영 위해 기존 컨테이너 삭제
   fi
 
-  echo "##### BLUE => GREEN #####"
+  echo "##### dev2 => dev1 #####"
 
   echo "1. get green image"
-  docker-compose pull accommodation-green # green으로 이미지를 내려받아옴
+  docker-compose pull accommodation-dev1 # dev1으로 이미지를 내려받아옴
 
   echo "2. green container up"
-  docker-compose up -d accommodation-green # green 컨테이너 실행
+  docker-compose up -d accommodation-dev1 # dev1 컨테이너 실행
 
   counter=0
   while [ 1 = 1 ]; do
@@ -24,7 +25,7 @@ if [ -z $IS_GREEN ];then # blue라면 or 첫 배포라면 (환경변수로 설�
   ((counter++))
   sleep 3
 
-  REQUEST=$(curl http://127.0.0.1:8082) # green으로 request
+  REQUEST=$(curl http://127.0.0.1:8082) # dev1으로 request
     if [ -n "$REQUEST" ]; then # 서비스 가능하면 health check 중지 (문자열 길이가 0보다 큰지 판단 -n)
             echo "health check success"
             echo "Number of attempts: $counter"
@@ -33,24 +34,25 @@ if [ -z $IS_GREEN ];then # blue라면 or 첫 배포라면 (환경변수로 설�
   done;
 
   echo "4. reload nginx"
-  sudo cp /etc/nginx/nginx.green.conf /etc/nginx/nginx.conf
+  sudo cp /etc/nginx/nginx.dev1.conf $DEFAULT_CONF
   sudo nginx -s reload
 
-  echo "5. blue container down"
-  docker-compose stop accommodation-blue
+#  echo "5. blue container down"
+#  docker-compose stop accommodation-dev2
 
-else # green 운영중
-  if [ -n $EXIT_BLUE ];then
+else # dev2 운영중
+  if [ -n $IS_DEV2 ];then
       echo "down blue container"
-      docker-compose docker-compose rm -f accommodation-blue
+      docker-compose stop accommodation-dev2
+      docker-compose docker-compose rm -f accommodation-dev2 # 신버전 반영 위해 기존 컨테이너 삭제
   fi
-  echo "### GREEN => BLUE ###"
+  echo "### dev1 => dev2 ###"
 
   echo "1. get blue image"
-  docker-compose pull accommodation-blue
+  docker-compose pull accommodation-dev2
 
   echo "2. blue container up"
-  docker-compose up -d accommodation-blue
+  docker-compose up -d accommodation-dev2
 
 
   counter=0
@@ -68,9 +70,10 @@ else # green 운영중
   done;
 
   echo "4. reload nginx" 
-  sudo cp /etc/nginx/nginx.blue.conf /etc/nginx/nginx.conf
+  sudo cp /etc/nginx/nginx.dev2.conf $DEFAULT_CONF
   sudo nginx -s reload
 
-  echo "5. green container down"
-  docker-compose stop accommodation-green
+#  echo "5. green container down"
+#  docker-compose stop accommodation-dev1
 fi
+
