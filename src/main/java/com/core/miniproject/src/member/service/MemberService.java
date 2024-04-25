@@ -42,6 +42,7 @@ public class MemberService {
                     throw new BaseException(DUPLICAE_EMAIL);
                 });
 
+
         Member saveMember = memberRepository.save(insertMemberDataFromRequest(request));
 
         log.info("MemberEntity has created for join with ID: {} email: {} name : {}",
