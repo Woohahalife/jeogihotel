@@ -63,6 +63,9 @@ public class AccommodationController {
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "size", defaultValue = "4") int size
     ) {
+        if(page > 0) {
+            page--;
+        }
 
         Pageable pageable = PageRequest.of(page, size);
 
