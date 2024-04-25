@@ -61,7 +61,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          source: "./scripts/deploy.sh"
+          source: "./scripts"
           target: "/home/ubuntu"
 
       - name: Deploy to Develop

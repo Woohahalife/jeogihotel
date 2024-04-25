@@ -63,8 +63,8 @@ else # dev2 운영중인 경우
     echo "3. update version health check..."
     ((counter++))
     sleep 3
-    REQUEST=$(curl http://127.0.0.1:8083) # dev2로 request
 
+    REQUEST=$(curl http://127.0.0.1:8083) # dev2로 request
     if [ -n "$REQUEST" ]; then # 서비스 가능하면 health check 중지 (문자열 길이가 0보다 큰지 판단 -n)
       echo "health check success"
       echo "Number of attempts: $counter"
