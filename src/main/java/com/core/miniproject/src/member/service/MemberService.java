@@ -78,7 +78,7 @@ public class MemberService {
 
         refreshTokenService.saveRefreshToken(new RefreshToken(String.valueOf(member.getId()), refreshToken, token.getSecretKey()));
 
-        return MemberLoginResponse.toClient(token, member.getId());
+        return MemberLoginResponse.toClient(token, member.getId(), member.getRole());
     }
 
     private void validatePassword(String requestPassword, Member member) {

@@ -60,7 +60,7 @@ public class AccommodationController {
     @GetMapping("/v1/accommodation/member")
     public BaseResponse<RegisteredAccommodationResponse> getAccommodationMember(
             @JwtAuthentication MemberInfo memberInfo,
-            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "size", defaultValue = "4") int size
     ) {
 
