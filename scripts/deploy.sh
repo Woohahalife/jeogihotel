@@ -3,9 +3,9 @@ IS_DEV2=$(docker ps | grep accommodation-dev2)
 CURRENT_SERVER=$(grep -oP '(?<=proxy_pass http://127.0.0.1:)\d+' /etc/nginx/nginx.conf | head -n1)
 DEFAULT_CONF=" /etc/nginx/nginx.conf"
 
-if [ "$CURRENT_SERVER" = "8083" -o -z $IS_DEV1 ];then # dev2라면 or 첫 배포라면 (환경변수로 설정한 문자열 길이가 0인 경우 -z)
+if [ "$CURRENT_SERVER" = "8083" -o -z "$IS_DEV1" ];then # dev2라면 or 첫 배포라면 (환경변수로 설정한 문자열 길이가 0인 경우 -z)
 
-  if [ -n $IS_DEV1 ];then
+  if [ -n "$IS_DEV1" ];then
     echo "down old container"
     docker-compose stop accommodation-dev1
     docker-compose docker-compose rm -f accommodation-dev1 # 신버전 반영 위해 기존 컨테이너 삭제
