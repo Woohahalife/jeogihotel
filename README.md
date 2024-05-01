@@ -100,4 +100,20 @@ GET | public-api/v1/member/logout | 로그 아웃
 - 배포 관련 이슈
 - 보안 토큰 처리 이슈
 
+### 리팩토링 진행 과정
+- 무중단 배포 전환   
+ ![image](https://github.com/Woohahalife/KDT_BE7_Mini-Project/assets/140988037/06cd30ac-ca06-4fa4-89e6-cf5472205596)   
+ update된 프로젝트의 배포~실행까지의 과정에서 생기는 중단점 제거를 위해   
+ BLUE/GREEN 방식의 무중단 배포 도입 및 Rollback 시나리오에 대한 대응책 구축
+
+- S3활용 imageUploader 도입   
+  이미지 파일을 프로젝트 외부에서 관리하고, 자유롭게 view 페이지로 전달할 수 있도록   
+  S3 storage를 활용해 imageUploader를 도입 및 관리 기능 구현
+
+- 예약을 하고 싶은 객실을 저장할 수 있는 basket 구현 및 공지사항 board 도입    
+  선택한 숙소를 바로 예약하기 전 소비자에게 선택할 시간을 부여할 수 있도록
+  대상 내역을 저장할 수 있고 여러 내역을 동시에 예약할 수 있는 basket 구현
+    
+  관리자와 소비자가 소통할 수 있는 공지사항 board 도입
+
 
